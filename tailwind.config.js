@@ -11,9 +11,9 @@ export default {
         accent: "#FF1E1E",
       },
       fontFamily: {
-        heading: ["Orbitron", "sans-serif"],
-        body: ["Roboto", "sans-serif"],
-      },
+        heading: ["Poppins", "sans-serif"],
+        body: ["Inter", "sans-serif"],
+      }
     },
   },
   plugins: [],

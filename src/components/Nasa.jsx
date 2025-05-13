@@ -48,10 +48,11 @@ export default function Nasa() {
                     <span className="inline-block animate-bounce">🔭</span>
                 </h2>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <div className="flex flex-col items-center gap-4 mb-8">
                     <input
                         type="date"
                         inputMode="numeric"
+                        pattern="\\d{4}-\\d{2}-\\d{2}"
                         max={new Date().toISOString().split("T")[0]}
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
@@ -59,13 +60,14 @@ export default function Nasa() {
               bg-black/50 border border-gray-600 rounded-lg
               px-3 py-2 text-white placeholder-gray-400
               focus:outline-none focus:ring-2 focus:ring-red-500
+              w-full max-w-[160px]
             "
                     />
                     <button
                         onClick={fetchApod}
                         className="
               bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg
-              font-semibold transition
+              font-semibold transition w-full max-w-[160px]
             "
                     >
                         Buscar

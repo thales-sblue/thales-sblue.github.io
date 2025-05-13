@@ -57,14 +57,14 @@ export default function Hero() {
     return (
         <section
             id="hero"
-            className="relative h-screen flex items-center justify-center overflow-hidden bg-cover bg-center bg-gradient-to-r from-blue-500 to-purple-600"
+            className="relative min-h-screen max-h-[900px] flex items-center justify-center overflow-hidden bg-cover bg-center bg-gradient-to-r from-blue-500 to-purple-600"
             style={{ backgroundImage: `url(${bgHero})` }}
         >
-            <div className="absolute inset-0 bg-black/60 z-10" />
+            <div className="absolute inset-0 bg-black/30 sm:bg-black/60 z-10" />
 
             <div ref={contentRef} className="relative z-20 flex flex-col md:flex-row items-center gap-8 px-4">
                 <motion.div
-                    className="w-64 h-64 md:w-80 md:h-80 relative"
+                    className="w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 relative"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
@@ -77,7 +77,7 @@ export default function Hero() {
                 </motion.div>
 
                 <motion.div
-                    className="max-w-md text-center md:text-left space-y-4"
+                    className="w-full max-w-xl text-center md:text-left space-y-4 px-4"
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6, duration: 0.8 }}
@@ -88,16 +88,16 @@ export default function Hero() {
                     <p className="text-lg md:text-xl text-gray-300">
                         Veja meus projetos e as soluções que já criei em Java, NodeJs e muito mais.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
                         <a
                             href="#nasa"
-                            className="inline-block bg-accent text-black font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
+                            className="inline-block bg-accent text-black font-semibold px-4 py-2 text-sm rounded-full hover:bg-white hover:text-black transition w-[85%] max-w-[180px] mx-auto sm:mx-0"
                         >
                             Explorar o Universo
                         </a>
                         <a
                             href="#projects"
-                            className="inline-block bg-accent text-black font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
+                            className="inline-block bg-accent text-black font-semibold px-4 py-2 text-sm rounded-full hover:bg-white hover:text-black transition w-[85%] max-w-[180px] mx-auto sm:mx-0"
                         >
                             Ver Projetos
                         </a>
