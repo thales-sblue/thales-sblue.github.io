@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-hero {
+    background-color: #0A0A0A;
+    background-image: url('./assets/what-the-hex-dark.png');
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: auto;
+}
