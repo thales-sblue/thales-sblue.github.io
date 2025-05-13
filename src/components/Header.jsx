@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-import { FaUser, FaCode, FaProjectDiagram, FaEnvelope } from "react-icons/fa";
+import { FaHome, FaProjectDiagram, FaCode, FaUser, FaEnvelope } from "react-icons/fa";
 
+// Inclui Nasa antes de Projetos e corrige href para #apod
 const navItems = [
-    { name: "Sobre", href: "#about", icon: <FaUser /> },
-    { name: "Skills", href: "#skills", icon: <FaCode /> },
+    { name: "Início", href: "#hero", icon: <FaHome /> },
+    { name: "Nasa", href: "#nasa", icon: <FaCode /> },
     { name: "Projetos", href: "#projects", icon: <FaProjectDiagram /> },
+    { name: "Skills", href: "#skills", icon: <FaCode /> },
+    { name: "Sobre", href: "#about", icon: <FaUser /> },
     { name: "Contato", href: "#contact", icon: <FaEnvelope /> },
 ];
 
@@ -15,10 +18,10 @@ export default function Header() {
 
     useEffect(() => {
         const onScroll = () => {
-            const pos = window.scrollY;
+            const pos = window.scrollY + 160; // Compensa header
             navItems.forEach(({ name, href }) => {
                 const sec = document.querySelector(href);
-                if (sec && pos >= sec.offsetTop - 160) {
+                if (sec && pos >= sec.offsetTop) {
                     setActive(name);
                 }
             });
@@ -26,6 +29,16 @@ export default function Header() {
         window.addEventListener("scroll", onScroll);
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
+    const handleNavClick = (e, href) => {
+        e.preventDefault();
+        setIsOpen(false);
+        const section = document.querySelector(href);
+        if (section) {
+            const top = section.offsetTop - 140; // Ajusta posição de rolagem
+            window.scrollTo({ top, behavior: "smooth" });
+        }
+    };
 
     return (
         <>
@@ -35,6 +48,7 @@ export default function Header() {
                         <a
                             key={item.name}
                             href={item.href}
+                            onClick={(e) => handleNavClick(e, item.href)}
                             className={
                                 "relative text-white hover:text-red-600 transition-colors flex items-center space-x-2 " +
                                 (active === item.name ? "text-red-600" : "")
@@ -68,7 +82,7 @@ export default function Header() {
                         onClick={() => setIsOpen(false)}
                     />
 
-                    <div className="fixed top-0 right-0 w-64 bg-black p-6 flex flex-col space-y-6 rounded-bl-lg shadow-lg z-50 transform transition-transform duration-300 ease-in-out">
+                    <div className="fixed top-0 right-0 w-64 bg-black p-6 flex flex-col space-y-6 rounded-bl-lg shadow-lg z-50">
                         <button
                             className="self-end text-white text-2xl"
                             onClick={() => setIsOpen(false)}
@@ -80,7 +94,7 @@ export default function Header() {
                             <a
                                 key={item.name}
                                 href={item.href}
-                                onClick={() => setIsOpen(false)}
+                                onClick={(e) => handleNavClick(e, item.href)}
                                 className="flex items-center space-x-3 text-white text-lg hover:text-red-600 transition"
                             >
                                 {item.icon}
@@ -93,4 +107,3 @@ export default function Header() {
         </>
     );
 }
-

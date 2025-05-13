@@ -31,7 +31,7 @@ export default function Skills() {
         >
             <div className="max-w-5xl mx-auto text-center">
                 <h2 className="font-heading text-3xl mb-12 inline-block relative">
-                    Minhas Skills
+                    Hard Skills
                     <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-accent"></span>
                 </h2>
 

@@ -88,12 +88,20 @@ export default function Hero() {
                     <p className="text-lg md:text-xl text-gray-300">
                         Veja meus projetos e as soluções que já criei em Java, NodeJs e muito mais.
                     </p>
-                    <a
-                        href="#projects"
-                        className="inline-block bg-accent text-black font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
-                    >
-                        Ver Projetos
-                    </a>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a
+                            href="#nasa"
+                            className="inline-block bg-accent text-black font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
+                        >
+                            Explorar o Universo
+                        </a>
+                        <a
+                            href="#projects"
+                            className="inline-block bg-accent text-black font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-black transition"
+                        >
+                            Ver Projetos
+                        </a>
+                    </div>
                 </motion.div>
             </div>
 
