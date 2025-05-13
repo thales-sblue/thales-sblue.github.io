@@ -8,12 +8,13 @@ export default function Hero() {
         <section
             id="hero"
             className="
-        relative h-screen
-        flex flex-col md:flex-row        /* empilha no mobile, lado a lado no desktop */
-        items-center justify-center      /* tudo centralizado */
-        gap-8                            /* espaço constante entre foto e texto */
-        bg-cover bg-center
-      "
+                relative h-screen
+                flex flex-col md:flex-row
+                items-center justify-center
+                gap-8
+                bg-cover bg-center
+                bg-gradient-to-r from-blue-500 to-purple-600
+            "
             style={{ backgroundImage: `url(${bgHero})` }}
         >
             <div className="absolute inset-0 bg-black/60 z-10" />
@@ -28,28 +29,29 @@ export default function Hero() {
                     src={fotoPerfil}
                     alt="Thales Santos"
                     className="
-            w-64 h-64 md:w-80 md:h-80 
-            object-cover
-            rounded-xl
-            border-2 border-accent
-            shadow-xl
-          "
+                        w-64 h-64 md:w-80 md:h-80 
+                        object-cover
+                        rounded-full
+                        border-4 border-accent
+                        shadow-2xl
+                        transition-transform transform hover:scale-105
+                    "
                 />
             </motion.div>
 
             <motion.div
                 className="
-          relative z-20
-          px-6 
-          max-w-md       /* largura máxima pra texto ficar próximo */
-          text-center md:text-left
-          space-y-6
-        "
+                    relative z-20
+                    px-6 
+                    max-w-md
+                    text-center md:text-left
+                    space-y-6
+                "
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
             >
-                <h1 className="font-heading text-4xl md:text-5xl text-white leading-snug">
+                <h1 className="font-heading text-4xl md:text-5xl text-white leading-snug shadow-md">
                     Olá, eu sou o Thales
                 </h1>
                 <p className="font-body text-lg md:text-xl text-gray-300">
@@ -58,11 +60,11 @@ export default function Hero() {
                 <a
                     href="#projects"
                     className="
-            inline-block 
-            bg-accent text-black font-semibold 
-            px-6 py-3 rounded-full 
-            hover:scale-105 transition
-          "
+                        inline-block 
+                        bg-accent text-black font-semibold 
+                        px-6 py-3 rounded-full 
+                        hover:bg-white hover:text-black transition
+                    "
                 >
                     Ver Projetos
                 </a>

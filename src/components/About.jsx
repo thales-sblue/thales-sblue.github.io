@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { FaCode, FaDatabase, FaServer } from "react-icons/fa"; // Importando ícones
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
@@ -19,9 +20,23 @@ export default function About() {
                     Sobre Mim
                     <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-accent"></span>
                 </h2>
-                <p className="font-body text-gray-300 leading-relaxed">
-                    Sou desenvolvedor com experiência prática em backend com PHP, frontend com React e bom domínio de banco de dados Oracle.
-                    Atuei por mais de 2 anos na área adquirindo uma visão ampla do processo de desenvolvimento, desde o suporte técnico até a entrega de soluções completas.               </p>
+                <p className="font-body text-gray-300 leading-relaxed mb-4">
+                    Sou desenvolvedor com experiência prática em:
+                </p>
+                <ul className="font-body text-gray-300 leading-relaxed mb-6 space-y-2">
+                    <li className="flex items-center justify-center">
+                        <FaCode className="text-accent mr-2" /> Frontend com React
+                    </li>
+                    <li className="flex items-center justify-center">
+                        <FaServer className="text-accent mr-2" /> Backend com PHP
+                    </li>
+                    <li className="flex items-center justify-center">
+                        <FaDatabase className="text-accent mr-2" /> Banco de dados Oracle
+                    </li>
+                </ul>
+                <p className="font-body text-gray-300 leading-relaxed mb-4">
+                    Atuei por mais de 2 anos na área adquirindo uma visão ampla do processo de desenvolvimento, desde o suporte técnico até a entrega de soluções completas.
+                </p>
                 <p className="font-body text-gray-300 leading-relaxed">
                     Gosto de aprender na prática e atualmente estou focado em estudar Java e NodeJs para ampliar minhas habilidades e evoluir como dev.
                 </p>
