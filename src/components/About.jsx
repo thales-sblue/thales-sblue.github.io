@@ -21,8 +21,7 @@ export default function About() {
                 </h2>
                 <p className="font-body text-gray-300 leading-relaxed">
                     Sou desenvolvedor com experiência prática em backend com PHP, frontend com React e bom domínio de banco de dados Oracle.
-                    Atuei por mais de 2 anos na área, passando por diversas áreas e adquirindo uma visão ampla do processo de desenvolvimento, desde o suporte técnico até a entrega de soluções robustas.
-                </p>
+                    Atuei por mais de 2 anos na área adquirindo uma visão ampla do processo de desenvolvimento, desde o suporte técnico até a entrega de soluções completas.               </p>
                 <p className="font-body text-gray-300 leading-relaxed">
                     Gosto de aprender na prática e atualmente estou focado em estudar Java e NodeJs para ampliar minhas habilidades e evoluir como dev.
                 </p>

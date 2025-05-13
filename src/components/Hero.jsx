@@ -50,7 +50,7 @@ export default function Hero() {
                 transition={{ duration: 0.8 }}
             >
                 <h1 className="font-heading text-4xl md:text-5xl text-white leading-snug">
-                    Olá, eu sou o Thales Santos
+                    Olá, eu sou o Thales
                 </h1>
                 <p className="font-body text-lg md:text-xl text-gray-300">
                     Veja meus projetos e as soluções que já criei em Java, NodeJs e muito mais.
