@@ -46,7 +46,8 @@ export default function Hero() {
             if (contentRef.current) {
                 const { width, height } = contentRef.current.getBoundingClientRect();
                 const diagonal = Math.sqrt(width * width + height * height);
-                setRadius(diagonal / 2 + 60); // margem extra maior pra ícones não escaparem
+                // reduzimos a margem extra para aproximar os ícones
+                setRadius(diagonal / 2 + 20);
             }
         };
         calcRadius();
@@ -57,14 +58,14 @@ export default function Hero() {
     return (
         <section
             id="hero"
-            className="relative min-h-screen max-h-[900px] flex items-center justify-center overflow-hidden bg-cover bg-center bg-gradient-to-r from-blue-500 to-purple-600"
+            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-cover bg-center"
             style={{ backgroundImage: `url(${bgHero})` }}
         >
             <div className="absolute inset-0 bg-black/30 sm:bg-black/60 z-10" />
 
             <div
                 ref={contentRef}
-                className="relative z-20 flex flex-col md:flex-row items-center justify-center gap-8 px-4 max-w-7xl w-full"
+                className="relative z-20 flex flex-col md:flex-row items-center justify-center gap-8 px-4 max-w-6xl w-full"
             >
                 <motion.div
                     className="w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72"
@@ -126,10 +127,7 @@ export default function Hero() {
                                 animate={{ rotate: 360 }}
                                 transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
                             >
-                                <Icon
-                                    className="text-4xl text-accent hover:text-red-600 cursor-pointer"
-                                    title={name}
-                                />
+                                <Icon className="text-4xl text-accent hover:text-red-600 cursor-pointer" title={name} />
                             </motion.div>
                         );
                     })}
