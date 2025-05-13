@@ -46,7 +46,6 @@ export default function Hero() {
             if (contentRef.current) {
                 const { width, height } = contentRef.current.getBoundingClientRect();
                 const diagonal = Math.sqrt(width * width + height * height);
-                // reduzimos a margem extra para aproximar os ícones
                 setRadius(diagonal / 2 + 20);
             }
         };

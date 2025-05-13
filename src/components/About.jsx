@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaCode, FaDatabase, FaServer } from "react-icons/fa"; // Importando ícones
+import { FaCode, FaDatabase, FaServer } from "react-icons/fa";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 

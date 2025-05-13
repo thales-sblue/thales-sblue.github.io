@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import { FaHome, FaProjectDiagram, FaCode, FaUser, FaEnvelope } from "react-icons/fa";
 
-// Inclui Nasa antes de Projetos e corrige href para #apod
 const navItems = [
     { name: "Início", href: "#hero", icon: <FaHome /> },
     { name: "Nasa", href: "#nasa", icon: <FaCode /> },
@@ -18,7 +17,7 @@ export default function Header() {
 
     useEffect(() => {
         const onScroll = () => {
-            const pos = window.scrollY + 160; // Compensa header
+            const pos = window.scrollY + 160;
             navItems.forEach(({ name, href }) => {
                 const sec = document.querySelector(href);
                 if (sec && pos >= sec.offsetTop) {
@@ -35,7 +34,7 @@ export default function Header() {
         setIsOpen(false);
         const section = document.querySelector(href);
         if (section) {
-            const top = section.offsetTop - 140; // Ajusta posição de rolagem
+            const top = section.offsetTop - 140;
             window.scrollTo({ top, behavior: "smooth" });
         }
     };
