@@ -24,32 +24,34 @@ export default function Nasa() {
         }
     };
 
+    const backgroundImage = apod?.media_type === "image" && apod?.url
+        ? `url(${apod.url})`
+        : `url('https://images-assets.nasa.gov/image/PIA18033/PIA18033~orig.jpg')`;
+
     return (
         <section
             id="nasa"
-            style={{
-                backgroundImage: apod
-                    ? `url(${apod.url})`
-                    : `linear-gradient(to right, #0f0f1f, #180a1f)`,
-            }}
+            style={{ backgroundImage }}
             className="
         relative
-        bg-cover bg-center
-        before:absolute before:inset-0 before:bg-black/60
-        overflow-hidden
+        bg-cover bg-center bg-no-repeat bg-fixed
+        before:absolute before:inset-0 before:bg-black/70
+        overflow-hidden min-h-[80vh]
+        flex items-center justify-center
       "
         >
             <div className="absolute inset-0 bg-gradient-to-r from-red-700/30 via-transparent to-black/80 mix-blend-overlay" />
 
-            <div className="relative z-10 max-w-xl mx-auto py-24 px-4 text-white">
-                <h2 className="text-3xl md:text-4xl font-heading text-center mb-6">
+            <div className="relative z-10 w-full max-w-3xl px-4 text-white text-center">
+                <h2 className="text-3xl md:text-4xl font-heading mb-6">
                     Já pensou em ver o universo no dia do seu aniversário?{' '}
                     <span className="inline-block animate-bounce">🔭</span>
                 </h2>
 
-                <div className="flex gap-2 justify-center mb-8">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                     <input
                         type="date"
+                        inputMode="numeric"
                         max={new Date().toISOString().split("T")[0]}
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
@@ -70,12 +72,13 @@ export default function Nasa() {
                     </button>
                 </div>
 
-                {loading && <p className="text-center">Carregando...</p>}
-                {error && <p className="text-red-400 text-center">{error}</p>}
+                {loading && <p>Carregando...</p>}
+                {error && <p className="text-red-400">{error}</p>}
 
                 {apod && (
-                    <div className="bg-black/70 rounded-xl p-6 space-y-4">
+                    <div className="bg-black/70 rounded-xl p-6 space-y-4 mt-6 text-left">
                         <h3 className="text-2xl font-semibold">{apod.title}</h3>
+
                         <div className="w-full aspect-video rounded-lg overflow-hidden border border-gray-700">
                             {apod.media_type === "video" ? (
                                 <iframe
@@ -97,6 +100,10 @@ export default function Nasa() {
                         <p className="text-gray-200">{apod.explanation}</p>
                     </div>
                 )}
+
+                <p className="mt-6 text-sm text-gray-400 italic">
+                    As imagens exibidas são fornecidas pela NASA através da API Astronomy Picture of the Day (APOD).
+                </p>
             </div>
         </section>
     );
