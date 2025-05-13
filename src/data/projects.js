@@ -15,14 +15,14 @@ export const projects = [
     {
         title: "Vagasync (Backend)",
         description:
-            "API RESTful com Spring Boot, JWT e PostgreSQL.",
+            "API RESTful com Spring Boot, Java 17, Docker, JWT, JUnit e PostgreSQL.",
         link: "https://github.com/thales-sblue/vagasync",
         image: vagasyncBack,
     },
     {
         title: "Simplified Transaction",
         description:
-            "Desafio PicPay em Java, Spring Boot e SonarQube.",
+            "Desafio PicPay em Java, Spring Boot, JUnit/Mockito, Docker e PostgreSQL.",
         link: "https://github.com/thales-sblue/simplified-transaction",
         Icon: DiJava,
     },
