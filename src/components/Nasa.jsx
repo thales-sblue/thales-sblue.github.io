@@ -10,7 +10,40 @@ export default function Nasa() {
     const [error, setError] = useState("");
 
     const fetchApod = async () => {
-        if (!date) return setError("Selecione uma data");
+        const today = new Date();
+        const selectedDate = new Date(date);
+        const earliestDate = new Date("1995-06-16");
+
+        if (!date) {
+            return setError("Selecione uma data.");
+        }
+
+        if (selectedDate > today) {
+            return setError("Infelizmente, ainda não conseguimos captar imagens do futuro.");
+        }
+
+        if (selectedDate < earliestDate) {
+            return setError("Não há imagens antes de 16 de junho de 1995.");
+        }
+
+        const requests = JSON.parse(localStorage.getItem("apod_requests") || "[]");
+        const now = new Date();
+
+        const lastHour = new Date(now.getTime() - 60 * 60 * 1000);
+        const updatedRequests = requests.filter((r) => new Date(r) > lastHour);
+        if (updatedRequests.length >= 30) {
+            return setError("Limite horário atingido. Tente novamente em breve.");
+        }
+
+        const todayStr = now.toISOString().split("T")[0];
+        const dailyRequests = updatedRequests.filter((r) => r.startsWith(todayStr));
+        if (dailyRequests.length >= 50) {
+            return setError("Limite diário atingido. Tente novamente amanhã.");
+        }
+
+        updatedRequests.push(now.toISOString());
+        localStorage.setItem("apod_requests", JSON.stringify(updatedRequests));
+
         setError("");
         setLoading(true);
         try {
