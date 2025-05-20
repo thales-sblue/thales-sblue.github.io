@@ -6,6 +6,13 @@ import { DiJava } from "react-icons/di";
 
 export const projects = [
     {
+        title: "API Auth (Node.js + MongoDB)",
+        description:
+            "API de autenticação com Node.js, TypeScript, Express, Prisma, JWT e MongoDB.",
+        link: "https://github.com/thales-sblue/api-node-auth",
+        Icon: FaNodeJs,
+    },
+    {
         title: "Vagasync (Frontend)",
         description:
             "Aplicação web MVC com Spring Boot, Thymeleaf e Tailwind CSS.",
