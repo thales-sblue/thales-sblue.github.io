@@ -9,7 +9,7 @@ export const projects = [
         title: "API Auth (Node.js + MongoDB)",
         description:
             "API de autenticação com Node.js, TypeScript, Express, Prisma, JWT e MongoDB.",
-        link: "https://github.com/thales-sblue/api-node-auth",
+        link: "https://github.com/thales-sblue/api-node-jwt",
         Icon: FaNodeJs,
     },
     {
