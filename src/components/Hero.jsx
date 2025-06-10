@@ -89,7 +89,7 @@ export default function Hero() {
                         Olá, eu sou o Thales
                     </h1>
                     <p className="text-lg md:text-xl text-gray-300">
-                        Veja meus projetos e as soluções que já criei em Java, NodeJs e muito mais.
+                        Veja meus projetos e as soluções que já criei em Java, NodeJs, PHP e muito mais.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 items-center justify-center md:justify-start">
                         <a

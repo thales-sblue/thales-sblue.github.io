@@ -10,7 +10,7 @@ export const projects = [
     {
         title: "BCB - Backend Challenge",
         description:
-            "API robusta para gestão de clientes e mensagens com Java 17, Spring Boot, RabbitMQ, Docker e JWT.",
+            "API para gestão de clientes e mensagens com Java 17, Spring Boot, RabbitMQ, Docker e JWT.",
         link: "https://github.com/thales-sblue/bcb-challenge",
         Icon: DiJava,
     },
