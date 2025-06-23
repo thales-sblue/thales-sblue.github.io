@@ -28,17 +28,17 @@ export default function About() {
                         <FaCode className="text-accent mr-2" /> Frontend com React
                     </li>
                     <li className="flex items-center justify-center">
-                        <FaServer className="text-accent mr-2" /> Backend com PHP
+                        <FaServer className="text-accent mr-2" /> Backend com PHP e Java
                     </li>
                     <li className="flex items-center justify-center">
                         <FaDatabase className="text-accent mr-2" /> Banco de dados Oracle
                     </li>
                 </ul>
                 <p className="font-body text-gray-300 leading-relaxed mb-4">
-                    Atuei por mais de 2 anos na área adquirindo uma visão ampla do processo de desenvolvimento, desde o suporte técnico até a entrega de soluções completas.
+                    Atuo a mais de 3 anos na área adquirindo uma visão ampla do processo de desenvolvimento, desde o suporte técnico até a entrega de soluções completas.
                 </p>
                 <p className="font-body text-gray-300 leading-relaxed">
-                    Gosto de aprender na prática e atualmente estou focado em estudar Java e NodeJs para ampliar minhas habilidades e evoluir como dev.
+                    Gosto de aprender na prática, nada melhor que a mão no código para evoluir como dev.
                 </p>
             </div>
         </motion.section>
