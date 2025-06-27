@@ -1,5 +1,6 @@
 import vagasyncFrontLogin from "../assets/vagasync-front-login.png";
 import vagasyncBack from "../assets/vagasync-back.png";
+import phpBank from "../assets/php-bank-login.png";
 
 import { FaNodeJs } from "react-icons/fa";
 import { DiJava } from "react-icons/di";
@@ -9,9 +10,9 @@ export const projects = [
     {
         title: "PHP Bank",
         description:
-            "Aplicação web de operações bancárias com PHP8.3, VueJs, Docker, PostgreSQL, validação de saldo, histórico de transações e transferências, extratos de contas.",
+            "Aplicação web de operações bancárias com PHP 8.3, VueJs, Docker, PostgreSQL, validação de saldo, histórico de transações e transferências, extratos de contas.",
         link: "https://github.com/thales-sblue/php-bank",
-        Icon: DiPhp,
+        image: phpBank,
     },
     {
         title: "BCB - Backend Challenge",
