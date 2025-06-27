@@ -10,7 +10,7 @@ export const projects = [
         title: "PHP Bank",
         description:
             "Aplicação web de operações bancárias com PHP8.3, VueJs, Docker, PostgreSQL, validação de saldo, histórico de transações e transferências, extratos de contas.",
-        link: "https://github.com/thales-blue/php-bank",
+        link: "https://github.com/thales-sblue/php-bank",
         Icon: DiPhp,
     },
     {
@@ -19,7 +19,7 @@ export const projects = [
             "API para gestão de clientes e mensagens com Java 17, Spring Boot, RabbitMQ, Docker e JWT.",
         link: "https://github.com/thales-sblue/bcb-challenge",
         Icon: DiJava,
-    },    
+    },
     {
         title: "API Auth (Node.js + MongoDB)",
         description:
