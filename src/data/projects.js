@@ -50,6 +50,13 @@ export const projects = [
         Icon: DiJava,
     },
     {
+        title: "Emissor de Notas Fiscais",
+        description:
+            "Sistema simples de emissão de notas fiscais com PHP 8.3, VueJs, Docker, PostgreSQL, possui cadastro de clientes, produtos, geração de NF e exportação em PDF.",
+        link: "https://github.com/thales-sblue/emissor-notas-fiscais",
+        Icon: DiPhp,
+    },
+    {
         title: "ToDo List",
         description:
             "Lista de tarefas em Java, Spring Boot, Lombok e H2.",
@@ -62,12 +69,5 @@ export const projects = [
             "Agendador de viagens em Node.js, TypeScript, Prisma e Fastify.",
         link: "https://github.com/thales-sblue/plann.er-node.js",
         Icon: FaNodeJs,
-    },
-    {
-        title: "CRUD API Carros",
-        description:
-            "CRUD de carros usando Node.js e MySQL.",
-        link: "https://github.com/thales-sblue/CRUD-APIcarros",
-        Icon: FaNodeJs,
-    },
+    }
 ];
