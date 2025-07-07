@@ -25,13 +25,13 @@ export default function About() {
                 </p>
                 <ul className="font-body text-gray-300 leading-relaxed mb-6 space-y-2">
                     <li className="flex items-center justify-center">
-                        <FaCode className="text-accent mr-2" /> Frontend com React
+                        <FaCode className="text-accent mr-2" /> Frontend com React e Vue
                     </li>
                     <li className="flex items-center justify-center">
                         <FaServer className="text-accent mr-2" /> Backend com PHP e Java
                     </li>
                     <li className="flex items-center justify-center">
-                        <FaDatabase className="text-accent mr-2" /> Banco de dados Oracle
+                        <FaDatabase className="text-accent mr-2" /> Banco de dados Oracle e PostgreSQL
                     </li>
                 </ul>
                 <p className="font-body text-gray-300 leading-relaxed mb-4">

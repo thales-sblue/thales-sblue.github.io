@@ -22,13 +22,6 @@ export const projects = [
         Icon: DiJava,
     },
     {
-        title: "API Auth (Node.js + MongoDB)",
-        description:
-            "API de autenticação com Node.js, TypeScript, Express, Prisma, JWT e MongoDB.",
-        link: "https://github.com/thales-sblue/api-node-jwt",
-        Icon: FaNodeJs,
-    },
-    {
         title: "Vagasync (Frontend)",
         description:
             "Aplicação web MVC com Spring Boot, Thymeleaf e Tailwind CSS.",
@@ -55,6 +48,13 @@ export const projects = [
             "Sistema simples de emissão de notas fiscais com PHP 8.3, VueJs, Docker, PostgreSQL, possui cadastro de clientes, produtos, geração de NF e exportação em PDF.",
         link: "https://github.com/thales-sblue/emissor-notas-fiscais",
         Icon: DiPhp,
+    },
+    {
+        title: "API Auth (Node.js + MongoDB)",
+        description:
+            "API de autenticação com Node.js, TypeScript, Express, Prisma, JWT e MongoDB.",
+        link: "https://github.com/thales-sblue/api-node-jwt",
+        Icon: FaNodeJs,
     },
     {
         title: "ToDo List",
