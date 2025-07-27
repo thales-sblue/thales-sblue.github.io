@@ -1,12 +1,20 @@
 import vagasyncFrontLogin from "../assets/vagasync-front-login.png";
 import vagasyncBack from "../assets/vagasync-back.png";
 import phpBank from "../assets/php-bank-login.png";
+import pokeMemory from "../assets/poke-memory.png";
 
 import { FaNodeJs } from "react-icons/fa";
 import { DiJava } from "react-icons/di";
 import { DiPhp } from "react-icons/di";
 
 export const projects = [
+    {
+        title: "Poke Memory",
+        description:
+            "Jogo de memória com tema Pokémon, desenvolvido com React, TypeScript e Styled Components.",
+        link: "https://github.com/thales-sblue/poke-memory",
+        image: pokeMemory,
+    },
     {
         title: "PHP Bank",
         description:
