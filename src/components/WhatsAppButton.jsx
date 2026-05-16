@@ -7,15 +7,10 @@ export default function WhatsAppButton() {
       href="https://wa.me/5544999072631"
       target="_blank"
       rel="noopener noreferrer"
-      className="
-        fixed bottom-4 right-4 z-50
-        bg-red-500 hover:bg-red-600
-        text-white px-4 py-3 rounded-full
-        shadow-lg flex items-center gap-2
-        transition duration-300
-      "
+      aria-label="Conversar no WhatsApp"
+      className="fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/30 transition hover:scale-105 hover:bg-[#20bd5a]"
     >
-      <FaWhatsapp className="text-xl" />
+      <FaWhatsapp className="text-2xl" />
     </a>
   );
 }

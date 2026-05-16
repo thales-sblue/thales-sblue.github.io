@@ -1,52 +1,55 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import SectionHeading from "./ui/SectionHeading";
+import Reveal from "./ui/Reveal";
+import Button from "./ui/Button";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+const links = [
+  {
+    label: "Email",
+    href: "mailto:thales_sblue@hotmail.com",
+    Icon: FaEnvelope,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/thales-s-a883a2194/",
+    Icon: FaLinkedin,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/thales-sblue",
+    Icon: FaGithub,
+  },
+];
 
 export default function Contact() {
-    return (
-        <motion.section
-            id="contact"
-            className="py-20 px-4 bg-primary text-white"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-        >
-            <div className="max-w-xl mx-auto text-center">
-                <h2 className="relative inline-block font-heading text-3xl mb-6">
-                    Contato
-                    <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-accent"></span>
-                </h2>
-                <p className="font-body text-gray-300 mb-6">
-                    Me envie uma mensagem ou conecte-se comigo nas redes:
-                </p>
-                <div className="flex justify-center space-x-6">
-                    <a
-                        href="mailto:thales_sblue@hotmail.com"
-                        className="font-body hover:text-accent transition"
-                    >
-                        Email
-                    </a>
-                    <a
-                        href="https://www.linkedin.com/in/thales-s-a883a2194/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="font-body hover:text-accent transition"
-                    >
-                        LinkedIn
-                    </a>
-                    <a
-                        href="https://github.com/thales-sblue"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="font-body hover:text-accent transition"
-                    >
-                        GitHub
-                    </a>
-                </div>
-            </div>
-        </motion.section>
-    );
+  return (
+    <section id="contact" className="bg-surface-elevated py-section">
+      <Reveal className="section-container text-center">
+        <SectionHeading
+          title="Contato"
+          subtitle="Me envie uma mensagem ou conecte-se comigo nas redes."
+        />
+
+        <div className="mx-auto flex max-w-2xl flex-col gap-4 sm:flex-row sm:justify-center">
+          {links.map(({ label, href, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              target={href.startsWith("mailto") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              className="group flex flex-1 items-center justify-center gap-3 rounded-card border border-white/10 bg-surface px-6 py-4 transition hover:border-accent/50 hover:bg-surface-muted/30"
+            >
+              <Icon className="text-xl text-muted transition group-hover:text-accent" />
+              <span className="font-medium text-white">{label}</span>
+            </a>
+          ))}
+        </div>
+
+        <div className="mt-10">
+          <Button href="mailto:thales_sblue@hotmail.com">Vamos conversar</Button>
+        </div>
+      </Reveal>
+    </section>
+  );
 }

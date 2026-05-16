@@ -2,11 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-.bg-hero {
-    background-color: #0A0A0A;
-    background-image: url('./assets/what-the-hex-dark.png');
-    background-repeat: repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: auto;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface font-sans text-white antialiased;
+  }
+}
+
+@layer components {
+  .glass-nav {
+    @apply border-b border-white/10 bg-black/70 backdrop-blur-xl;
+  }
+
+  .section-container {
+    @apply mx-auto max-w-6xl px-6;
+  }
+
+  .text-gradient-subtle {
+    @apply bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .bg-nasa-parallax {
+    background-attachment: scroll;
+  }
+
+  @media (min-width: 768px) {
+    .bg-nasa-parallax {
+      background-attachment: fixed;
+    }
+  }
 }

@@ -1,78 +1,73 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { projects } from "../data/projects";
-import bgProjects from "../assets/bg-projects.png";
+import SectionHeading from "./ui/SectionHeading";
 
-const fadeUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i = 1) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            delay: i * 0.15,
-            duration: 0.5,
-        },
-    }),
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  }),
 };
 
 export default function Projects() {
-    return (
-        <section
-            id="projects"
-            className="relative py-20 px-4 text-white bg-cover bg-center"
-            style={{ backgroundImage: `url(${bgProjects})` }}
-        >
-            <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+  return (
+    <section id="projects" className="bg-surface py-section">
+      <div className="section-container">
+        <SectionHeading
+          title="Meus Projetos"
+          subtitle="Soluções que desenvolvi em diferentes stacks e contextos."
+        />
 
-            <div className="relative max-w-5xl mx-auto text-center">
-                <h2 className="relative inline-block font-heading text-3xl mb-8">
-                    Meus Projetos
-                    <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-accent" />
-                </h2>
-
-                <div className="grid justify-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    {projects.map((proj, index) => {
-                        const TechIcon = proj.Icon;
-                        return (
-                            <motion.a
-                                key={proj.title}
-                                href={proj.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="
-                  block w-80 bg-primary rounded-lg overflow-hidden
-                  border-2 border-transparent hover:border-accent
-                  shadow-lg hover:shadow-xl transition
-                  relative z-10
-                "
-                                variants={fadeUp}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, amount: 0.3 }}
-                                custom={index}
-                            >
-                                {proj.image ? (
-                                    <img
-                                        src={proj.image}
-                                        alt={proj.title}
-                                        className="w-full h-48 object-cover"
-                                    />
-                                ) : (
-                                    <div className="w-full h-48 flex items-center justify-center bg-dark-gray">
-                                        <TechIcon className="text-6xl text-accent" />
-                                    </div>
-                                )}
-                                <div className="p-4">
-                                    <h3 className="font-heading text-xl mb-2">{proj.title}</h3>
-                                    <p className="font-body text-gray-300 text-sm leading-relaxed">
-                                        {proj.description}
-                                    </p>
-                                </div>
-                            </motion.a>
-                        );
-                    })}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((proj, index) => {
+            const TechIcon = proj.Icon;
+            return (
+              <motion.a
+                key={proj.title}
+                href={proj.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col overflow-hidden rounded-card border border-white/10 bg-surface-elevated transition duration-300 hover:scale-[1.02] hover:border-white/20 hover:shadow-2xl hover:shadow-black/40"
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                custom={index}
+              >
+                {proj.image ? (
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={proj.image}
+                      alt={proj.title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex aspect-video items-center justify-center bg-surface-muted">
+                    <TechIcon className="text-5xl text-white/50 transition group-hover:text-accent" />
+                  </div>
+                )}
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="text-xl font-semibold tracking-tight">{proj.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                    {proj.description}
+                  </p>
+                  <span className="mt-4 text-sm font-medium text-accent opacity-0 transition group-hover:opacity-100">
+                    Ver no GitHub →
+                  </span>
                 </div>
-            </div>
-        </section>
-    );
+              </motion.a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
 }

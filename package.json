@@ -1,7 +1,7 @@
 {
   "name": "thales-dev",
   "version": "0.0.1",
-  "homepage": "https://thales-sblue.github.io/thales-dev",
+  "homepage": "https://thales-sblue.github.io/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
