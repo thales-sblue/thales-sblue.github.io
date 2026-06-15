@@ -1,4 +1,3 @@
-import React from "react";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
@@ -47,7 +46,9 @@ export default function Contact() {
         </div>
 
         <div className="mt-10">
-          <Button href="mailto:thales_sblue@hotmail.com">Vamos conversar</Button>
+          <Button href="mailto:thales_sblue@hotmail.com">
+            Vamos conversar
+          </Button>
         </div>
       </Reveal>
     </section>

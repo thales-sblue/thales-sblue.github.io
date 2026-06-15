@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function SectionHeading({
   title,
   subtitle,
@@ -7,7 +5,11 @@ export default function SectionHeading({
   className = "",
 }) {
   const alignClass =
-    align === "left" ? "text-left" : align === "right" ? "text-right" : "text-center";
+    align === "left"
+      ? "text-left"
+      : align === "right"
+        ? "text-right"
+        : "text-center";
 
   return (
     <div className={`mb-12 md:mb-16 ${alignClass} ${className}`}>

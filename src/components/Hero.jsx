@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import bgHero from "../assets/bg-hero.png";
 import fotoPerfil from "../assets/foto-perfil.png";
@@ -89,7 +89,11 @@ export default function Hero() {
           className="w-full max-w-xl space-y-6 text-center md:text-left"
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{
+            delay: 0.35,
+            duration: 0.8,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
         >
           <h1 className="text-display-lg font-semibold tracking-tight text-gradient-subtle">
             Olá, eu sou o Thales.

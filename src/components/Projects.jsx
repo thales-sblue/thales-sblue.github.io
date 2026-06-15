@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { projects } from "../data/projects";
 import SectionHeading from "./ui/SectionHeading";
@@ -55,7 +54,9 @@ export default function Projects() {
                   </div>
                 )}
                 <div className="flex flex-1 flex-col p-5">
-                  <h3 className="text-xl font-semibold tracking-tight">{proj.title}</h3>
+                  <h3 className="text-xl font-semibold tracking-tight">
+                    {proj.title}
+                  </h3>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
                     {proj.description}
                   </p>

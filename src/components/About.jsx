@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCode, FaDatabase, FaServer } from "react-icons/fa";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
