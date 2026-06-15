@@ -23,7 +23,12 @@ type LinkButtonProps = SharedButtonProps &
   };
 
 type NativeButtonProps = SharedButtonProps &
-  Omit<ComponentPropsWithoutRef<"button">, "children" | "className" | "type">;
+  Omit<
+    ComponentPropsWithoutRef<"button">,
+    "children" | "className" | "type"
+  > & {
+    href?: never;
+  };
 
 type ButtonProps = LinkButtonProps | NativeButtonProps;
 
@@ -36,6 +41,24 @@ export default function Button(props: ButtonProps) {
   const classes = `${base} ${variants[variant]} ${className}`;
 
   if ("href" in props) {
+    if (typeof props.href !== "string") {
+      const {
+        variant: _variant,
+        className: _className,
+        children: _children,
+        ...buttonProps
+      } = props;
+      void _variant;
+      void _className;
+      void _children;
+
+      return (
+        <button type="button" className={classes} {...buttonProps}>
+          {children}
+        </button>
+      );
+    }
+
     const {
       href,
       variant: _variant,

@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-005-typescript-button`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, and isolated Button migration completed in separate tasks; next permitted step is defining a new isolated task after inspection of `Reveal` and the remaining section components
+- Active branch target: `fix/task-006-button-native-href-contract`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, and the native Button href contract correction completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada após inspecionar Reveal e os componentes de seção restantes.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -218,6 +218,54 @@
   - the GitHub Pages flow remains unchanged
   - phase 4 remains in progress after this task
 
+## Task-006 Result
+- Created task document:
+  - `docs/tasks/TASK-006-button-native-href-contract.md`
+- Corrected file:
+  - `src/components/ui/Button.tsx`
+- Correction applied:
+  - `NativeButtonProps` now explicitly uses `href?: never`
+  - `LinkButtonProps` still requires `href: string`
+  - native button mode still keeps `type="button"` fixed
+  - discrimination by `if ("href" in props)` remains unchanged
+- Consumers changed:
+  - none
+- Commands executed:
+  - `git fetch origin`
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `Get-Content AGENTS.md`
+  - `Get-Content docs/PRODUCT_SPEC.md`
+  - `Get-Content docs/ARCHITECTURE.md`
+  - `Get-Content docs/ROADMAP.md`
+  - `Get-Content docs/STATE.md`
+  - `Get-Content docs/tasks/TASK-005-typescript-button.md`
+  - `Get-Content src/components/ui/Button.tsx`
+  - `git checkout -b fix/task-006-button-native-href-contract`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --check origin/main...HEAD`
+  - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC' src`
+  - `$utfPattern = [string]([char]0x00C3) + '|' + [char]0x00C2 + '|' + [char]0xFFFD`
+  - `rg -n $utfPattern docs/tasks/TASK-006-button-native-href-contract.md docs/STATE.md`
+- Results:
+  - `NativeButtonProps` now explicitly forbids `href` with `href?: never`
+  - consumers were not changed
+  - no dependency or configuration was changed
+  - no visual or functional change was introduced
+  - phase 4 remains in progress after this task
+
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
 - `npm ls --depth=0` before removal showed all five investigated packages as direct dependencies of the root package only.
@@ -349,7 +397,7 @@
 - `git diff --name-status origin/main...HEAD`
 - `git diff --check origin/main...HEAD`
 - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC' src`
-- `rg -n 'Ã|Â|�' docs/tasks/TASK-005-typescript-button.md docs/STATE.md`
+- `PowerShell UTF-8 artifact scan for docs/tasks/TASK-005-typescript-button.md and docs/STATE.md`
 
 ## Results
 - Initial `npm ci` succeeded on the current checkout before cleanup.
@@ -399,7 +447,7 @@
 - After migrating only `Button`, `cmd /c npm.cmd run build` and `cmd /c npm.cmd run validate` both succeeded outside the sandbox.
 - A clean reinstall with `Remove-Item node_modules`, `cmd /c npm ci`, `cmd /c npm.cmd run lint`, `cmd /c npm.cmd run format:check`, `cmd /c npm.cmd run typecheck`, `cmd /c npm.cmd run build`, and `cmd /c npm.cmd run validate` also succeeded after TASK-005.
 - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC' src` returned no matches after TASK-005.
-- `rg -n 'Ã|Â|�' docs/tasks/TASK-005-typescript-button.md docs/STATE.md` returned no matches after TASK-005.
+- `PowerShell UTF-8 artifact scan for docs/tasks/TASK-005-typescript-button.md and docs/STATE.md` returned no matches after TASK-005.
 - Manual diff review confirmed the task is limited to `src/components/ui/Button.tsx`, removal of `src/components/ui/Button.jsx`, `docs/tasks/TASK-005-typescript-button.md`, and `docs/STATE.md`.
 
 ## Risks And Pending Notes
@@ -414,7 +462,7 @@
 - Components and configuration files remain covered by Prettier; no coverage was removed to make validation pass.
 - Remaining React components and data modules are still pending migration in later phase-4 tasks.
 - Tests, Testing Library, Vitest, GitHub Actions, and broader TypeScript rollout remain out of scope.
-- The next step is only to define a new isolated task after inspecting `Reveal` and the remaining section components; that follow-up task was not chosen or implemented here.
+- The next step is only: `Definir uma nova tarefa isolada após inspecionar Reveal e os componentes de seção restantes.`
 
 ## Verification
 - `npm ci`: succeeded before implementation and again after removing `node_modules`.
@@ -432,3 +480,4 @@
 - 2026-06-15: `TASK-003-typescript-foundation` completed with a strict no-emit TypeScript foundation, migration limited to `src/main` and `src/App`, successful clean-install validation, and phase 4 left in progress for later component migrations.
 - 2026-06-15: `TASK-004-typescript-simple-components` completed with migration limited to `SectionHeading` and `WhatsAppButton`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
 - 2026-06-15: `TASK-005-typescript-button` completed with migration limited to `Button`, no consumer changes, successful clean-install validation, preserved link/native-button behavior, and phase 4 kept in progress.
+- 2026-06-15: `TASK-006-button-native-href-contract` completed with a contract-only correction in `Button.tsx`, explicit `href?: never` in `NativeButtonProps`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
