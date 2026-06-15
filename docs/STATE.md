@@ -136,19 +136,19 @@
 - The root package name remains `thales-dev`, but the invalid self-dependency entry was removed.
 - A sandboxed build hit an esbuild path-access error; the same build succeeded outside the sandbox, so this was treated as an environment restriction rather than a project regression.
 - `src/data/projects.min.js` remains out of scope for this task and was not changed.
-- No lint, test, Playwright, or CI workflow exists yet.
+- ESLint and Prettier are configured.
+- Automated tests do not exist yet.
+- Playwright does not exist yet.
+- GitHub Actions or other CI workflow does not exist yet.
 - Prettier was not expanded to documentation, `index.html`, or `src/index.css` in this task to avoid a broad style-only diff; that normalization remains a future cleanup candidate if explicitly scheduled.
 
 ## Verification
-- `npm ci`: succeeded after cleanup.
-- `npm run build`: succeeded after cleanup.
-- `lint`: unavailable because no lint script exists.
-- `test`: unavailable because no test script exists.
-- `npm run lint`: succeeded after removing obsolete `React` imports.
-- `npm run format:check`: succeeded after targeted Prettier formatting within the defined scope.
-- `npm run build`: succeeded after ESLint and Prettier integration.
 - `npm ci`: succeeded after removing `node_modules`.
+- `npm run lint`: succeeded.
+- `npm run format:check`: succeeded.
+- `npm run build`: succeeded.
 - `npm run validate`: succeeded outside the sandbox after a sandbox-only `esbuild` access error.
+- `test`: unavailable because no test script exists yet.
 
 ## Task History
 - 2026-06-15: documentation baseline created with `AGENTS.md`, audit, product spec, architecture notes, roadmap, initial state file, and `TASK-001-clean-dependencies`.
