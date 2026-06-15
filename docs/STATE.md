@@ -188,7 +188,7 @@
   - accepts anchor-native attributes via `ComponentPropsWithoutRef<"a">`
   - removes `children` and `className` from propagated native anchor props
 - Native button contract:
-  - has no `href`
+  - uses `href?: never` to forbid `href` explicitly
   - accepts button-native attributes via `ComponentPropsWithoutRef<"button">`
   - removes `children`, `className`, and `type` from propagated native button props
 - Discrimination strategy:
@@ -349,7 +349,7 @@
 - `git diff --name-status origin/main...HEAD`
 - `git diff --check origin/main...HEAD`
 - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC' src`
-- `rg -n 'Ã|Â|�' docs/tasks/TASK-005-typescript-button.md docs/STATE.md`
+- `rg -n '<encoding-markers>' docs/tasks/TASK-005-typescript-button.md docs/STATE.md`
 
 ## Results
 - Initial `npm ci` succeeded on the current checkout before cleanup.
@@ -398,8 +398,9 @@
 - After migrating only `Button`, `cmd /c npm.cmd run lint`, `cmd /c npm.cmd run format:check`, and `cmd /c npm.cmd run typecheck` all succeeded.
 - After migrating only `Button`, `cmd /c npm.cmd run build` and `cmd /c npm.cmd run validate` both succeeded outside the sandbox.
 - A clean reinstall with `Remove-Item node_modules`, `cmd /c npm ci`, `cmd /c npm.cmd run lint`, `cmd /c npm.cmd run format:check`, `cmd /c npm.cmd run typecheck`, `cmd /c npm.cmd run build`, and `cmd /c npm.cmd run validate` also succeeded after TASK-005.
+- After adding `href?: never` to `NativeButtonProps`, no consumer adjustment was required and validations continued passing.
 - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC' src` returned no matches after TASK-005.
-- `rg -n 'Ã|Â|�' docs/tasks/TASK-005-typescript-button.md docs/STATE.md` returned no matches after TASK-005.
+- The encoding-marker search returned no matches for corrupted text in `docs/tasks/TASK-005-typescript-button.md` or `docs/STATE.md` after TASK-005.
 - Manual diff review confirmed the task is limited to `src/components/ui/Button.tsx`, removal of `src/components/ui/Button.jsx`, `docs/tasks/TASK-005-typescript-button.md`, and `docs/STATE.md`.
 
 ## Risks And Pending Notes

@@ -44,7 +44,7 @@ Migrar exclusivamente `src/components/ui/Button.jsx` para `src/components/ui/But
 - Derivar `ButtonVariant` com `keyof typeof variants`.
 - Declarar `SharedButtonProps` com `variant?: ButtonVariant`, `className?: string` e `children: ReactNode`.
 - Declarar `LinkButtonProps` como `SharedButtonProps` combinado com os atributos nativos de `<a>`, removendo `children` e `className`, e exigindo `href: string`.
-- Declarar `NativeButtonProps` como `SharedButtonProps` combinado com os atributos nativos de `<button>`, removendo `children`, `className` e `type`.
+- Declarar `NativeButtonProps` como `SharedButtonProps` combinado com os atributos nativos de `<button>`, removendo `children`, `className` e `type`, e proibindo `href` explicitamente com `href?: never`.
 - Declarar `ButtonProps = LinkButtonProps | NativeButtonProps`.
 - Discriminar os ramos com `if ("href" in props)`.
 
@@ -65,6 +65,7 @@ Migrar exclusivamente `src/components/ui/Button.jsx` para `src/components/ui/But
   - `aria-*`
   - handlers compatíveis com `<button>`
   - `type` removido do contrato para preservar `type="button"` fixo no componente
+  - `href` proibido explicitamente no modo nativo
 
 ## Regras De Propagação
 - Em ambos os ramos, remover `variant`, `className` e `children` antes de propagar props ao elemento HTML.
@@ -94,7 +95,7 @@ Migrar exclusivamente `src/components/ui/Button.jsx` para `src/components/ui/But
 - O modo botão não aceita `href`, aceita `onClick` e `disabled`, e preserva `type="button"`.
 - `variant`, `className`, `children` e `href` não vazam como atributos inválidos no DOM.
 - Nenhum `any`, `@ts-ignore`, `@ts-nocheck`, `React.FC` ou cast de silenciamento é introduzido.
-- Nenhum consumidor precisa ser alterado, salvo incompatibilidade real documentada, o que não foi identificado na inspeção atual.
+- Nenhum consumidor precisa ser alterado, salvo incompatibilidade real documentada, o que não foi identificado na inspeção atual nem após proibir `href` explicitamente no modo nativo.
 - `npm ci`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build` e `npm run validate` passam após a implementação e após reinstalação limpa.
 - Nenhuma dependência ou configuração é alterada.
 - Nenhuma mudança visual, funcional, de SPA ou de compatibilidade com GitHub Pages é introduzida.
