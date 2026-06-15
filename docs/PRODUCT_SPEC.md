@@ -34,6 +34,6 @@ Do not invent experiences, metrics, or credentials.
 - Reordering sections.
 - Rewriting content.
 - Introducing routes now.
-- Expanding TypeScript migration beyond the entrypoint foundation authorized in roadmap phase 4.
+- Expanding the TypeScript migration beyond the scope explicitly authorized by the active phase-4 task.
 - Updating React or Vite now.
 - Adding tests, CI, or new tooling now.

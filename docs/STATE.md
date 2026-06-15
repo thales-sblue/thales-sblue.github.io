@@ -112,8 +112,9 @@
   - All remaining source files stay in `.jsx` or `.js`
   - TypeScript checks application TypeScript files while JavaScript stays included but unchecked
   - ESLint now recognizes `.ts` and `.tsx` with non-type-aware `typescript-eslint` recommended rules on top of the existing React, Hooks, Refresh, and Prettier setup
-- Validation scope adjustment required by current `main`:
-  - `.prettierignore` was narrowed further because the merged `TASK-002` baseline still fails `npm run format:check` on multiple untouched JS/JSX/config files outside this task's allowed migration scope
+- Prettier coverage preserved:
+  - `.prettierignore` was restored to the `main` scope so components and configuration files remain covered by `npm run format:check`
+  - `.prettierrc` now sets `"endOfLine": "auto"` to avoid Windows checkout line-ending drift being reported as formatting failures
 
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
@@ -124,7 +125,8 @@
 - `origin/main` at commit `c6b542e` contains merge commit `Merge pull request #2 from thales-sblue/chore/task-001-clean-dependencies`, confirming dependency cleanup is present on `main`.
 - The current `package.json` no longer contains `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts` as dependencies.
 - `origin/main` at commit `4ff5f37` contains merge commit `Merge pull request #3 from thales-sblue/chore/task-002-eslint-prettier`, confirming ESLint, Prettier, and validation scripts are present on `main`.
-- The current `main` baseline passes `npm ci`, `npm run lint`, and `npm run build`, but fails `npm run format:check` and `npm run validate` due to pre-existing formatting drift outside the permitted scope of `TASK-003`.
+- After restoring the original `.prettierignore` scope, the files reported by `npm run format:check` were `.prettierrc`, `postcss.config.js`, `src/components/About.jsx`, `src/components/Contact.jsx`, `src/components/Header.jsx`, `src/components/Hero.jsx`, `src/components/Nasa.jsx`, `src/components/Projects.jsx`, `src/components/Skills.jsx`, `src/components/ui/Button.jsx`, `src/components/ui/Reveal.jsx`, `src/components/ui/SectionHeading.jsx`, `src/components/WhatsAppButton.jsx`, `src/data/projects.js`, `tailwind.config.js`, and `vite.config.js`.
+- A direct comparison against Prettier output confirmed that all 16 reported files differed only by line endings (`CRLF` in the Windows checkout versus `LF` from Prettier), with no real formatting or logic drift.
 
 ## Commands Executed
 - `git fetch origin`
@@ -169,6 +171,7 @@
 - `cmd /c npm run format:check`
 - `cmd /c npm run build`
 - `cmd /c npm run validate`
+- `cmd /c npm run format:check`
 - `Remove-Item -LiteralPath node_modules -Recurse -Force`
 - `cmd /c npm ci`
 - `cmd /c npm run lint`
@@ -176,6 +179,7 @@
 - `cmd /c npm run typecheck`
 - `cmd /c npm run build`
 - `cmd /c npm run validate`
+- `node` comparison against Prettier output for the 16 reported files to distinguish line-ending drift from real formatting differences
 
 ## Results
 - Initial `npm ci` succeeded on the current checkout before cleanup.
@@ -193,10 +197,12 @@
 - The Vite static build still generates `dist` successfully and remains compatible with the existing GitHub Pages flow.
 - `npm ci` succeeded before implementation on the merged `main`.
 - `npm run lint` succeeded before implementation on the merged `main`.
-- `npm run format:check` failed before implementation on the merged `main` because `.prettierignore` did not exclude multiple untouched JS/JSX/config files outside this task scope.
+- `npm run format:check` failed before implementation on the merged `main` because 16 covered files in the Windows checkout differed from Prettier output only by line endings.
+- After restoring `.prettierignore` to the `main` scope, `npm run format:check` initially failed on 16 covered files only because of Windows line-ending differences.
 - `npm run build` succeeded before implementation on the merged `main`.
 - `npm run validate` failed before implementation on the merged `main` only because it depends on the failing `format:check`.
 - TypeScript was introduced without changing layout, copy, navigation, NASA behavior, project rendering, contact actions, or WhatsApp behavior.
+- The formatting fix was limited to `.prettierrc` by setting `"endOfLine": "auto"`; no source, class, text, or behavior changes were needed in the 16 reported files.
 - `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` all succeeded after the TypeScript foundation changes.
 - A clean reinstall with `Remove-Item node_modules`, `npm ci`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` also succeeded.
 - The application remains an SPA with no routes.
@@ -212,6 +218,7 @@
 - Playwright does not exist yet.
 - GitHub Actions or other CI workflow does not exist yet.
 - Prettier was not expanded to documentation, `index.html`, or `src/index.css` in this task to avoid a broad style-only diff; that normalization remains a future cleanup candidate if explicitly scheduled.
+- Components and configuration files remain covered by Prettier; no coverage was removed to make validation pass.
 - Remaining React components and data modules are still pending migration in later phase-4 tasks.
 - Tests, Testing Library, Vitest, GitHub Actions, and broader TypeScript rollout remain out of scope.
 
