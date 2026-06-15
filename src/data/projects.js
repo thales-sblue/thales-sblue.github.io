@@ -23,8 +23,7 @@ export const projects = [
   },
   {
     title: "Vagasync (Frontend)",
-    description:
-      "Aplicação web MVC com Spring Boot, Thymeleaf e Tailwind CSS.",
+    description: "Aplicação web MVC com Spring Boot, Thymeleaf e Tailwind CSS.",
     link: "https://github.com/thales-sblue/front_vagasync",
     image: vagasyncFrontLogin,
   },
@@ -58,8 +57,7 @@ export const projects = [
   },
   {
     title: "ToDo List",
-    description:
-      "Lista de tarefas em Java, Spring Boot, Lombok e H2.",
+    description: "Lista de tarefas em Java, Spring Boot, Lombok e H2.",
     link: "https://github.com/thales-sblue/todolist",
     Icon: DiJava,
   },

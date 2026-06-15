@@ -1,0 +1,10 @@
+dist
+node_modules
+coverage
+package-lock.json
+AGENTS.md
+README.md
+docs
+index.html
+src/index.css
+src/data/projects.min.js

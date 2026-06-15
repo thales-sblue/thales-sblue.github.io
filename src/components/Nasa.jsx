@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SectionHeading from "./ui/SectionHeading";
 import Button from "./ui/Button";
 
@@ -22,7 +22,7 @@ export default function Nasa() {
 
     if (selectedDate > today) {
       return setError(
-        "Infelizmente, ainda não conseguimos captar imagens do futuro."
+        "Infelizmente, ainda não conseguimos captar imagens do futuro.",
       );
     }
 
@@ -105,7 +105,9 @@ export default function Nasa() {
 
         {apod && (
           <div className="mt-8 rounded-card border border-white/10 bg-surface-elevated/80 p-6 text-left shadow-2xl backdrop-blur-xl md:p-8">
-            <h3 className="text-2xl font-semibold tracking-tight">{apod.title}</h3>
+            <h3 className="text-2xl font-semibold tracking-tight">
+              {apod.title}
+            </h3>
 
             <div className="mt-4 aspect-video overflow-hidden rounded-xl border border-white/10">
               {apod.media_type === "video" ? (
@@ -126,7 +128,9 @@ export default function Nasa() {
             </div>
 
             <p className="mt-4 text-sm text-muted">{apod.date}</p>
-            <p className="mt-3 leading-relaxed text-white/90">{apod.explanation}</p>
+            <p className="mt-3 leading-relaxed text-white/90">
+              {apod.explanation}
+            </p>
           </div>
         )}
 
