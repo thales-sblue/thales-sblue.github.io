@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-004-typescript-simple-components`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation and simple component migration completed in isolated tasks; next permitted step is defining a new isolated task for the next phase-4 component after inspection of the remaining components
+- Active branch target: `chore/task-005-typescript-button`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, and isolated Button migration completed in separate tasks; next permitted step is defining a new isolated task after inspection of `Reveal` and the remaining section components
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -159,6 +159,63 @@
   - the application remains a single-page application
   - the Vite build still generates `dist/`
   - the GitHub Pages flow remains unchanged
+- phase 4 remains in progress after this task
+
+## Task-005 Result
+- Created task document:
+  - `docs/tasks/TASK-005-typescript-button.md`
+- Migrated file:
+  - `src/components/ui/Button.jsx` -> `src/components/ui/Button.tsx`
+- Consumers verified:
+  - `src/components/Hero.jsx`
+  - `src/components/Contact.jsx`
+  - `src/components/Nasa.jsx`
+- Link uses found:
+  - `Hero`: `href="#nasa"`
+  - `Hero`: `href="#projects"` with `variant="secondary"`
+  - `Contact`: `href="mailto:thales_sblue@hotmail.com"`
+- Native button use found:
+  - `Nasa`: `onClick`, `className`, `disabled`, no `href`
+- Variant contract:
+  - `variants` preserved with keys `primary`, `secondary`, and `ghost`
+  - `ButtonVariant` derived from `keyof typeof variants`
+- Shared contract:
+  - `variant?: ButtonVariant`
+  - `className?: string`
+  - `children: ReactNode`
+- Link mode contract:
+  - requires `href: string`
+  - accepts anchor-native attributes via `ComponentPropsWithoutRef<"a">`
+  - removes `children` and `className` from propagated native anchor props
+- Native button contract:
+  - has no `href`
+  - accepts button-native attributes via `ComponentPropsWithoutRef<"button">`
+  - removes `children`, `className`, and `type` from propagated native button props
+- Discrimination strategy:
+  - `ButtonProps = LinkButtonProps | NativeButtonProps`
+  - branch selection by presence of `href` with `if ("href" in props)`
+- Prop propagation rules enforced:
+  - `variant`, `className`, and `children` are removed before DOM propagation in both branches
+  - `href` is removed from spread props and passed explicitly only to `<a>`
+  - internal props do not reach the DOM as invalid attributes
+- Consumer adjustments performed:
+  - none
+- Files still in JSX:
+  - `src/components/About.jsx`
+  - `src/components/Contact.jsx`
+  - `src/components/Header.jsx`
+  - `src/components/Hero.jsx`
+  - `src/components/Nasa.jsx`
+  - `src/components/Projects.jsx`
+  - `src/components/Skills.jsx`
+  - `src/components/ui/Reveal.jsx`
+- Scope and behavior confirmations:
+  - `type="button"` remained fixed in native button mode
+  - no visual or functional change was introduced
+  - no dependency or configuration change was introduced
+  - the application remains a single-page application
+  - the Vite build still generates `dist/`
+  - the GitHub Pages flow remains unchanged
   - phase 4 remains in progress after this task
 
 ## Evidence
@@ -253,6 +310,46 @@
 - `git diff --name-status origin/main...HEAD`
 - `git diff --check origin/main...HEAD`
 - `rg -n ":\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck" src`
+- `git fetch origin`
+- `git checkout main`
+- `git pull --ff-only origin main`
+- `Get-Content AGENTS.md`
+- `Get-Content docs/PRODUCT_SPEC.md`
+- `Get-Content docs/ARCHITECTURE.md`
+- `Get-Content docs/ROADMAP.md`
+- `Get-Content docs/STATE.md`
+- `Get-Content docs/tasks/TASK-003-typescript-foundation.md`
+- `Get-Content docs/tasks/TASK-004-typescript-simple-components.md`
+- `Get-Content src/components/ui/Button.jsx`
+- `rg -n 'import Button|<Button' src`
+- `Get-Content src/components/Hero.jsx`
+- `Get-Content src/components/Contact.jsx`
+- `Get-Content src/components/Nasa.jsx`
+- `cmd /c npm ci`
+- `cmd /c npm run lint`
+- `cmd /c npm run format:check`
+- `cmd /c npm run typecheck`
+- `cmd /c npm run build`
+- `cmd /c npm run validate`
+- `cmd /c npm.cmd run lint`
+- `cmd /c npm.cmd run format:check`
+- `cmd /c npm.cmd run typecheck`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run validate`
+- `git checkout -b chore/task-005-typescript-button`
+- `Remove-Item -LiteralPath node_modules -Recurse -Force`
+- `cmd /c npm ci`
+- `cmd /c npm.cmd run lint`
+- `cmd /c npm.cmd run format:check`
+- `cmd /c npm.cmd run typecheck`
+- `cmd /c npm.cmd run build`
+- `cmd /c npm.cmd run validate`
+- `git status --short`
+- `git diff -- src/components/ui/Button.tsx docs/tasks/TASK-005-typescript-button.md docs/STATE.md src/components/ui/Button.jsx`
+- `git diff --name-status origin/main...HEAD`
+- `git diff --check origin/main...HEAD`
+- `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC' src`
+- `rg -n 'Ã|Â|�' docs/tasks/TASK-005-typescript-button.md docs/STATE.md`
 
 ## Results
 - Initial `npm ci` succeeded on the current checkout before cleanup.
@@ -288,6 +385,22 @@
 - After migrating only the two approved components, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` all succeeded.
 - A clean reinstall with `Remove-Item node_modules`, `npm ci`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` also succeeded after TASK-004.
 - No dependency, configuration, routing, deployment, SPA, GitHub Pages, layout, style, or behavior change was introduced in TASK-004.
+- `origin/main` at commit `30746f7` contains merge commit `Merge pull request #5 from thales-sblue/chore/task-004-typescript-simple-components`, confirming the TASK-004 merge is present on `main` before TASK-005.
+- `cmd /c npm ci` succeeded before implementation on merged `main`.
+- `cmd /c npm run lint`, `cmd /c npm run format:check`, `cmd /c npm run typecheck`, `cmd /c npm run build`, and `cmd /c npm run validate` failed before implementation only because this environment either blocks `npm.ps1`, misresolves local script bins under `cmd /c npm run ...`, or restricts `esbuild` path access in the sandbox.
+- After switching the baseline verification to `cmd /c npm.cmd run ...`, `lint`, `format:check`, and `typecheck` succeeded on merged `main`.
+- A sandboxed `cmd /c npm.cmd run build` still failed before implementation because `esbuild` could not read directories above the workspace; the same build succeeded outside the sandbox and was treated as an environment restriction rather than a project issue.
+- A sandboxed `cmd /c npm.cmd run validate` failed before implementation only because it depends on the same sandboxed build; the same validation run succeeded outside the sandbox.
+- The current Button consumers match the expected task scope exactly: `Hero`, `Contact`, and `Nasa`.
+- `Hero` uses only link mode with `href="#nasa"` and `href="#projects"`, with `variant="secondary"` on the second link.
+- `Contact` uses only link mode with `href="mailto:thales_sblue@hotmail.com"`.
+- `Nasa` uses only native button mode with `onClick`, `className`, `disabled`, and no `href`.
+- After migrating only `Button`, `cmd /c npm.cmd run lint`, `cmd /c npm.cmd run format:check`, and `cmd /c npm.cmd run typecheck` all succeeded.
+- After migrating only `Button`, `cmd /c npm.cmd run build` and `cmd /c npm.cmd run validate` both succeeded outside the sandbox.
+- A clean reinstall with `Remove-Item node_modules`, `cmd /c npm ci`, `cmd /c npm.cmd run lint`, `cmd /c npm.cmd run format:check`, `cmd /c npm.cmd run typecheck`, `cmd /c npm.cmd run build`, and `cmd /c npm.cmd run validate` also succeeded after TASK-005.
+- `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC' src` returned no matches after TASK-005.
+- `rg -n 'Ã|Â|�' docs/tasks/TASK-005-typescript-button.md docs/STATE.md` returned no matches after TASK-005.
+- Manual diff review confirmed the task is limited to `src/components/ui/Button.tsx`, removal of `src/components/ui/Button.jsx`, `docs/tasks/TASK-005-typescript-button.md`, and `docs/STATE.md`.
 
 ## Risks And Pending Notes
 - The root package name remains `thales-dev`, but the invalid self-dependency entry was removed.
@@ -301,7 +414,7 @@
 - Components and configuration files remain covered by Prettier; no coverage was removed to make validation pass.
 - Remaining React components and data modules are still pending migration in later phase-4 tasks.
 - Tests, Testing Library, Vitest, GitHub Actions, and broader TypeScript rollout remain out of scope.
-- The only next permitted step for phase 4 is defining a new isolated task for the next component after inspecting the remaining JSX components; that follow-up task was not chosen or implemented here.
+- The next step is only to define a new isolated task after inspecting `Reveal` and the remaining section components; that follow-up task was not chosen or implemented here.
 
 ## Verification
 - `npm ci`: succeeded before implementation and again after removing `node_modules`.
@@ -318,3 +431,4 @@
 - 2026-06-15: `TASK-002-eslint-prettier` created and executed with minimal ESLint and Prettier setup, obsolete `React` import cleanup, targeted formatting of JS/JSX/config files, and successful lint/format/build verification.
 - 2026-06-15: `TASK-003-typescript-foundation` completed with a strict no-emit TypeScript foundation, migration limited to `src/main` and `src/App`, successful clean-install validation, and phase 4 left in progress for later component migrations.
 - 2026-06-15: `TASK-004-typescript-simple-components` completed with migration limited to `SectionHeading` and `WhatsAppButton`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
+- 2026-06-15: `TASK-005-typescript-button` completed with migration limited to `Button`, no consumer changes, successful clean-install validation, preserved link/native-button behavior, and phase 4 kept in progress.
