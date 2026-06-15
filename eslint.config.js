@@ -4,15 +4,17 @@ const reactPlugin = require("eslint-plugin-react");
 const reactHooks = require("eslint-plugin-react-hooks");
 const reactRefreshModule = require("eslint-plugin-react-refresh");
 const prettierConfig = require("eslint-config-prettier");
+const tseslint = require("typescript-eslint");
 
 const reactRefresh = reactRefreshModule.default || reactRefreshModule;
 
 const applicationFiles = [
-  "src/**/*.{js,jsx}",
+  "src/**/*.{js,jsx,ts,tsx}",
   "vite.config.js",
   "tailwind.config.js",
 ];
 const commonJsFiles = ["eslint.config.js", "postcss.config.js"];
+const typeScriptFiles = ["src/**/*.{ts,tsx}"];
 
 module.exports = [
   {
@@ -59,6 +61,10 @@ module.exports = [
       "react/prop-types": "off",
     },
   },
+  ...tseslint.configs.recommended.map((config) => ({
+    ...config,
+    files: typeScriptFiles,
+  })),
   {
     files: commonJsFiles,
     languageOptions: {

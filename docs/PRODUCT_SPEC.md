@@ -12,8 +12,8 @@ This repository currently powers a personal portfolio website implemented as a s
 ## Product Constraints For The Evolution Plan
 - No interface changes during documentation and audit work.
 - No content edits during documentation and audit work.
-- No source changes under `src/` during this task set.
-- No package or version changes during this task set.
+- The earlier prohibition on source changes under `src/`, package changes, and TypeScript migration applied to the initial documentation and audit phase only.
+- Later roadmap phases may authorize controlled source and package changes explicitly, and those changes must stay inside the approved task scope.
 - No architecture changes are allowed without an explicit recorded decision.
 
 ## Evolution Principles
@@ -34,6 +34,6 @@ Do not invent experiences, metrics, or credentials.
 - Reordering sections.
 - Rewriting content.
 - Introducing routes now.
-- Migrating to TypeScript now.
+- Expanding the TypeScript migration beyond the scope explicitly authorized by the active phase-4 task.
 - Updating React or Vite now.
 - Adding tests, CI, or new tooling now.
