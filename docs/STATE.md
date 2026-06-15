@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-003-typescript-foundation`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation completed in this task; next permitted step is migrating the simplest UI components within phase 4
+- Active branch target: `chore/task-004-typescript-simple-components`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation and simple component migration completed in isolated tasks; next permitted step is defining a new isolated task for the next phase-4 component after inspection of the remaining components
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -116,6 +116,51 @@
   - `.prettierignore` was restored to the `main` scope so components and configuration files remain covered by `npm run format:check`
   - `.prettierrc` now sets `"endOfLine": "auto"` to avoid Windows checkout line-ending drift being reported as formatting failures
 
+## Task-004 Result
+- Created task document:
+  - `docs/tasks/TASK-004-typescript-simple-components.md`
+- Migrated simple components:
+  - `src/components/ui/SectionHeading.jsx` -> `src/components/ui/SectionHeading.tsx`
+  - `src/components/WhatsAppButton.jsx` -> `src/components/WhatsAppButton.tsx`
+- Consumers verified:
+  - `src/components/About.jsx`
+  - `src/components/Contact.jsx`
+  - `src/components/Nasa.jsx`
+  - `src/components/Projects.jsx`
+  - `src/components/Skills.jsx`
+  - `src/App.tsx`
+- `SectionHeading` contract:
+  - `title: ReactNode`
+  - `subtitle?: ReactNode`
+  - `align?: "left" | "center" | "right"`
+  - `className?: string`
+- `SectionHeading` consumer props confirmed in the current checkout:
+  - `title` is always provided
+  - `subtitle` is used only in `Contact`, `Nasa`, `Projects`, and `Skills`
+  - `align` appears only once and only with `align="left"` in `About`
+  - `className` appears only once and only with `className="md:mb-12"` in `About`
+- `WhatsAppButton` receives no props.
+- Minimal consumer adjustments performed:
+  - none
+- Files still in JSX:
+  - `src/components/About.jsx`
+  - `src/components/Contact.jsx`
+  - `src/components/Header.jsx`
+  - `src/components/Hero.jsx`
+  - `src/components/Nasa.jsx`
+  - `src/components/Projects.jsx`
+  - `src/components/Skills.jsx`
+  - `src/components/ui/Button.jsx`
+  - `src/components/ui/Reveal.jsx`
+- Scope and behavior confirmations:
+  - no other component was migrated
+  - no CSS class, layout, text, link, or visual structure was changed
+  - no visual or functional change was introduced
+  - the application remains a single-page application
+  - the Vite build still generates `dist/`
+  - the GitHub Pages flow remains unchanged
+  - phase 4 remains in progress after this task
+
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
 - `npm ls --depth=0` before removal showed all five investigated packages as direct dependencies of the root package only.
@@ -180,6 +225,34 @@
 - `cmd /c npm run build`
 - `cmd /c npm run validate`
 - `node` comparison against Prettier output for the 16 reported files to distinguish line-ending drift from real formatting differences
+- `git fetch origin`
+- `git checkout main`
+- `git pull --ff-only origin main`
+- `cmd /c npm ci`
+- `cmd /c npm run lint`
+- `cmd /c npm run format:check`
+- `cmd /c npm run typecheck`
+- `cmd /c npm run build`
+- `cmd /c npm run validate`
+- `git checkout -b chore/task-004-typescript-simple-components`
+- `rg -n "SectionHeading|WhatsAppButton" src`
+- `rg -n 'align=' src`
+- `rg --files src -g "*.jsx"`
+- `cmd /c npm run lint`
+- `cmd /c npm run format:check`
+- `cmd /c npm run typecheck`
+- `cmd /c npm run build`
+- `cmd /c npm run validate`
+- `Remove-Item -LiteralPath node_modules -Recurse -Force`
+- `cmd /c npm ci`
+- `cmd /c npm run lint`
+- `cmd /c npm run format:check`
+- `cmd /c npm run typecheck`
+- `cmd /c npm run build`
+- `cmd /c npm run validate`
+- `git diff --name-status origin/main...HEAD`
+- `git diff --check origin/main...HEAD`
+- `rg -n ":\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck" src`
 
 ## Results
 - Initial `npm ci` succeeded on the current checkout before cleanup.
@@ -208,6 +281,13 @@
 - The application remains an SPA with no routes.
 - The static build continues to generate `dist/`.
 - GitHub Pages compatibility remains unchanged because the Vite base, deploy scripts, and hosting model were preserved.
+- `origin/main` at commit `e2873b6` contains merge commit `Merge pull request #4 from thales-sblue/chore/task-003-typescript-foundation`, confirming the TypeScript foundation is present on `main` before TASK-004.
+- Baseline validation on merged `main` succeeded with `npm ci`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate`.
+- The only values found for `SectionHeading` props in current consumers were `align="left"` and `className="md:mb-12"` in `About`; no invalid `align` value exists in the current checkout.
+- `WhatsAppButton` is consumed only in `src/App.tsx` and receives no props.
+- After migrating only the two approved components, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` all succeeded.
+- A clean reinstall with `Remove-Item node_modules`, `npm ci`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` also succeeded after TASK-004.
+- No dependency, configuration, routing, deployment, SPA, GitHub Pages, layout, style, or behavior change was introduced in TASK-004.
 
 ## Risks And Pending Notes
 - The root package name remains `thales-dev`, but the invalid self-dependency entry was removed.
@@ -221,6 +301,7 @@
 - Components and configuration files remain covered by Prettier; no coverage was removed to make validation pass.
 - Remaining React components and data modules are still pending migration in later phase-4 tasks.
 - Tests, Testing Library, Vitest, GitHub Actions, and broader TypeScript rollout remain out of scope.
+- The only next permitted step for phase 4 is defining a new isolated task for the next component after inspecting the remaining JSX components; that follow-up task was not chosen or implemented here.
 
 ## Verification
 - `npm ci`: succeeded before implementation and again after removing `node_modules`.
@@ -236,3 +317,4 @@
 - 2026-06-15: `TASK-001-clean-dependencies` completed with verified removal of `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, and `recharts`, followed by clean install and successful build.
 - 2026-06-15: `TASK-002-eslint-prettier` created and executed with minimal ESLint and Prettier setup, obsolete `React` import cleanup, targeted formatting of JS/JSX/config files, and successful lint/format/build verification.
 - 2026-06-15: `TASK-003-typescript-foundation` completed with a strict no-emit TypeScript foundation, migration limited to `src/main` and `src/App`, successful clean-install validation, and phase 4 left in progress for later component migrations.
+- 2026-06-15: `TASK-004-typescript-simple-components` completed with migration limited to `SectionHeading` and `WhatsAppButton`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
