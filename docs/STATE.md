@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-002-eslint-prettier`
-- Current roadmap status: phase `3. ESLint e Prettier` executed; next permitted step is `4. Migracao gradual para TypeScript`
+- Active branch target: `chore/task-003-typescript-foundation`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation completed in this task; next permitted step is migrating the simplest UI components within phase 4
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -14,6 +14,7 @@
 - Architecture decisions must be documented explicitly.
 - `TASK-002` must keep lint and formatting as separate responsibilities.
 - `TASK-002` must not update React, Vite, Tailwind, deployment configuration, or migrate any file to TypeScript.
+- `TASK-003` must migrate only the two safest entrypoints and keep the rest of `src/` in JavaScript or JSX.
 
 ## Task-001 Result
 - Removed dependencies:
@@ -78,6 +79,42 @@
   - `src/index.css`
   - `src/data/projects.min.js`
 
+## Task-003 Result
+- Added dev dependencies:
+  - `typescript@^6.0.3`
+  - `@types/react@^18.3.31`
+  - `@types/react-dom@^18.3.7`
+  - `typescript-eslint@^8.61.1`
+- Added configuration files:
+  - `tsconfig.json`
+  - `src/vite-env.d.ts`
+  - `docs/tasks/TASK-003-typescript-foundation.md`
+- Migrated entrypoints:
+  - `src/main.jsx` -> `src/main.tsx`
+  - `src/App.jsx` -> `src/App.tsx`
+- Files still in JavaScript or JSX:
+  - `src/components/**/*.jsx`
+  - `src/components/ui/**/*.jsx`
+  - `src/data/projects.js`
+  - `src/data/projects.min.js`
+- TypeScript foundation rules:
+  - `strict: true`
+  - `noEmit: true`
+  - `jsx: "react-jsx"`
+  - `module: "ESNext"`
+  - `moduleResolution: "Bundler"`
+  - `allowJs: true`
+  - `checkJs: false`
+  - `forceConsistentCasingInFileNames: true`
+  - `skipLibCheck: true`
+- JS/TS coexistence strategy:
+  - Only `main` and `App` moved to `.tsx`
+  - All remaining source files stay in `.jsx` or `.js`
+  - TypeScript checks application TypeScript files while JavaScript stays included but unchecked
+  - ESLint now recognizes `.ts` and `.tsx` with non-type-aware `typescript-eslint` recommended rules on top of the existing React, Hooks, Refresh, and Prettier setup
+- Validation scope adjustment required by current `main`:
+  - `.prettierignore` was narrowed further because the merged `TASK-002` baseline still fails `npm run format:check` on multiple untouched JS/JSX/config files outside this task's allowed migration scope
+
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
 - `npm ls --depth=0` before removal showed all five investigated packages as direct dependencies of the root package only.
@@ -86,6 +123,8 @@
 - `package-lock.json` contained entries for all investigated packages before cleanup and was updated through `npm uninstall` plus clean reinstall.
 - `origin/main` at commit `c6b542e` contains merge commit `Merge pull request #2 from thales-sblue/chore/task-001-clean-dependencies`, confirming dependency cleanup is present on `main`.
 - The current `package.json` no longer contains `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts` as dependencies.
+- `origin/main` at commit `4ff5f37` contains merge commit `Merge pull request #3 from thales-sblue/chore/task-002-eslint-prettier`, confirming ESLint, Prettier, and validation scripts are present on `main`.
+- The current `main` baseline passes `npm ci`, `npm run lint`, and `npm run build`, but fails `npm run format:check` and `npm run validate` due to pre-existing formatting drift outside the permitted scope of `TASK-003`.
 
 ## Commands Executed
 - `git fetch origin`
@@ -116,6 +155,27 @@
 - `cmd /c npm run format:check`
 - `cmd /c npm run build`
 - `cmd /c npm run validate`
+- `cmd /c npm ci`
+- `cmd /c npm run lint`
+- `cmd /c npm run format:check`
+- `cmd /c npm run build`
+- `cmd /c npm run validate`
+- `git checkout -b chore/task-003-typescript-foundation`
+- `cmd /c npm install -D typescript @types/react@^18 @types/react-dom@^18 typescript-eslint`
+- `cmd /c npm run lint`
+- `cmd /c npm run format:check`
+- `cmd /c npm run typecheck`
+- `cmd /c npx prettier package.json eslint.config.js --write`
+- `cmd /c npm run format:check`
+- `cmd /c npm run build`
+- `cmd /c npm run validate`
+- `Remove-Item -LiteralPath node_modules -Recurse -Force`
+- `cmd /c npm ci`
+- `cmd /c npm run lint`
+- `cmd /c npm run format:check`
+- `cmd /c npm run typecheck`
+- `cmd /c npm run build`
+- `cmd /c npm run validate`
 
 ## Results
 - Initial `npm ci` succeeded on the current checkout before cleanup.
@@ -131,6 +191,17 @@
 - A sandboxed `npm run validate` attempt hit an `esbuild` path-access error while loading `vite.config.js`; the same command succeeded outside the sandbox and was treated as an environment restriction rather than a project issue.
 - No React, Vite, Tailwind, deployment, routing, layout, style, content, or behavior changes were introduced.
 - The Vite static build still generates `dist` successfully and remains compatible with the existing GitHub Pages flow.
+- `npm ci` succeeded before implementation on the merged `main`.
+- `npm run lint` succeeded before implementation on the merged `main`.
+- `npm run format:check` failed before implementation on the merged `main` because `.prettierignore` did not exclude multiple untouched JS/JSX/config files outside this task scope.
+- `npm run build` succeeded before implementation on the merged `main`.
+- `npm run validate` failed before implementation on the merged `main` only because it depends on the failing `format:check`.
+- TypeScript was introduced without changing layout, copy, navigation, NASA behavior, project rendering, contact actions, or WhatsApp behavior.
+- `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` all succeeded after the TypeScript foundation changes.
+- A clean reinstall with `Remove-Item node_modules`, `npm ci`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run build`, and `npm run validate` also succeeded.
+- The application remains an SPA with no routes.
+- The static build continues to generate `dist/`.
+- GitHub Pages compatibility remains unchanged because the Vite base, deploy scripts, and hosting model were preserved.
 
 ## Risks And Pending Notes
 - The root package name remains `thales-dev`, but the invalid self-dependency entry was removed.
@@ -141,16 +212,20 @@
 - Playwright does not exist yet.
 - GitHub Actions or other CI workflow does not exist yet.
 - Prettier was not expanded to documentation, `index.html`, or `src/index.css` in this task to avoid a broad style-only diff; that normalization remains a future cleanup candidate if explicitly scheduled.
+- Remaining React components and data modules are still pending migration in later phase-4 tasks.
+- Tests, Testing Library, Vitest, GitHub Actions, and broader TypeScript rollout remain out of scope.
 
 ## Verification
-- `npm ci`: succeeded after removing `node_modules`.
+- `npm ci`: succeeded before implementation and again after removing `node_modules`.
 - `npm run lint`: succeeded.
 - `npm run format:check`: succeeded.
+- `npm run typecheck`: succeeded.
 - `npm run build`: succeeded.
-- `npm run validate`: succeeded outside the sandbox after a sandbox-only `esbuild` access error.
+- `npm run validate`: succeeded.
 - `test`: unavailable because no test script exists yet.
 
 ## Task History
 - 2026-06-15: documentation baseline created with `AGENTS.md`, audit, product spec, architecture notes, roadmap, initial state file, and `TASK-001-clean-dependencies`.
 - 2026-06-15: `TASK-001-clean-dependencies` completed with verified removal of `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, and `recharts`, followed by clean install and successful build.
 - 2026-06-15: `TASK-002-eslint-prettier` created and executed with minimal ESLint and Prettier setup, obsolete `React` import cleanup, targeted formatting of JS/JSX/config files, and successful lint/format/build verification.
+- 2026-06-15: `TASK-003-typescript-foundation` completed with a strict no-emit TypeScript foundation, migration limited to `src/main` and `src/App`, successful clean-install validation, and phase 4 left in progress for later component migrations.

@@ -7,4 +7,10 @@ README.md
 docs
 index.html
 src/index.css
+src/components
+src/data/projects.js
 src/data/projects.min.js
+.prettierrc
+postcss.config.js
+tailwind.config.js
+vite.config.js

@@ -1,17 +1,18 @@
 # Architecture
 
 ## Current Architecture
-- Rendering starts in `index.html`, mounts in `src/main.jsx`, and renders a single `App` tree.
-- `src/App.jsx` composes the full page in a fixed section order and does not use routing.
+- Rendering starts in `index.html`, mounts in `src/main.tsx`, and renders a single `App` tree.
+- `src/App.tsx` composes the full page in a fixed section order and does not use routing.
 - Section components live in `src/components/`.
 - Shared presentation helpers live in `src/components/ui/`.
 - Project card data lives in `src/data/projects.js`.
 - Static images live in `src/assets/`.
+- The codebase now temporarily mixes `.tsx`, `.jsx`, and `.js` while the gradual TypeScript migration is in progress.
 
 ## Runtime Boundaries
 - Client-side only React application.
+- Single-page application with no route segmentation.
 - No server-side rendering.
-- No route segmentation.
 - No persistent backend owned by this repository.
 - One external runtime integration: NASA APOD API, configured through `VITE_NASA_API_KEY`.
 
@@ -26,6 +27,7 @@
 - Production build: `vite build`.
 - Publishing: `gh-pages -d dist`.
 - Static hosting target: GitHub Pages.
+- The build output remains a static `dist/` directory compatible with the current GitHub Pages deployment flow.
 
 ## Architecture Decisions To Preserve Until Changed Explicitly
 - The app remains a single-page portfolio until the roadmap reaches the routing phase.
