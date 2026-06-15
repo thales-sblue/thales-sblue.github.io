@@ -14,8 +14,9 @@
 - Architecture decisions must be documented explicitly.
 
 ## Open Findings
-- `thales-dev: "file:"` is likely invalid and should be addressed in the dependency cleanup phase.
-- `@headlessui/react`, `react-tsparticles`, `tsparticles`, and `recharts` appear unused from repository search and should be verified during dependency cleanup.
+- The initial audit found dependency candidates for removal, but final confirmation is deferred to `TASK-001-clean-dependencies`.
+- `thales-dev: "file:"` is a candidata a remocao prioritaria based on current checkout evidence, pending direct confirmation in `TASK-001`.
+- `@headlessui/react`, `react-tsparticles`, `tsparticles`, and `recharts` are candidatas a remocao based on the current checkout search, pending complete confirmation in `TASK-001`.
 - `src/data/projects.min.js` appears redundant and should be reviewed in a later cleanup task.
 - `base: ''` in `vite.config.js` is a risk area for future Vite and routing changes on GitHub Pages.
 - No lint, test, Playwright, or CI workflow exists yet.

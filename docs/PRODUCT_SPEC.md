@@ -22,6 +22,13 @@ This repository currently powers a personal portfolio website implemented as a s
 - Prefer reversible changes and isolated upgrades over large parallel migrations.
 - Treat deployment, routing, accessibility, performance, and SEO as first-class concerns rather than cleanup after design changes.
 
+## Direcao Futura
+The portfolio should evolve to present Thales Santos as a mid-level full stack developer with emphasis on backend engineering, APIs, system modernization, code quality, databases, integrations, and CI/CD.
+
+The future interface should prioritize engineering evidence, technical decisions, architecture, tests, results, and learnings instead of only listing technologies or emphasizing visual effects.
+
+Do not invent experiences, metrics, or credentials.
+
 ## Current Non-Goals
 - Redesigning the hero.
 - Reordering sections.

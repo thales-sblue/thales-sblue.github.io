@@ -9,6 +9,7 @@
 - Update `docs/STATE.md` after each completed task.
 - Each task must end in its own separate commit.
 - Architecture decisions documented in this repository must not be changed silently; any change requires an explicit documentation update.
+- Nenhum fato pode ser declarado como confirmado sem ter sido verificado diretamente no checkout atual. Inferências devem ser marcadas como hipóteses, evidências parciais ou confirmações pendentes.
 
 ## Workflow
 1. Read the active task document and confirm scope, constraints, and acceptance criteria.

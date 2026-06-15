@@ -42,7 +42,7 @@
 
 ## Dependency Review
 
-### In Use
+### Manter
 - `react`
 - `react-dom`
 - `framer-motion`
@@ -54,28 +54,35 @@
 - `autoprefixer`
 - `gh-pages`
 
-### Suspect Or Invalid
+### Candidata A Remocao Prioritaria
 - `thales-dev: "file:"`
-  - Invalid as a normal application dependency and likely self-referential residue.
-  - High-confidence cleanup candidate.
+  - Evidencia parcial: declarada como dependencia `file:` no proprio aplicativo, o que sugere residuo autorreferencial e nao um pacote de aplicacao normal.
+  - Confirmacao final pendente de validacao completa na `TASK-001`.
+
+### Candidatas A Remocao
 - `@headlessui/react`
-  - No usage found in repository search.
-  - Likely unused.
+  - Evidencia parcial: nenhuma referencia encontrada na busca atual do checkout.
+  - Confirmacao completa pendente durante a `TASK-001`.
 - `react-tsparticles`
-  - No usage found in repository search.
-  - Likely unused.
+  - Evidencia parcial: nenhuma referencia encontrada na busca atual do checkout.
+  - Confirmacao completa pendente durante a `TASK-001`.
 - `tsparticles`
-  - No usage found in repository search.
-  - Likely unused.
+  - Evidencia parcial: nenhuma referencia encontrada na busca atual do checkout.
+  - Confirmacao completa pendente durante a `TASK-001`.
 - `recharts`
-  - No usage found in repository search.
-  - Likely unused.
+  - Evidencia parcial: nenhuma referencia encontrada na busca atual do checkout.
+  - Confirmacao completa pendente durante a `TASK-001`.
+
+### Investigar
+- `src/data/projects.min.js`
+  - Evidencia parcial: o arquivo existe no checkout atual e nao foi encontrado como importado pela aplicacao observada.
+  - Nao e uma dependencia de `package.json`, mas pode representar artefato legado ou redundante.
 
 ## Additional Cleanup Candidates
 - `src/data/projects.min.js`
   - Minified source file committed alongside the readable source version.
-  - Not imported by the current app.
-  - Candidate for later cleanup after dependency work, because it is source-level clutter rather than a package dependency.
+  - Aparenta ser um candidato a limpeza futura, mas essa classificacao depende de confirmacao direta no escopo apropriado.
+  - Deve ser tratado separadamente do cleanup de dependencias, porque e um arquivo de codigo-fonte.
 
 ## Technical Risks
 
