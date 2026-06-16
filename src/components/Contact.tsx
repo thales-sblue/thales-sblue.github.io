@@ -1,9 +1,16 @@
+import type { IconType } from "react-icons";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import Button from "./ui/Button";
 
-const links = [
+type ContactLink = {
+  label: string;
+  href: string;
+  Icon: IconType;
+};
+
+const links: ContactLink[] = [
   {
     label: "Email",
     href: "mailto:thales_sblue@hotmail.com",
@@ -29,7 +36,6 @@ export default function Contact() {
           title="Contato"
           subtitle="Me envie uma mensagem ou conecte-se comigo nas redes."
         />
-
         <div className="mx-auto flex max-w-2xl flex-col gap-4 sm:flex-row sm:justify-center">
           {links.map(({ label, href, Icon }) => (
             <a
@@ -44,7 +50,6 @@ export default function Contact() {
             </a>
           ))}
         </div>
-
         <div className="mt-10">
           <Button href="mailto:thales_sblue@hotmail.com">
             Vamos conversar

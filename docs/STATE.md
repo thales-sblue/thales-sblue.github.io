@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-007-typescript-reveal`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, and isolated Reveal migration completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada para migrar o proximo componente de secao apos inspecao dos JSX restantes.`
+- Active branch target: `chore/task-008-typescript-static-sections`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, isolated Reveal migration, and isolated static section migration completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada para migrar o proximo componente apos inspecao dos JSX restantes.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -355,6 +355,93 @@
   - `src/components/Skills.jsx`
 - Next step:
   - `Definir uma nova tarefa isolada para migrar o proximo componente de secao apos inspecao dos JSX restantes.`
+
+## Task-008 Result
+- Migrated files:
+  - `src/components/About.jsx` -> `src/components/About.tsx`
+  - `src/components/Contact.jsx` -> `src/components/Contact.tsx`
+  - `src/components/Skills.jsx` -> `src/components/Skills.tsx`
+- Consumers verified:
+  - `src/App.tsx`
+  - `import About from "./components/About";`
+  - `import Skills from "./components/Skills";`
+  - `import Contact from "./components/Contact";`
+  - `<Skills />`
+  - `<About />`
+  - `<Contact />`
+- Props confirmation:
+  - `About` does not receive props
+  - `Contact` does not receive props
+  - `Skills` does not receive props
+- Contracts added:
+  - `Highlight`
+  - `ContactLink`
+  - `Skill`
+- `IconType` confirmation:
+  - all icon references in `About.tsx`, `Contact.tsx`, and `Skills.tsx` are explicitly typed with `IconType`
+- Preservation confirmation:
+  - texts were preserved
+  - classes were preserved
+  - icons were preserved
+  - layout and JSX structure were preserved
+  - `SectionHeading` was preserved
+  - `Reveal` was preserved
+- Consumer change confirmation:
+  - no consumer was changed
+  - `src/App.tsx` was not changed
+- Commands executed:
+  - `git fetch origin`
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `Get-Content AGENTS.md`
+  - `Get-Content docs/PRODUCT_SPEC.md`
+  - `Get-Content docs/ARCHITECTURE.md`
+  - `Get-Content docs/ROADMAP.md`
+  - `Get-Content docs/STATE.md`
+  - `Get-Content docs/tasks/TASK-007-typescript-reveal.md`
+  - `Get-Content src/components/About.jsx`
+  - `Get-Content src/components/Contact.jsx`
+  - `Get-Content src/components/Skills.jsx`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git checkout -b chore/task-008-typescript-static-sections`
+  - `rg -n 'import About|<About|import Contact|<Contact|import Skills|<Skills' src`
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --check origin/main...HEAD`
+  - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC|asserts|type guard' src/components/About.tsx src/components/Contact.tsx src/components/Skills.tsx`
+  - `UTF-8 artifact scan for docs/tasks/TASK-008-typescript-static-sections.md and docs/STATE.md`
+  - `PowerShell BOM scan for docs/tasks/TASK-008-typescript-static-sections.md and docs/STATE.md`
+- Results:
+  - `npm ci` passed before implementation and after clean reinstall
+  - `lint` passed before implementation and after clean reinstall
+  - `format:check` passed before implementation and after clean reinstall
+  - `typecheck` passed before implementation and after clean reinstall
+  - `build` passed before implementation and after clean reinstall
+  - `validate` passed before implementation and after clean reinstall
+- Files still in JSX:
+  - `src/components/Header.jsx`
+  - `src/components/Hero.jsx`
+  - `src/components/Nasa.jsx`
+  - `src/components/Projects.jsx`
+- Platform confirmation:
+  - no visual or functional change was introduced
+  - the application remains a single-page application
+  - the Vite build continues to generate `dist/`
+  - GitHub Pages compatibility remains unchanged
+  - phase 4 remains in progress after this task
+- Next step:
+  - `Definir uma nova tarefa isolada para migrar o proximo componente apos inspecao dos JSX restantes.`
 
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
