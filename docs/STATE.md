@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-009-typescript-header-hero`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, isolated Reveal migration, and isolated static section migration completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada para migrar o proximo componente apos inspecao dos JSX restantes.`
+- Active branch target: `chore/task-010-typescript-projects`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, isolated Reveal migration, isolated static section migration, and isolated Header/Hero migration completed in separate tasks; next permitted step is `Migrar Nasa.jsx para TypeScript em uma tarefa isolada com contrato explicito para APOD, localStorage e estados de carregamento/erro.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -521,6 +521,108 @@
   - phase 4 remains in progress after this task
 - Next step:
   - `Definir uma nova tarefa isolada para migrar o proximo componente apos inspecao dos JSX restantes.`
+
+## Task-010 Result
+- Migrated file:
+  - `src/components/Projects.jsx` -> `src/components/Projects.tsx`
+- Consumer verified:
+  - `src/App.tsx`
+  - `import Projects from "./components/Projects";`
+  - `<Projects />`
+- Props confirmation:
+  - `Projects` does not receive props
+- Project contract:
+  - `title: string`
+  - `description: string`
+  - `link: string`
+  - `image?: string`
+  - `Icon: IconType`
+- Type usage confirmation:
+  - `Icon` is typed locally with `IconType`
+  - `cardVariants` is typed locally with `Variants`
+- Local cast justification:
+  - `const typedProjects = projects as Project[];` is used only in `Projects.tsx` because the data source still comes from `src/data/projects.js` during phase 4 JS/TS coexistence
+- Data confirmation:
+  - `src/data/projects.js` was not changed
+  - `src/data/projects.min.js` was not changed
+- Preservation confirmation:
+  - texts were preserved
+  - links were preserved
+  - icons were preserved
+  - images were preserved
+  - classes were preserved
+  - animations were preserved
+  - layout and JSX structure were preserved
+  - `SectionHeading` was preserved
+  - `motion.a` was preserved
+  - the icon fallback for entries without `proj.image` was preserved
+- Consumer change confirmation:
+  - no consumer was changed
+  - `src/App.tsx` was not changed
+- Commands executed:
+  - `git fetch origin`
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `Get-Content AGENTS.md`
+  - `Get-Content docs/PRODUCT_SPEC.md`
+  - `Get-Content docs/ARCHITECTURE.md`
+  - `Get-Content docs/ROADMAP.md`
+  - `Get-Content docs/STATE.md`
+  - `Get-Content docs/tasks/TASK-009-typescript-header-hero.md`
+  - `Get-Content src/components/Projects.jsx`
+  - `Get-Content src/data/projects.js`
+  - `Get-Content src/App.tsx`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npx prettier src/components/Projects.tsx --write`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git checkout -b chore/task-010-typescript-projects`
+  - `rg -n 'import Projects|<Projects' src`
+  - `rg -n 'export const projects|Icon|image|title|description|link' src/data/projects.js src/components/Projects.jsx`
+  - `git mv src/components/Projects.jsx src/components/Projects.tsx`
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --check origin/main...HEAD`
+  - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC|asserts|type guard|unknown' src/components/Projects.tsx`
+  - `mojibake scan with rg on src/components/Projects.tsx, docs/tasks/TASK-010-typescript-projects.md, and docs/STATE.md`
+  - `PowerShell BOM scan for docs/tasks/TASK-010-typescript-projects.md and docs/STATE.md`
+- Results:
+  - `npm ci` passed before implementation
+  - `lint` passed before implementation
+  - `format:check` passed before implementation
+  - `typecheck` passed before implementation
+  - `build` passed before implementation
+  - `validate` passed before implementation
+  - post-implementation `lint` passed
+  - post-implementation `format:check` initially failed only on `src/components/Projects.tsx`, then passed after running Prettier on that file
+  - post-implementation `typecheck` passed
+  - post-implementation `build` passed
+  - post-implementation `validate` passed
+  - clean reinstall `npm ci` passed
+  - clean reinstall `lint` passed
+  - clean reinstall `format:check` passed
+  - clean reinstall `typecheck` passed
+  - clean reinstall `build` passed
+  - clean reinstall `validate` passed
+- Files still in JSX:
+  - `src/components/Nasa.jsx`
+- Platform confirmation:
+  - no visual or functional change was introduced
+  - the application remains a single-page application
+  - the Vite build continues to generate `dist/`
+  - GitHub Pages compatibility remains unchanged
+  - phase 4 remains in progress after this task
+- Next step:
+  - `Migrar Nasa.jsx para TypeScript em uma tarefa isolada com contrato explicito para APOD, localStorage e estados de carregamento/erro.`
 
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
