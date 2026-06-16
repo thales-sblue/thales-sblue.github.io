@@ -467,6 +467,7 @@
   - layout and JSX structure were preserved
   - anchor navigation behavior was preserved
   - animations were preserved
+  - a follow-up fix restored the original accented text in `Header.tsx` and `Hero.tsx` after mojibake was detected in the PR
 - Consumer change confirmation:
   - no consumer was changed
   - `src/App.tsx` was not changed

@@ -48,6 +48,7 @@ type Skill = {
 - `Button` preservado.
 - Nenhum consumidor foi alterado.
 - `src/App.tsx` nao foi alterado.
+- Uma correcao posterior de mojibake restaurou `Início`, `Olá` e `soluções` sem alterar tipagens, estrutura JSX, classes, links ou comportamento.
 
 ## Fora Do Escopo
 - Nao refatorar nem redesenhar.

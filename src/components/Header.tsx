@@ -8,7 +8,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { name: "InÃ­cio", href: "#hero" },
+  { name: "Início", href: "#hero" },
   { name: "Nasa", href: "#nasa" },
   { name: "Projetos", href: "#projects" },
   { name: "Skills", href: "#skills" },
@@ -18,12 +18,12 @@ const navItems: NavItem[] = [
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState("InÃ­cio");
+  const [active, setActive] = useState("Início");
 
   useEffect(() => {
     const onScroll = () => {
       const pos = window.scrollY + 120;
-      let current = "InÃ­cio";
+      let current = "Início";
       navItems.forEach(({ name, href }) => {
         const sec = document.querySelector<HTMLElement>(href);
         if (sec && pos >= sec.offsetTop) {

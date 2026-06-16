@@ -102,11 +102,11 @@ export default function Hero() {
           }}
         >
           <h1 className="text-display-lg font-semibold tracking-tight text-gradient-subtle">
-            OlÃ¡, eu sou o Thales.
+            Olá, eu sou o Thales.
           </h1>
           <p className="text-xl font-normal text-muted md:text-2xl">
-            Desenvolvedor full stack. Veja meus projetos e as soluÃ§Ãµes que
-            criei em Java, Node.js, PHP e mais.
+            Desenvolvedor full stack. Veja meus projetos e as soluções que criei
+            em Java, Node.js, PHP e mais.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
             <Button href="#nasa">Explorar o Universo</Button>
