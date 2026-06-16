@@ -1,8 +1,14 @@
+import type { IconType } from "react-icons";
 import { FaCode, FaDatabase, FaServer } from "react-icons/fa";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 
-const highlights = [
+type Highlight = {
+  Icon: IconType;
+  text: string;
+};
+
+const highlights: Highlight[] = [
   {
     Icon: FaCode,
     text: "Frontend com React e Vue",
@@ -22,7 +28,6 @@ export default function About() {
     <section id="about" className="bg-surface py-section">
       <Reveal className="section-container">
         <SectionHeading title="Sobre Mim" align="left" className="md:mb-12" />
-
         <div className="grid gap-12 md:grid-cols-2 md:gap-16">
           <div className="max-w-prose space-y-5 text-muted">
             <p className="text-lg leading-relaxed">
@@ -38,7 +43,6 @@ export default function About() {
               para evoluir como dev.
             </p>
           </div>
-
           <ul className="space-y-4">
             {highlights.map(({ Icon, text }) => (
               <li

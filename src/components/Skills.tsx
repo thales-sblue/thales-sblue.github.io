@@ -1,10 +1,16 @@
+import type { IconType } from "react-icons";
 import { FaReact, FaNodeJs, FaVuejs } from "react-icons/fa";
 import { DiJava } from "react-icons/di";
 import { SiPhp, SiOracle, SiGit, SiPostgresql } from "react-icons/si";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 
-const skills = [
+type Skill = {
+  name: string;
+  Icon: IconType;
+};
+
+const skills: Skill[] = [
   { name: "PHP", Icon: SiPhp },
   { name: "Java", Icon: DiJava },
   { name: "Node.js", Icon: FaNodeJs },
@@ -23,7 +29,6 @@ export default function Skills() {
           title="Hard Skills"
           subtitle="Tecnologias que uso no dia a dia para entregar soluções."
         />
-
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 sm:gap-12">
           {skills.map(({ name, Icon }) => (
             <div key={name} className="group flex flex-col items-center gap-3">
