@@ -27,6 +27,7 @@ type NativeButtonProps = SharedButtonProps &
 - Proíbe explicitamente `href` no modo botão nativo.
 - Preserva o modo link como o único ramo que aceita e exige `href: string`.
 - Mantém a união discriminada sem alterar a estratégia atual baseada em `if ("href" in props)`.
+- Mantém apenas dois caminhos runtime: presença de `href` renderiza link e ausência de `href` renderiza botão nativo.
 - Reforça o contrato sem introduzir casts, `any`, `React.FC` ou silenciamento de erros.
 
 ## Critérios De Aceite
@@ -61,4 +62,4 @@ type NativeButtonProps = SharedButtonProps &
 - `rg -n $utfPattern docs/tasks/TASK-006-button-native-href-contract.md docs/STATE.md`
 
 ## Confirmação De Ausência De Mudança Visual Ou Funcional
-A alteração ficou limitada ao contrato de `NativeButtonProps` em `src/components/ui/Button.tsx`. A renderização atual, as classes, o `type="button"`, a discriminação por `if ("href" in props)` e todos os consumidores existentes foram preservados sem qualquer mudança visual ou funcional.
+A alteração ficou limitada ao contrato de `NativeButtonProps` em `src/components/ui/Button.tsx`. A renderização atual, as classes, o `type="button"`, a discriminação por `if ("href" in props)` com apenas dois ramos runtime e todos os consumidores existentes foram preservados sem qualquer mudança visual ou funcional.

@@ -1,4 +1,4 @@
-# State
+﻿# State
 
 ## Current Snapshot
 - Active branch target: `fix/task-006-button-native-href-contract`
@@ -227,7 +227,8 @@
   - `NativeButtonProps` now explicitly uses `href?: never`
   - `LinkButtonProps` still requires `href: string`
   - native button mode still keeps `type="button"` fixed
-  - discrimination by `if ("href" in props)` remains unchanged
+  - discrimination by `if ("href" in props)` remains unchanged with only two runtime branches
+  - the redundant runtime branch for `typeof props.href !== "string"` was removed
 - Consumers changed:
   - none
 - Commands executed:
@@ -481,3 +482,4 @@
 - 2026-06-15: `TASK-004-typescript-simple-components` completed with migration limited to `SectionHeading` and `WhatsAppButton`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
 - 2026-06-15: `TASK-005-typescript-button` completed with migration limited to `Button`, no consumer changes, successful clean-install validation, preserved link/native-button behavior, and phase 4 kept in progress.
 - 2026-06-15: `TASK-006-button-native-href-contract` completed with a contract-only correction in `Button.tsx`, explicit `href?: never` in `NativeButtonProps`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
+
