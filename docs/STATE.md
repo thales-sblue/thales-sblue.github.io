@@ -1,8 +1,8 @@
-﻿# State
+# State
 
 ## Current Snapshot
 - Active branch target: `fix/task-006-button-native-href-contract`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, and the native Button href contract correction completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada após inspecionar Reveal e os componentes de seção restantes.`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, and the native Button href contract correction completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada apos inspecionar Reveal e os componentes de secao restantes.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -227,8 +227,9 @@
   - `NativeButtonProps` now explicitly uses `href?: never`
   - `LinkButtonProps` still requires `href: string`
   - native button mode still keeps `type="button"` fixed
-  - discrimination by `if ("href" in props)` remains unchanged with only two runtime branches
-  - the redundant runtime branch for `typeof props.href !== "string"` was removed
+  - `props.href !== undefined` now selects the link mode directly
+  - the absence of `href` now selects the native button mode directly
+  - no assertion, type guard, cast, or extra runtime branch remains in `Button.tsx`
 - Consumers changed:
   - none
 - Commands executed:
@@ -463,7 +464,7 @@
 - Components and configuration files remain covered by Prettier; no coverage was removed to make validation pass.
 - Remaining React components and data modules are still pending migration in later phase-4 tasks.
 - Tests, Testing Library, Vitest, GitHub Actions, and broader TypeScript rollout remain out of scope.
-- The next step is only: `Definir uma nova tarefa isolada após inspecionar Reveal e os componentes de seção restantes.`
+- The next step is only: `Definir uma nova tarefa isolada apos inspecionar Reveal e os componentes de secao restantes.`
 
 ## Verification
 - `npm ci`: succeeded before implementation and again after removing `node_modules`.
