@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `fix/task-006-button-native-href-contract`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, and the native Button href contract correction completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada apos inspecionar Reveal e os componentes de secao restantes.`
+- Active branch target: `chore/task-007-typescript-reveal`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, and isolated Reveal migration completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada para migrar o proximo componente de secao apos inspecao dos JSX restantes.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -268,6 +268,94 @@
   - no visual or functional change was introduced
   - phase 4 remains in progress after this task
 
+## Task-007 Result
+- Created task document:
+  - `docs/tasks/TASK-007-typescript-reveal.md`
+- Migrated file:
+  - `src/components/ui/Reveal.jsx` -> `src/components/ui/Reveal.tsx`
+- Consumers verified:
+  - `src/components/About.jsx`
+  - `src/components/Contact.jsx`
+  - `src/components/Skills.jsx`
+- Props found in current consumers:
+  - `children`
+  - `className`
+- Final `RevealProps` contract:
+  - `HTMLMotionProps<"div">`
+  - `as?: typeof motion.div`
+  - `children: ReactNode`
+  - `className?: string`
+  - `delay?: number`
+- `as` confirmation:
+  - `as` was kept in a limited and safe form as `as?: typeof motion.div`
+  - no generic polymorphic abstraction was introduced
+  - no type guard, assertion, cast, or `as any` was introduced
+- Animation and viewport preserved:
+  - `defaultVariants` remained with `hidden` and `visible`
+  - `opacity: 0`, `opacity: 1`, `y: 24`, and `y: 0` were preserved
+  - `duration: 0.6` and `ease: [0.25, 0.1, 0.25, 1]` were preserved
+  - `initial="hidden"` and `whileInView="visible"` were preserved
+  - `viewport={{ once: true, amount: 0.2 }}`
+  - `transition={{ delay }}`
+- Consumer change confirmation:
+  - consumers were not changed
+  - no other component was migrated
+- Commands executed:
+  - `git fetch origin`
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `Get-Content AGENTS.md`
+  - `Get-Content docs/PRODUCT_SPEC.md`
+  - `Get-Content docs/ARCHITECTURE.md`
+  - `Get-Content docs/ROADMAP.md`
+  - `Get-Content docs/STATE.md`
+  - `Get-Content docs/tasks/TASK-005-typescript-button.md`
+  - `Get-Content docs/tasks/TASK-006-button-native-href-contract.md`
+  - `Get-Content src/components/ui/Reveal.jsx`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git checkout -b chore/task-007-typescript-reveal`
+  - `rg -n 'import Reveal|<Reveal' src`
+  - `Get-Content src/components/About.jsx`
+  - `Get-Content src/components/Contact.jsx`
+  - `Get-Content src/components/Skills.jsx`
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --check origin/main...HEAD`
+  - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC|asserts|type guard' src/components/ui/Reveal.tsx`
+  - `UTF-8 artifact scan for docs/tasks/TASK-007-typescript-reveal.md and docs/STATE.md`
+  - `PowerShell BOM scan for docs/tasks/TASK-007-typescript-reveal.md and docs/STATE.md`
+- Results:
+  - `git pull --ff-only origin main` failed because the local pull configuration targeted multiple branches, but `main` and `origin/main` were already identical at `49b002d84b56dacf84d4c3c87f56424b48cc6f47`
+  - `npm ci`, `lint`, `format:check`, `typecheck`, `build`, and `validate` passed before implementation
+  - the same clean-install validation sequence passed after implementation
+  - no dependency or configuration was changed
+  - no visual or functional change was introduced
+  - the application remains a single-page application
+  - the Vite build still generates `dist/`
+  - GitHub Pages compatibility remains unchanged
+  - phase 4 remains in progress after this task
+- Files still in JSX:
+  - `src/components/About.jsx`
+  - `src/components/Contact.jsx`
+  - `src/components/Header.jsx`
+  - `src/components/Hero.jsx`
+  - `src/components/Nasa.jsx`
+  - `src/components/Projects.jsx`
+  - `src/components/Skills.jsx`
+- Next step:
+  - `Definir uma nova tarefa isolada para migrar o proximo componente de secao apos inspecao dos JSX restantes.`
+
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
 - `npm ls --depth=0` before removal showed all five investigated packages as direct dependencies of the root package only.
@@ -483,3 +571,4 @@
 - 2026-06-15: `TASK-004-typescript-simple-components` completed with migration limited to `SectionHeading` and `WhatsAppButton`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
 - 2026-06-15: `TASK-005-typescript-button` completed with migration limited to `Button`, no consumer changes, successful clean-install validation, preserved link/native-button behavior, and phase 4 kept in progress.
 - 2026-06-15: `TASK-006-button-native-href-contract` completed with a contract-only correction in `Button.tsx`, explicit `href?: never` in `NativeButtonProps`, no consumer changes, successful clean-install validation, and phase 4 kept in progress.
+- 2026-06-16: `TASK-007-typescript-reveal` completed with migration limited to `Reveal`, consumers preserved, animation and viewport preserved, successful clean-install validation, and phase 4 kept in progress.
