@@ -1,7 +1,7 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-008-typescript-static-sections`
+- Active branch target: `chore/task-009-typescript-header-hero`
 - Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, isolated Reveal migration, and isolated static section migration completed in separate tasks; next permitted step is `Definir uma nova tarefa isolada para migrar o proximo componente apos inspecao dos JSX restantes.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
@@ -438,6 +438,85 @@
   - no visual or functional change was introduced
   - the application remains a single-page application
   - the Vite build continues to generate `dist/`
+  - GitHub Pages compatibility remains unchanged
+  - phase 4 remains in progress after this task
+- Next step:
+  - `Definir uma nova tarefa isolada para migrar o proximo componente apos inspecao dos JSX restantes.`
+
+## Task-009 Result
+- Migrated files:
+  - `src/components/Header.jsx` -> `src/components/Header.tsx`
+  - `src/components/Hero.jsx` -> `src/components/Hero.tsx`
+- Consumers verified:
+  - `src/App.tsx`
+  - `import Header from "./components/Header";`
+  - `import Hero from "./components/Hero";`
+  - `<Header />`
+  - `<Hero />`
+- Props confirmation:
+  - `Header` does not receive props
+  - `Hero` does not receive props
+- Local types added:
+  - `NavItem`
+  - `Skill`
+- Preservation confirmation:
+  - texts were preserved
+  - links were preserved
+  - icons were preserved
+  - classes were preserved
+  - layout and JSX structure were preserved
+  - anchor navigation behavior was preserved
+  - animations were preserved
+  - a follow-up fix restored the original accented text in `Header.tsx` and `Hero.tsx` after mojibake was detected in the PR
+- Consumer change confirmation:
+  - no consumer was changed
+  - `src/App.tsx` was not changed
+- Commands executed:
+  - `git fetch origin`
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `Get-Content AGENTS.md`
+  - `Get-Content docs/PRODUCT_SPEC.md`
+  - `Get-Content docs/ARCHITECTURE.md`
+  - `Get-Content docs/ROADMAP.md`
+  - `Get-Content docs/STATE.md`
+  - `Get-Content docs/tasks/TASK-008-typescript-static-sections.md`
+  - `Get-Content src/components/Header.jsx`
+  - `Get-Content src/components/Hero.jsx`
+  - `Get-Content src/App.tsx`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git checkout -b chore/task-009-typescript-header-hero`
+  - `rg -n 'import Header|<Header|import Hero|<Hero' src`
+  - `cmd /c npx prettier src/components/Hero.tsx --write`
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --check origin/main...HEAD`
+  - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC|asserts|type guard' src/components/Header.tsx src/components/Hero.tsx`
+  - `UTF-8 artifact scan for docs/tasks/TASK-009-typescript-header-hero.md and docs/STATE.md`
+  - `PowerShell BOM scan for docs/tasks/TASK-009-typescript-header-hero.md and docs/STATE.md`
+- Results:
+  - `npm ci` passed before implementation
+  - `lint`, `format:check`, `typecheck`, `build`, and `validate` passed after implementation
+  - a first post-clean-install parallel verification attempt was invalid because it raced `npm ci`; the valid sequential rerun passed without code changes
+  - the initial baseline attempt showed transient environment-level module resolution failures in `lint`, `build`, and `validate`, but those did not reproduce after the install stabilized and no out-of-scope change was applied
+- Files still in JSX:
+  - `src/components/Nasa.jsx`
+  - `src/components/Projects.jsx`
+- Platform confirmation:
+  - no visual or functional change was introduced
+  - the application remains a single-page application
+  - the Vite build continues to generate `dist/` when the preexisting baseline blockers are absent
   - GitHub Pages compatibility remains unchanged
   - phase 4 remains in progress after this task
 - Next step:

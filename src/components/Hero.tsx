@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import type { IconType } from "react-icons";
 import bgHero from "../assets/bg-hero.png";
 import fotoPerfil from "../assets/foto-perfil.png";
 import Button from "./ui/Button";
@@ -20,7 +21,12 @@ import {
   SiTypescript,
 } from "react-icons/si";
 
-const skills = [
+type Skill = {
+  name: string;
+  Icon: IconType;
+};
+
+const skills: Skill[] = [
   { name: "PHP", Icon: SiPhp },
   { name: "Java", Icon: DiJava },
   { name: "Node.js", Icon: FaNodeJs },
@@ -39,7 +45,7 @@ const skills = [
 ];
 
 export default function Hero() {
-  const contentRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const [radius, setRadius] = useState(0);
 
   useEffect(() => {
