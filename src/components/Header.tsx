@@ -1,9 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navItems = [
-  { name: "Início", href: "#hero" },
+type NavItem = {
+  name: string;
+  href: string;
+};
+
+const navItems: NavItem[] = [
+  { name: "InÃ­cio", href: "#hero" },
   { name: "Nasa", href: "#nasa" },
   { name: "Projetos", href: "#projects" },
   { name: "Skills", href: "#skills" },
@@ -13,14 +18,14 @@ const navItems = [
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState("Início");
+  const [active, setActive] = useState("InÃ­cio");
 
   useEffect(() => {
     const onScroll = () => {
       const pos = window.scrollY + 120;
-      let current = "Início";
+      let current = "InÃ­cio";
       navItems.forEach(({ name, href }) => {
-        const sec = document.querySelector(href);
+        const sec = document.querySelector<HTMLElement>(href);
         if (sec && pos >= sec.offsetTop) {
           current = name;
         }
@@ -32,10 +37,10 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (e, href) => {
+  const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setIsOpen(false);
-    const section = document.querySelector(href);
+    const section = document.querySelector<HTMLElement>(href);
     if (section) {
       const top = section.offsetTop - 72;
       window.scrollTo({ top, behavior: "smooth" });

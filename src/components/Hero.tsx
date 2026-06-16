@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import type { IconType } from "react-icons";
 import bgHero from "../assets/bg-hero.png";
 import fotoPerfil from "../assets/foto-perfil.png";
 import Button from "./ui/Button";
@@ -20,7 +21,12 @@ import {
   SiTypescript,
 } from "react-icons/si";
 
-const skills = [
+type Skill = {
+  name: string;
+  Icon: IconType;
+};
+
+const skills: Skill[] = [
   { name: "PHP", Icon: SiPhp },
   { name: "Java", Icon: DiJava },
   { name: "Node.js", Icon: FaNodeJs },
@@ -39,7 +45,7 @@ const skills = [
 ];
 
 export default function Hero() {
-  const contentRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const [radius, setRadius] = useState(0);
 
   useEffect(() => {
@@ -96,11 +102,11 @@ export default function Hero() {
           }}
         >
           <h1 className="text-display-lg font-semibold tracking-tight text-gradient-subtle">
-            Olá, eu sou o Thales.
+            OlÃ¡, eu sou o Thales.
           </h1>
           <p className="text-xl font-normal text-muted md:text-2xl">
-            Desenvolvedor full stack. Veja meus projetos e as soluções que criei
-            em Java, Node.js, PHP e mais.
+            Desenvolvedor full stack. Veja meus projetos e as soluÃ§Ãµes que
+            criei em Java, Node.js, PHP e mais.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
             <Button href="#nasa">Explorar o Universo</Button>
