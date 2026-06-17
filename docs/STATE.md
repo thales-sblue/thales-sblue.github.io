@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-011-typescript-nasa`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, isolated Reveal migration, isolated static section migration, isolated Header/Hero migration, and isolated Projects migration completed in separate tasks; next permitted step is `Executar uma task de encerramento da fase 4 para validar ausencia de JSX em src/components, revisar estado TypeScript e preparar a fase 5.`
+- Active branch target: `chore/task-012-close-typescript-phase`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` completed; next permitted step is `Iniciar phase 5: Testes com Vitest e Testing Library em tarefa isolada.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -722,6 +722,122 @@
   - phase 4 remains in progress after this task
 - Next step:
   - `Executar uma task de encerramento da fase 4 para validar ausencia de JSX em src/components, revisar estado TypeScript e preparar a fase 5.`
+
+## Task-012 Result
+- PR and main confirmation:
+  - PR `#12` (`chore: migrate nasa to typescript`) was confirmed as merged into `main`
+  - local `main` was updated with `git fetch origin`, `git checkout main`, and `git pull --ff-only origin main`
+  - `docs/STATE.md` already recorded `TASK-011-typescript-nasa` before this task started
+- Component migration closure confirmation:
+  - `src/components/Nasa.tsx` exists
+  - `src/components/Nasa.jsx` does not exist
+  - no `.jsx` file remains in `src/components`
+  - no `.jsx` file remains anywhere in `src`
+- Remaining `.js` files in `src`:
+  - `src/data/projects.js`
+  - `src/data/projects.min.js`
+  - these remaining `.js` files were not migrated because they stay outside the phase-4 React component migration scope
+- React components confirmed in `.tsx`:
+  - `src/components/About.tsx`
+  - `src/components/Contact.tsx`
+  - `src/components/Header.tsx`
+  - `src/components/Hero.tsx`
+  - `src/components/Nasa.tsx`
+  - `src/components/Projects.tsx`
+  - `src/components/Skills.tsx`
+  - `src/components/ui/Button.tsx`
+  - `src/components/ui/Reveal.tsx`
+  - `src/components/ui/SectionHeading.tsx`
+  - `src/components/WhatsAppButton.tsx`
+- TypeScript state:
+  - `jsx: "react-jsx"`
+  - `strict: true`
+  - `allowJs: true`
+  - `checkJs: false`
+  - `noEmit: true`
+  - repository search for `as any`, `@ts-ignore`, `@ts-nocheck`, `React.FC`, `: any`, `<any>`, `unknown`, `type guard`, and `asserts` in `src` returned no matches
+- Phase-4 completed tasks:
+  - TypeScript foundation
+  - simple components
+  - Button
+  - Button native href contract
+  - Reveal
+  - static sections
+  - Header/Hero
+  - Projects
+  - Nasa
+- Commands executed:
+  - `git fetch origin`
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `Get-Content -Raw AGENTS.md`
+  - `Get-Content -Raw docs/PRODUCT_SPEC.md`
+  - `Get-Content -Raw docs/ARCHITECTURE.md`
+  - `Get-Content -Raw docs/ROADMAP.md`
+  - `Get-Content -Raw docs/STATE.md`
+  - `Get-Content -Raw docs/tasks/TASK-011-typescript-nasa.md`
+  - `Get-Content -Raw package.json`
+  - `Get-Content -Raw tsconfig.json`
+  - `Get-Content -Raw eslint.config.js`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git checkout -b chore/task-012-close-typescript-phase`
+  - `find src/components -name "*.jsx" -print`
+  - `find src/components -name "*.tsx" -print`
+  - `find src -name "*.jsx" -print`
+  - `find src -name "*.js" -print`
+  - `rg -n 'allowJs|checkJs|strict|noEmit|jsx' tsconfig.json`
+  - `rg -n 'as any|@ts-ignore|@ts-nocheck|React\.FC|:\s*any\b|<any>|unknown|type guard|asserts' src`
+  - `rg -n 'TASK-0|phase \`4|fase 4|TypeScript|Files still in JSX|Arquivos.*JSX|jsx' docs/STATE.md docs/tasks`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --check origin/main...HEAD`
+  - `mojibake scan on docs/tasks/TASK-012-close-typescript-phase.md, docs/STATE.md, and docs/ARCHITECTURE.md`
+  - `PowerShell BOM scan for docs/tasks/TASK-012-close-typescript-phase.md, docs/STATE.md, and docs/ARCHITECTURE.md`
+- Validation results:
+  - baseline `npm ci` passed
+  - baseline `lint` passed
+  - baseline `format:check` passed
+  - baseline `typecheck` passed
+  - baseline `build` passed
+  - baseline `validate` passed
+  - post-documentation `lint` passed
+  - post-documentation `format:check` passed
+  - post-documentation `typecheck` passed
+  - post-documentation `build` passed
+  - post-documentation `validate` passed
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force` reported transient file-not-found noise while deleting nested `node_modules` entries, but the clean reinstall continued successfully
+  - clean reinstall `npm ci` passed
+  - clean reinstall `lint` passed
+  - clean reinstall `format:check` passed
+  - clean reinstall `typecheck` passed
+  - clean reinstall `build` passed
+  - clean reinstall `validate` passed
+- Scope confirmation:
+  - no application source file under `src/**` was changed
+  - no dependency was changed
+  - no configuration was changed
+  - no visual or functional change was introduced
+  - the application remains a single-page React + Vite SPA
+  - GitHub Pages deployment remains unchanged
+  - phase 4 is now complete
+- Next step:
+  - `Iniciar phase 5: Testes com Vitest e Testing Library em tarefa isolada.`
 
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
