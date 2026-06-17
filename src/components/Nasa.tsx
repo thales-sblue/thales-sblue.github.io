@@ -5,9 +5,21 @@ import Button from "./ui/Button";
 const APOD_API = "https://api.nasa.gov/planetary/apod";
 const API_KEY = import.meta.env.VITE_NASA_API_KEY;
 
+type ApodMediaType = "image" | "video";
+
+type ApodResponse = {
+  title: string;
+  date: string;
+  explanation: string;
+  url: string;
+  media_type: ApodMediaType;
+};
+
+type StoredRequestTimestamp = string;
+
 export default function Nasa() {
   const [date, setDate] = useState("");
-  const [apod, setApod] = useState(null);
+  const [apod, setApod] = useState<ApodResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,7 +42,9 @@ export default function Nasa() {
       return setError("Não há imagens antes de 16 de junho de 1995.");
     }
 
-    const requests = JSON.parse(localStorage.getItem("apod_requests") || "[]");
+    const requests = JSON.parse(
+      localStorage.getItem("apod_requests") || "[]",
+    ) as StoredRequestTimestamp[];
     const now = new Date();
 
     const lastHour = new Date(now.getTime() - 60 * 60 * 1000);
