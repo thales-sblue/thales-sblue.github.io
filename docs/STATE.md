@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-010-typescript-projects`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, isolated Reveal migration, isolated static section migration, and isolated Header/Hero migration completed in separate tasks; next permitted step is `Migrar Nasa.jsx para TypeScript em uma tarefa isolada com contrato explicito para APOD, localStorage e estados de carregamento/erro.`
+- Active branch target: `chore/task-011-typescript-nasa`
+- Current roadmap status: phase `4. Migracao gradual para TypeScript` in progress; TypeScript foundation, simple component migration, isolated Button migration, the native Button href contract correction, isolated Reveal migration, isolated static section migration, isolated Header/Hero migration, and isolated Projects migration completed in separate tasks; next permitted step is `Executar uma task de encerramento da fase 4 para validar ausencia de JSX em src/components, revisar estado TypeScript e preparar a fase 5.`
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -623,6 +623,105 @@
   - phase 4 remains in progress after this task
 - Next step:
   - `Migrar Nasa.jsx para TypeScript em uma tarefa isolada com contrato explicito para APOD, localStorage e estados de carregamento/erro.`
+
+## Task-011 Result
+- Migrated file:
+  - `src/components/Nasa.jsx` -> `src/components/Nasa.tsx`
+- Consumer verified:
+  - `src/App.tsx`
+  - `import Nasa from "./components/Nasa";`
+  - `<Nasa />`
+- Props confirmation:
+  - `Nasa` does not receive props
+- Contracts added:
+  - `ApodMediaType`
+  - `ApodResponse`
+  - `StoredRequestTimestamp`
+- Local cast justification:
+  - `const requests = JSON.parse(localStorage.getItem("apod_requests") || "[]") as StoredRequestTimestamp[];` is used only in `Nasa.tsx` because `localStorage` returns text, `JSON.parse` is not typed, and the task explicitly permits this single local cast without changing the stored format
+- Preservation confirmation:
+  - `APOD_API` was preserved
+  - `import.meta.env.VITE_NASA_API_KEY` was preserved
+  - `localStorage` usage was preserved
+  - the `apod_requests` key was preserved
+  - the hourly `30` request limit was preserved
+  - the daily `50` request limit was preserved
+  - empty-date, future-date, and pre-`1995-06-16` validations were preserved
+  - error messages were preserved
+  - the NASA background fallback was preserved
+  - `iframe`, `frameBorder="0"`, `allowFullScreen`, image rendering, and NASA credits were preserved
+  - texts, classes, links, layout, and behavior were preserved
+  - `Button` was preserved
+  - `SectionHeading` was preserved
+- Consumer change confirmation:
+  - no consumer was changed
+  - `src/App.tsx` was not changed
+- Commands executed:
+  - `git fetch origin`
+  - `git checkout main`
+  - `git pull --ff-only origin main`
+  - `Get-Content AGENTS.md`
+  - `Get-Content docs/PRODUCT_SPEC.md`
+  - `Get-Content docs/ARCHITECTURE.md`
+  - `Get-Content docs/ROADMAP.md`
+  - `Get-Content docs/STATE.md`
+  - `Get-Content docs/tasks/TASK-010-typescript-projects.md`
+  - `Get-Content src/components/Nasa.jsx`
+  - `Get-Content src/App.tsx`
+  - `Get-Content src/components/ui/Button.tsx`
+  - `Get-Content src/components/ui/SectionHeading.tsx`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npx prettier src/components/Nasa.tsx --write`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git checkout -b chore/task-011-typescript-nasa`
+  - `rg -n 'import Nasa|<Nasa' src`
+  - `rg -n 'APOD_API|VITE_NASA_API_KEY|localStorage|apod_requests|fetchApod|media_type|explanation|Limite|Selecione|futuro|1995' src/components/Nasa.jsx`
+  - `git mv src/components/Nasa.jsx src/components/Nasa.tsx`
+  - `Remove-Item -LiteralPath node_modules -Recurse -Force`
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --check origin/main...HEAD`
+  - `rg -n ':\s*any\b|<any>|as any|@ts-ignore|@ts-nocheck|React\.FC|asserts|type guard|unknown' src/components/Nasa.tsx`
+  - `mojibake scan with rg on src/components/Nasa.tsx, docs/tasks/TASK-011-typescript-nasa.md, and docs/STATE.md`
+  - `find src/components -name "*.jsx" -print`
+  - `PowerShell BOM scan for docs/tasks/TASK-011-typescript-nasa.md and docs/STATE.md`
+- Results:
+  - `npm ci` passed before implementation
+  - `lint` passed before implementation
+  - `format:check` passed before implementation
+  - `typecheck` passed before implementation
+  - `build` passed before implementation
+  - `validate` passed before implementation
+  - post-implementation `lint` passed
+  - post-implementation `format:check` initially failed only on `src/components/Nasa.tsx`, then passed after running Prettier on that file
+  - post-implementation `typecheck` passed
+  - post-implementation `build` passed
+  - post-implementation `validate` initially failed only because it depends on the same `format:check`, then passed after formatting `src/components/Nasa.tsx`
+  - clean reinstall `npm ci` passed
+  - clean reinstall `lint` passed
+  - clean reinstall `format:check` passed
+  - clean reinstall `typecheck` passed
+  - clean reinstall `build` passed
+  - clean reinstall `validate` passed
+- Files still in JSX:
+  - none in `src/components`
+- Platform confirmation:
+  - no visual or functional change was introduced
+  - the application remains a single-page application
+  - the Vite build continues to generate `dist/`
+  - GitHub Pages compatibility remains unchanged
+  - phase 4 remains in progress after this task
+- Next step:
+  - `Executar uma task de encerramento da fase 4 para validar ausencia de JSX em src/components, revisar estado TypeScript e preparar a fase 5.`
 
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
