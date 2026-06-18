@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-012-close-typescript-phase`
-- Current roadmap status: phase `4. Migracao gradual para TypeScript` completed; next permitted step is `Iniciar phase 5: Testes com Vitest e Testing Library em tarefa isolada.`
+- Active branch target: `chore/task-012-test-foundation`
+- Current roadmap status: phase `5. Testes com Vitest e Testing Library` in progress; phase `4. Migracao gradual para TypeScript` completed.
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -727,37 +727,63 @@
 - PR and main confirmation:
   - PR `#12` (`chore: migrate nasa to typescript`) was confirmed as merged into `main`
   - local `main` was updated with `git fetch origin`, `git checkout main`, and `git pull --ff-only origin main`
-  - `docs/STATE.md` already recorded `TASK-011-typescript-nasa` before this task started
-- Component migration closure confirmation:
-  - `src/components/Nasa.tsx` exists
-  - `src/components/Nasa.jsx` does not exist
+- Phase status confirmation:
+  - phase `4. Migracao gradual para TypeScript` is completed
+  - phase `5. Testes com Vitest e Testing Library` started in this task and is now in progress
+- JSX verification:
   - no `.jsx` file remains in `src/components`
   - no `.jsx` file remains anywhere in `src`
 - Remaining `.js` files in `src`:
   - `src/data/projects.js`
   - `src/data/projects.min.js`
-  - these remaining `.js` files were not migrated because they stay outside the phase-4 React component migration scope
-- React components confirmed in `.tsx`:
-  - `src/components/About.tsx`
-  - `src/components/Contact.tsx`
-  - `src/components/Header.tsx`
-  - `src/components/Hero.tsx`
-  - `src/components/Nasa.tsx`
-  - `src/components/Projects.tsx`
-  - `src/components/Skills.tsx`
-  - `src/components/ui/Button.tsx`
-  - `src/components/ui/Reveal.tsx`
-  - `src/components/ui/SectionHeading.tsx`
-  - `src/components/WhatsAppButton.tsx`
-- TypeScript state:
-  - `jsx: "react-jsx"`
-  - `strict: true`
-  - `allowJs: true`
-  - `checkJs: false`
-  - `noEmit: true`
-  - repository search for `as any`, `@ts-ignore`, `@ts-nocheck`, `React.FC`, `: any`, `<any>`, `unknown`, `type guard`, and `asserts` in `src` returned no matches
-- Phase-4 completed tasks:
-  - TypeScript foundation
+- Dependencies added:
+  - `vitest`
+  - `@testing-library/react`
+  - `@testing-library/jest-dom`
+  - `@testing-library/user-event`
+  - `jsdom`
+- Scripts added or changed:
+  - `test: vitest run`
+  - `test:watch: vitest`
+  - `validate` now includes `npm run test`
+- Test configuration files created:
+  - `vitest.config.ts`
+  - `src/test/setup.ts`
+- Tests created:
+  - `src/components/ui/Button.test.tsx`
+  - `src/components/ui/SectionHeading.test.tsx`
+  - `src/components/Projects.test.tsx`
+  - `src/components/Nasa.test.tsx`
+- Validations executed:
+  - baseline `npm ci`
+  - baseline `lint`
+  - baseline `format:check`
+  - baseline `typecheck`
+  - baseline `build`
+  - baseline `validate`
+  - post-change `lint`
+  - post-change `format:check`
+  - post-change `typecheck`
+  - post-change `test`
+  - post-change `build`
+  - post-change `validate`
+  - clean reinstall `npm ci`
+  - clean reinstall `lint`
+  - clean reinstall `format:check`
+  - clean reinstall `typecheck`
+  - clean reinstall `test`
+  - clean reinstall `build`
+  - clean reinstall `validate`
+- Results:
+  - baseline verification passed before implementation
+  - the test suite runs in `jsdom` and does not depend on network access
+  - no snapshot tests were added
+  - no new `any`, `as any`, `@ts-ignore`, `@ts-nocheck`, `React.FC`, `asserts`, or `type guard` usage was introduced
+- Platform confirmation:
+  - no visual or functional change was introduced
+  - GitHub Pages and deploy scripts remain unchanged
+- Next permitted step:
+  - phase 6 GitHub Actions may be proposed only after this test foundation is validated in a separate PR
   - simple components
   - Button
   - Button native href contract
@@ -1028,7 +1054,7 @@
 - A sandboxed build hit an esbuild path-access error; the same build succeeded outside the sandbox, so this was treated as an environment restriction rather than a project regression.
 - `src/data/projects.min.js` remains out of scope for this task and was not changed.
 - ESLint and Prettier are configured.
-- Automated tests do not exist yet.
+- Automated tests now exist with a Vitest + Testing Library foundation.
 - Playwright does not exist yet.
 - GitHub Actions or other CI workflow does not exist yet.
 - Prettier was not expanded to documentation, `index.html`, or `src/index.css` in this task to avoid a broad style-only diff; that normalization remains a future cleanup candidate if explicitly scheduled.
