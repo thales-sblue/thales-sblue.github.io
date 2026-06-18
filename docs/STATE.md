@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-012-test-foundation`
-- Current roadmap status: phase `5. Testes com Vitest e Testing Library` in progress; phase `4. Migracao gradual para TypeScript` completed.
+- Active branch target: `chore/task-013-github-actions-validation`
+- Current roadmap status: phase `6. GitHub Actions` in progress; phase `5. Testes com Vitest e Testing Library` foundation completed.
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -865,6 +865,46 @@
 - Next step:
   - `Iniciar phase 5: Testes com Vitest e Testing Library em tarefa isolada.`
 
+## Task-013 Result
+- PR merge confirmation:
+  - PR `#14` (`test: add vitest testing foundation`) was confirmed as merged into `main` before implementation
+- Phase status confirmation:
+  - phase `6. GitHub Actions` started in this task and is now in progress
+  - phase `5. Testes com Vitest e Testing Library` foundation is completed on `main`
+- Workflow created:
+  - `.github/workflows/validate.yml`
+  - workflow name: `Validate`
+  - job name: `Validate project`
+- Triggers configured:
+  - pull request to `main`
+  - push to `main`
+- Runtime and install strategy:
+  - Node `22`
+  - `actions/setup-node@v4` with `cache: npm`
+  - `npm ci`
+- Validation command:
+  - `npm run validate`
+  - `validate` covers `lint`, `format:check`, `typecheck`, `test`, and `build`
+- Local validations executed:
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run test`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --name-only origin/main...HEAD -- src`
+  - `git diff --check origin/main...HEAD`
+  - `rg` scan for mojibake in `.github/workflows/validate.yml`, `docs/tasks/TASK-013-github-actions-validation.md`, `docs/STATE.md`, and `docs/ARCHITECTURE.md`
+- Scope confirmation:
+  - no file under `src/**` was changed
+  - no dependency was changed
+  - deploy and GitHub Pages were not changed
+  - no secret, special permission, matrix, coverage, Playwright, or artifact upload was added
+- Next step recommended:
+  - `Promover o workflow Validate a status check obrigatorio para PRs na main somente depois de observar execucoes estaveis no GitHub.`
+
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
 - `npm ls --depth=0` before removal showed all five investigated packages as direct dependencies of the root package only.
@@ -1056,11 +1096,11 @@
 - ESLint and Prettier are configured.
 - Automated tests now exist with a Vitest + Testing Library foundation.
 - Playwright does not exist yet.
-- GitHub Actions or other CI workflow does not exist yet.
+- GitHub Actions validation now exists through `.github/workflows/validate.yml`.
 - Prettier was not expanded to documentation, `index.html`, or `src/index.css` in this task to avoid a broad style-only diff; that normalization remains a future cleanup candidate if explicitly scheduled.
 - Components and configuration files remain covered by Prettier; no coverage was removed to make validation pass.
 - Remaining React components and data modules are still pending migration in later phase-4 tasks.
-- Tests, Testing Library, Vitest, GitHub Actions, and broader TypeScript rollout remain out of scope.
+- Broader CI expansion, Playwright, and wider TypeScript rollout remain out of scope.
 - The next step is only: `Definir uma nova tarefa isolada apos inspecionar Reveal e os componentes de secao restantes.`
 
 ## Verification

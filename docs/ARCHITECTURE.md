@@ -27,6 +27,7 @@
 ## Operational Architecture
 - Local development: Vite dev server.
 - Production build: `vite build`.
+- Continuous validation: GitHub Actions workflow `Validate` runs `npm ci` and `npm run validate` on pull requests to `main` and pushes to `main`.
 - Publishing: `gh-pages -d dist`.
 - Static hosting target: GitHub Pages.
 - The build output remains a static `dist/` directory compatible with the current GitHub Pages deployment flow.
