@@ -3,11 +3,13 @@
 ## Current Architecture
 - Rendering starts in `index.html`, mounts in `src/main.tsx`, and renders a single `App` tree.
 - `src/App.tsx` composes the full page in a fixed section order and does not use routing.
-- Section components live in `src/components/`.
+- React section and UI components live in `src/components/` and `src/components/ui/` as `.tsx`.
 - Shared presentation helpers live in `src/components/ui/`.
-- Project card data lives in `src/data/projects.js`.
+- Remaining `.js` files in `src/` are limited to data modules:
+  - `src/data/projects.js`
+  - `src/data/projects.min.js`
 - Static images live in `src/assets/`.
-- The codebase now temporarily mixes `.tsx`, `.jsx`, and `.js` while the gradual TypeScript migration is in progress.
+- The codebase currently mixes `.tsx` for React components and `.js` for data-only modules.
 
 ## Runtime Boundaries
 - Client-side only React application.
