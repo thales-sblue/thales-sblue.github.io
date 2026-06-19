@@ -7,9 +7,11 @@ import SectionHeading from "./ui/SectionHeading";
 type Project = {
   title: string;
   description: string;
+  stack: string[];
+  evidence: string;
   link: string;
   image?: string;
-  Icon: IconType;
+  Icon?: IconType;
 };
 
 const cardVariants: Variants = {
@@ -33,7 +35,7 @@ export default function Projects() {
       <div className="section-container">
         <SectionHeading
           title="Meus Projetos"
-          subtitle="Soluções que desenvolvi em diferentes stacks e contextos."
+          subtitle="Cases de backend e full stack que demonstram decisões técnicas, integrações e regras de negócio."
         />
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -62,16 +64,41 @@ export default function Projects() {
                   </div>
                 ) : (
                   <div className="flex aspect-video items-center justify-center bg-surface-muted">
-                    <TechIcon className="text-5xl text-white/50 transition group-hover:text-accent" />
+                    {TechIcon && (
+                      <TechIcon className="text-5xl text-white/50 transition group-hover:text-accent" />
+                    )}
                   </div>
                 )}
                 <div className="flex flex-1 flex-col p-5">
                   <h3 className="text-xl font-semibold tracking-tight">
                     {proj.title}
                   </h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                  <p className="mt-2 text-sm leading-relaxed text-muted">
                     {proj.description}
                   </p>
+                  <div className="mt-4">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-white/70">
+                      Stack
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {proj.stack.map((technology) => (
+                        <span
+                          key={technology}
+                          className="rounded-full border border-white/10 bg-surface-muted px-2.5 py-1 text-xs text-muted"
+                        >
+                          {technology}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-4 flex-1 border-t border-white/10 pt-4">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-white/70">
+                      Evidência técnica
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      {proj.evidence}
+                    </p>
+                  </div>
                   <span className="mt-4 text-sm font-medium text-accent opacity-0 transition group-hover:opacity-100">
                     Ver no GitHub →
                   </span>
