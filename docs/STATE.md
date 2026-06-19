@@ -1,8 +1,8 @@
 # State
 
 ## Current Snapshot
-- Active branch target: `chore/task-013-github-actions-validation`
-- Current roadmap status: phase `6. GitHub Actions` in progress; phase `5. Testes com Vitest e Testing Library` foundation completed.
+- Active branch target: `chore/task-014-update-vite-toolchain`
+- Current roadmap status: phase `7. Atualizacoes separadas de React/Vite` in progress; Vite tooling update completed in isolation.
 - Source application type: single-page React + Vite portfolio
 - Current deployment model: GitHub Pages via `gh-pages`
 
@@ -904,6 +904,42 @@
   - no secret, special permission, matrix, coverage, Playwright, or artifact upload was added
 - Next step recommended:
   - `Promover o workflow Validate a status check obrigatorio para PRs na main somente depois de observar execucoes estaveis no GitHub.`
+
+## Task-014 Result
+- PR merge confirmation:
+  - PR `#15` (`ci: add validation workflow`) was confirmed as merged into `main` before implementation
+- Workflow confirmation:
+  - workflow `Validate` was confirmed with at least one successful run before implementation
+- Phase status confirmation:
+  - phase `7. Atualizacoes separadas de React/Vite` started in this task and is now in progress
+  - Vite tooling update was completed in isolation
+- Dependency updates:
+  - `vite`: `4.5.14` -> `8.0.16`
+  - `@vitejs/plugin-react`: `4.4.1` -> `6.0.2`
+- Dependency holds:
+  - `react` remained at `18.3.1`
+  - `react-dom` remained at `18.3.1`
+- Local validations executed:
+  - `cmd /c npm ci`
+  - `cmd /c npm.cmd run lint`
+  - `cmd /c npm.cmd run format:check`
+  - `cmd /c npm.cmd run typecheck`
+  - `cmd /c npm.cmd run test`
+  - `cmd /c npm.cmd run build`
+  - `cmd /c npm.cmd run validate`
+  - `git diff --name-status origin/main...HEAD`
+  - `git diff --name-only origin/main...HEAD -- src`
+  - `git diff --check origin/main...HEAD`
+  - `rg` scan for mojibake in `docs/tasks/TASK-014-update-vite-toolchain.md` and `docs/STATE.md`
+- Scope confirmation:
+  - no file under `src/**` was changed
+  - React and React DOM were not changed
+  - no test file was changed
+  - no visual or functional change was introduced intentionally
+  - deploy and GitHub Pages were not changed
+  - GitHub Actions were not changed
+- Next step recommended:
+  - `Atualizar React em PR separado ou seguir para estrutura de rotas, conforme a prioridade definida apos esta atualizacao isolada do Vite.`
 
 ## Evidence
 - Repository-wide search outside `docs/`, `package.json`, and `package-lock.json` found no references to `thales-dev`, `@headlessui/react`, `react-tsparticles`, `tsparticles`, or `recharts`.
