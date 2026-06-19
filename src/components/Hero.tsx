@@ -102,16 +102,17 @@ export default function Hero() {
           }}
         >
           <h1 className="text-display-lg font-semibold tracking-tight text-gradient-subtle">
-            Olá, eu sou o Thales.
+            Desenvolvedor PHP / Full Stack com foco em backend.
           </h1>
           <p className="text-xl font-normal text-muted md:text-2xl">
-            Desenvolvedor full stack. Veja meus projetos e as soluções que criei
-            em Java, Node.js, PHP e mais.
+            Atuo na sustentação e evolução de sistemas reais com PHP 8, Oracle,
+            Docker, testes, pipelines e automação com IA para entregar
+            aplicações mais estáveis, legíveis e fáceis de manter.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
-            <Button href="#nasa">Explorar o Universo</Button>
-            <Button href="#projects" variant="secondary">
-              Ver Projetos
+            <Button href="#projects">Ver Projetos</Button>
+            <Button href="#nasa" variant="secondary">
+              Explorar NASA
             </Button>
           </div>
         </motion.div>
