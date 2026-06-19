@@ -110,9 +110,9 @@ export default function Hero() {
             aplicações mais estáveis, legíveis e fáceis de manter.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
-            <Button href="#nasa">Explorar o Universo</Button>
-            <Button href="#projects" variant="secondary">
-              Ver Projetos
+            <Button href="#projects">Ver Projetos</Button>
+            <Button href="#nasa" variant="secondary">
+              Explorar NASA
             </Button>
           </div>
         </motion.div>
