@@ -1,45 +1,31 @@
-# Architecture
+# Arquitetura
 
-## Current Architecture
-- Rendering starts in `index.html`, mounts in `src/main.tsx`, and renders a single `App` tree.
-- `src/App.tsx` composes the full page in a fixed section order and does not use routing.
-- React section and UI components live in `src/components/` and `src/components/ui/` as `.tsx`.
-- Shared presentation helpers live in `src/components/ui/`.
-- Remaining `.js` files in `src/` are limited to data modules:
-  - `src/data/projects.js`
-  - `src/data/projects.min.js`
-- Static images live in `src/assets/`.
-- The codebase currently mixes `.tsx` for React components and `.js` for data-only modules.
+## Visão geral
 
-## Runtime Boundaries
-- Client-side only React application.
-- Single-page application with no route segmentation.
-- No server-side rendering.
-- No persistent backend owned by this repository.
-- One external runtime integration: NASA APOD API, configured through `VITE_NASA_API_KEY`.
+O portfólio é uma aplicação React de página única, executada integralmente no navegador e publicada como site estático. O fluxo de entrada parte de `index.html`, monta a aplicação em `src/main.tsx` e renderiza a árvore definida em `src/App.tsx`.
 
-## Current Interaction Model
-- Navigation is based on hash targets and manual smooth scrolling.
-- Section activation in the header is derived from `window.scrollY` and DOM section offsets.
-- Animation is handled with `framer-motion`.
-- Visual styling is driven by Tailwind utilities and a small set of custom component classes in `src/index.css`.
+## Estrutura
 
-## Operational Architecture
-- Local development: Vite dev server.
-- Production build: `vite build`.
-- Continuous validation: GitHub Actions workflow `Validate` runs `npm ci` and `npm run validate` on pull requests to `main` and pushes to `main`.
-- Publishing: `gh-pages -d dist`.
-- Static hosting target: GitHub Pages.
-- The build output remains a static `dist/` directory compatible with the current GitHub Pages deployment flow.
+- `src/components/`: seções da página e componentes de interface.
+- `src/components/ui/`: componentes de apresentação reutilizáveis.
+- `src/data/`: dados locais usados pelos projetos.
+- `src/assets/`: imagens estáticas importadas pela aplicação.
 
-## Architecture Decisions To Preserve Until Changed Explicitly
-- The app remains a single-page portfolio until the roadmap reaches the routing phase.
-- Existing section order remains the baseline reference for future refactors.
-- Current external integration scope remains limited to the NASA APOD section.
-- Documentation is the source of truth for planned architecture changes; no silent deviations are allowed.
+As seções são compostas em uma única página. A navegação usa âncoras e rolagem suave, sem biblioteca de rotas.
 
-## Evolution Pressure Points
-- TypeScript migration will touch every component boundary and the project data module.
-- React Router adoption will require a hosting-safe fallback for GitHub Pages and a migration plan from anchors.
-- Testability will improve only after browser-dependent logic is isolated enough to mock cleanly.
-- SEO improvements beyond the current meta tags will be constrained until page boundaries are introduced.
+## Integrações
+
+A única integração externa em tempo de execução é a API Astronomy Picture of the Day (APOD), da NASA. A chave usada na requisição é lida da variável `VITE_NASA_API_KEY`.
+
+## Interface
+
+- Tailwind CSS concentra os estilos utilitários.
+- Framer Motion controla animações e transições.
+- Imagens são empacotadas pelo Vite a partir de `src/assets/`.
+- O estado das interações permanece no cliente; este repositório não possui backend nem persistência própria.
+
+## Qualidade e entrega
+
+O comando `npm run validate` executa lint, verificação de formatação, TypeScript, testes e build. O GitHub Actions aplica essa validação em pull requests e pushes para `main`.
+
+O Vite gera o site estático em `dist/`, e o script `npm run deploy` publica esse diretório no GitHub Pages por meio do pacote `gh-pages`.
