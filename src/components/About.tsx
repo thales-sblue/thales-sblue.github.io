@@ -10,16 +10,16 @@ type Highlight = {
 
 const highlights: Highlight[] = [
   {
-    Icon: FaCode,
-    text: "Frontend com React e Vue",
-  },
-  {
     Icon: FaServer,
-    text: "Backend com PHP e Java",
+    text: "Backend com PHP 8 e foco em sistemas reais",
   },
   {
     Icon: FaDatabase,
-    text: "Banco de dados Oracle e PostgreSQL",
+    text: "Oracle, Docker, testes e pipelines CI/CD",
+  },
+  {
+    Icon: FaCode,
+    text: "Experiência full stack com React e Vue",
   },
 ];
 
@@ -31,16 +31,19 @@ export default function About() {
         <div className="grid gap-12 md:grid-cols-2 md:gap-16">
           <div className="max-w-prose space-y-5 text-muted">
             <p className="text-lg leading-relaxed">
-              Sou desenvolvedor com experiência prática em criar soluções do
-              suporte técnico à entrega completa de produtos.
+              Sou desenvolvedor PHP / Full Stack, com direcionamento para
+              backend e experiência prática na manutenção e evolução de sistemas
+              reais.
             </p>
             <p className="leading-relaxed">
-              Atuo há mais de 3 anos na área, com visão ampla do processo de
-              desenvolvimento e foco em código limpo e resultados.
+              No backend, trabalho com PHP 8 e Oracle, usando Docker, testes e
+              pipelines de CI/CD para apoiar entregas confiáveis e a evolução
+              contínua das aplicações.
             </p>
             <p className="leading-relaxed">
-              Gosto de aprender na prática — nada melhor que a mão no código
-              para evoluir como dev.
+              Minha experiência com React e Vue complementa essa atuação,
+              permitindo compreender o produto de ponta a ponta e automatizar
+              rotinas de desenvolvimento com apoio de IA.
             </p>
           </div>
           <ul className="space-y-4">
