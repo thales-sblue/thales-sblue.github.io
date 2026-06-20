@@ -1,18 +1,7 @@
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import type { IconType } from "react-icons";
 import { projects } from "../data/projects";
 import SectionHeading from "./ui/SectionHeading";
-
-type Project = {
-  title: string;
-  description: string;
-  stack: string[];
-  evidence: string;
-  link: string;
-  image?: string;
-  Icon?: IconType;
-};
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -28,8 +17,6 @@ const cardVariants: Variants = {
 };
 
 export default function Projects() {
-  const typedProjects = projects as Project[];
-
   return (
     <section id="projects" className="bg-surface py-section">
       <div className="section-container">
@@ -39,7 +26,7 @@ export default function Projects() {
         />
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {typedProjects.map((proj, index) => {
+          {projects.map((proj, index) => {
             const TechIcon = proj.Icon;
             return (
               <motion.a

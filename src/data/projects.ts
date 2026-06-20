@@ -2,11 +2,22 @@ import vagasyncFrontLogin from "../assets/vagasync-front-login.png";
 import vagasyncBack from "../assets/vagasync-back.png";
 import phpBank from "../assets/php-bank-login.png";
 
+import type { IconType } from "react-icons";
 import { FaNodeJs } from "react-icons/fa";
 import { DiJava } from "react-icons/di";
 import { DiPhp } from "react-icons/di";
 
-export const projects = [
+export type Project = {
+  title: string;
+  description: string;
+  stack: string[];
+  evidence: string;
+  link: string;
+  image?: string;
+  Icon?: IconType;
+};
+
+export const projects: Project[] = [
   {
     title: "PHP Bank",
     description:
