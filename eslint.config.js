@@ -18,13 +18,7 @@ const typeScriptFiles = ["src/**/*.{ts,tsx}"];
 
 module.exports = [
   {
-    ignores: [
-      "dist/**",
-      "node_modules/**",
-      "coverage/**",
-      "package-lock.json",
-      "src/data/projects.min.js",
-    ],
+    ignores: ["dist/**", "node_modules/**", "coverage/**", "package-lock.json"],
   },
   {
     files: applicationFiles,
