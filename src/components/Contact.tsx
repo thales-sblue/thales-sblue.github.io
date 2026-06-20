@@ -33,8 +33,8 @@ export default function Contact() {
     <section id="contact" className="bg-surface-elevated py-section">
       <Reveal className="section-container text-center">
         <SectionHeading
-          title="Vamos conversar?"
-          subtitle="Estou aberto a oportunidades backend ou full stack com foco em PHP 8, Oracle e Docker, atuando na manutenção e evolução de sistemas reais, integrações, testes e pipelines CI/CD. Recrutadores e avaliadores técnicos podem entrar em contato pelos canais abaixo."
+          title="Contato"
+          subtitle="Para conversas técnicas, networking ou contato profissional, meus canais estão abaixo."
         />
         <div className="mx-auto flex max-w-2xl flex-col gap-4 sm:flex-row sm:justify-center">
           {links.map(({ label, href, Icon }) => (
