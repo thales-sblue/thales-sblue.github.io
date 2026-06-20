@@ -1,7 +1,57 @@
 import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { projects } from "../data/projects";
 import Projects from "./Projects";
+
+vi.mock("framer-motion", async () => {
+  const React = await import("react");
+  const animationProps = new Set([
+    "animate",
+    "custom",
+    "exit",
+    "initial",
+    "transition",
+    "variants",
+    "viewport",
+    "whileInView",
+  ]);
+  const motion = new Proxy(
+    {},
+    {
+      get: (_, tag: string) => {
+        const MockMotionComponent = React.forwardRef<
+          HTMLElement,
+          Record<string, unknown>
+        >(({ children, ...props }, ref) => {
+          const domProps = Object.fromEntries(
+            Object.entries(props).filter(
+              ([propName]) => !animationProps.has(propName),
+            ),
+          );
+
+          return React.createElement(
+            tag,
+            { ...domProps, ref },
+            children as React.ReactNode,
+          );
+        });
+
+        MockMotionComponent.displayName = `MockMotion(${tag})`;
+
+        return MockMotionComponent;
+      },
+    },
+  );
+
+  return {
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+    motion,
+  };
+});
+
+function escapeRegex(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 function getProjectCard(title: string) {
   const card = screen
@@ -24,8 +74,12 @@ describe("Projects", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders every project title and link from the real data source", () => {
+  it("renders every project card as a link from the real data source", () => {
     render(<Projects />);
+
+    const cards = screen.getAllByRole("link");
+
+    expect(cards).toHaveLength(projects.length);
 
     for (const project of projects) {
       const heading = screen.getByRole("heading", {
@@ -36,6 +90,23 @@ describe("Projects", () => {
 
       expect(heading).toBeInTheDocument();
       expect(card).toHaveAttribute("href", project.link);
+    }
+  });
+
+  it("gives every project link an accessible name based on the project title", () => {
+    render(<Projects />);
+
+    for (const project of projects) {
+      const titlePattern = new RegExp(escapeRegex(project.title), "i");
+      const card = screen.getByRole("link", { name: titlePattern });
+
+      expect(card).toHaveAttribute("href", project.link);
+      expect(card).toContainElement(
+        within(card).getByRole("heading", {
+          level: 3,
+          name: project.title,
+        }),
+      );
     }
   });
 
@@ -51,6 +122,41 @@ describe("Projects", () => {
 
       expect(within(card).getByText("Evidência técnica")).toBeInTheDocument();
       expect(within(card).getByText(project.evidence)).toBeInTheDocument();
+    }
+  });
+
+  it("renders non-empty alt text for every project image", () => {
+    render(<Projects />);
+
+    for (const project of projects) {
+      if (!project.image) {
+        continue;
+      }
+
+      const card = getProjectCard(project.title);
+      const image = within(card).getByRole("img", { name: project.title });
+
+      expect(image).toHaveAttribute("src", project.image);
+      expect(image).toHaveAttribute("alt", project.title);
+      expect(image.getAttribute("alt")?.trim()).not.toBe("");
+    }
+  });
+
+  it("does not rely on icon-only visuals as the sole accessible label", () => {
+    render(<Projects />);
+
+    for (const project of projects) {
+      if (project.image) {
+        continue;
+      }
+
+      const card = getProjectCard(project.title);
+      const titlePattern = new RegExp(escapeRegex(project.title), "i");
+
+      expect(card.querySelector("svg")).toBeInTheDocument();
+      expect(within(card).queryByRole("img")).not.toBeInTheDocument();
+      expect(card).toHaveAccessibleName(titlePattern);
+      expect(within(card).getByText(project.evidence)).toBeVisible();
     }
   });
 
