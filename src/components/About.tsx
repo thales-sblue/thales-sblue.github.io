@@ -11,7 +11,7 @@ type Highlight = {
 const highlights: Highlight[] = [
   {
     Icon: FaServer,
-    text: "Backend com PHP 8 e foco em sistemas reais",
+    text: "Backend com PHP 8 e integrações",
   },
   {
     Icon: FaDatabase,
@@ -19,7 +19,7 @@ const highlights: Highlight[] = [
   },
   {
     Icon: FaCode,
-    text: "Experiência full stack com React e Vue",
+    text: "React, Vue e automação com IA",
   },
 ];
 
@@ -31,19 +31,18 @@ export default function About() {
         <div className="grid gap-12 md:grid-cols-2 md:gap-16">
           <div className="max-w-prose space-y-5 text-muted">
             <p className="text-lg leading-relaxed">
-              Sou desenvolvedor PHP / Full Stack, com direcionamento para
-              backend e experiência prática na manutenção e evolução de sistemas
-              reais.
+              Sou desenvolvedor PHP / Full Stack com foco em backend. Tenho
+              experiência com aplicações de contexto financeiro, integrações e
+              banco de dados Oracle.
             </p>
             <p className="leading-relaxed">
-              No backend, trabalho com PHP 8 e Oracle, usando Docker, testes e
-              pipelines de CI/CD para apoiar entregas confiáveis e a evolução
-              contínua das aplicações.
+              No dia a dia, trabalho com PHP 8, Docker, testes e pipelines de
+              CI/CD, incluindo validações de segurança web com OWASP ZAP.
             </p>
             <p className="leading-relaxed">
-              Minha experiência com React e Vue complementa essa atuação,
-              permitindo compreender o produto de ponta a ponta e automatizar
-              rotinas de desenvolvimento com apoio de IA.
+              Também atuo com React e Vue quando o produto exige uma visão de
+              ponta a ponta e uso IA para automatizar rotinas de
+              desenvolvimento.
             </p>
           </div>
           <ul className="space-y-4">

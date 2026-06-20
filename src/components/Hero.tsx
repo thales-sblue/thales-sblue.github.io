@@ -105,9 +105,9 @@ export default function Hero() {
             Desenvolvedor PHP / Full Stack com foco em backend.
           </h1>
           <p className="text-xl font-normal text-muted md:text-2xl">
-            Atuo na sustentação e evolução de sistemas reais com PHP 8, Oracle,
-            Docker, testes, pipelines e automação com IA para entregar
-            aplicações mais estáveis, legíveis e fáceis de manter.
+            Trabalho com PHP 8, Oracle e Docker em aplicações de contexto
+            financeiro, com integrações, testes, pipelines de CI/CD e automação
+            com IA.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
             <Button href="#projects">Ver Projetos</Button>

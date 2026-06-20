@@ -26,13 +26,8 @@ const skillGroups: SkillGroup[] = [
     Icon: FaDatabase,
   },
   {
-    title: "Quality & Delivery",
-    skills: [
-      "Tests",
-      "CI/CD pipelines",
-      "Code maintainability",
-      "AI-assisted automation",
-    ],
+    title: "Qualidade, Entrega & Segurança",
+    skills: ["Tests", "CI/CD pipelines", "AI-assisted automation", "OWASP ZAP"],
     Icon: FaCheckCircle,
   },
   {
@@ -48,7 +43,7 @@ export default function Skills() {
       <Reveal className="section-container">
         <SectionHeading
           title="Hard Skills"
-          subtitle="Competências para manter e evoluir sistemas, com foco em backend e visão full stack do produto."
+          subtitle="Tecnologias e práticas que fazem parte da minha atuação em backend e desenvolvimento full stack."
         />
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 sm:gap-12">
           {skillGroups.map(({ title, skills, Icon }) => (

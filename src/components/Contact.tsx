@@ -34,7 +34,7 @@ export default function Contact() {
       <Reveal className="section-container text-center">
         <SectionHeading
           title="Contato"
-          subtitle="Me envie uma mensagem ou conecte-se comigo nas redes."
+          subtitle="Para conversas técnicas, networking ou contato profissional, meus canais estão abaixo."
         />
         <div className="mx-auto flex max-w-2xl flex-col gap-4 sm:flex-row sm:justify-center">
           {links.map(({ label, href, Icon }) => (
