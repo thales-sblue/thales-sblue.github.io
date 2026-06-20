@@ -42,10 +42,15 @@ export default function Contact() {
               key={label}
               href={href}
               target={href.startsWith("mailto") ? undefined : "_blank"}
-              rel="noopener noreferrer"
+              rel={
+                href.startsWith("mailto") ? undefined : "noopener noreferrer"
+              }
               className="group flex flex-1 items-center justify-center gap-3 rounded-card border border-white/10 bg-surface px-6 py-4 transition hover:border-accent/50 hover:bg-surface-muted/30"
             >
-              <Icon className="text-xl text-muted transition group-hover:text-accent" />
+              <Icon
+                aria-hidden="true"
+                className="text-xl text-muted transition group-hover:text-accent"
+              />
               <span className="font-medium text-white">{label}</span>
             </a>
           ))}

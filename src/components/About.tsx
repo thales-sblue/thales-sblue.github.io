@@ -11,7 +11,7 @@ type Highlight = {
 const highlights: Highlight[] = [
   {
     Icon: FaServer,
-    text: "Backend com PHP 8 e integrações",
+    text: "Backend com PHP 8, integrações e RabbitMQ",
   },
   {
     Icon: FaDatabase,
@@ -32,8 +32,8 @@ export default function About() {
           <div className="max-w-prose space-y-5 text-muted">
             <p className="text-lg leading-relaxed">
               Sou desenvolvedor PHP / Full Stack com foco em backend. Tenho
-              experiência com aplicações de contexto financeiro, integrações e
-              banco de dados Oracle.
+              experiência com aplicações de contexto financeiro, integrações,
+              RabbitMQ e banco de dados Oracle.
             </p>
             <p className="leading-relaxed">
               No dia a dia, trabalho com PHP 8, Docker, testes e pipelines de
@@ -51,7 +51,10 @@ export default function About() {
                 key={text}
                 className="flex items-center gap-4 rounded-card border border-white/10 bg-surface-elevated px-5 py-4 transition hover:border-white/20"
               >
-                <Icon className="shrink-0 text-xl text-accent" />
+                <Icon
+                  aria-hidden="true"
+                  className="shrink-0 text-xl text-accent"
+                />
                 <span className="font-medium text-white">{text}</span>
               </li>
             ))}

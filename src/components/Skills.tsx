@@ -17,7 +17,7 @@ type SkillGroup = {
 const skillGroups: SkillGroup[] = [
   {
     title: "Backend & APIs",
-    skills: ["PHP 8", "Java / Spring Boot", "Node.js", "REST APIs"],
+    skills: ["PHP 8", "Java / Spring Boot", "Node.js", "REST APIs", "RabbitMQ"],
     Icon: FaServer,
   },
   {
@@ -49,7 +49,10 @@ export default function Skills() {
           {skillGroups.map(({ title, skills, Icon }) => (
             <div key={title} className="group flex flex-col items-center gap-3">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted/50 transition duration-300 group-hover:bg-surface-muted">
-                <Icon className="text-3xl text-white/70 transition duration-300 group-hover:text-accent" />
+                <Icon
+                  aria-hidden="true"
+                  className="text-3xl text-white/70 transition duration-300 group-hover:text-accent"
+                />
               </div>
               <h3 className="text-center text-sm font-medium text-white">
                 {title}
