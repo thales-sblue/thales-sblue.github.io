@@ -86,7 +86,7 @@ export default function Hero() {
         >
           <img
             src={fotoPerfil}
-            alt="Thales Santos"
+            alt="Foto de perfil de Thales Santos"
             className="h-full w-full rounded-full border border-white/10 object-cover shadow-2xl shadow-black/50"
           />
         </motion.div>
@@ -140,6 +140,7 @@ export default function Hero() {
                 transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
               >
                 <Icon
+                  aria-hidden="true"
                   className="text-2xl text-white/20 transition-colors duration-300 hover:text-accent sm:text-3xl"
                   title={name}
                 />
