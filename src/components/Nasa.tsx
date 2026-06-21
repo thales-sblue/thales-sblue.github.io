@@ -1,22 +1,46 @@
 import { useState } from "react";
 import { sectionIds } from "../data/site";
-import SectionHeading from "./ui/SectionHeading";
+import {
+  buildApodUrl,
+  getApodDateValidationMessage,
+  getApodErrorMessage,
+  type ApodResponse,
+  parseApodResponse,
+} from "../utils/apod";
 import Button from "./ui/Button";
+import SectionHeading from "./ui/SectionHeading";
 
-const APOD_API = "https://api.nasa.gov/planetary/apod";
-const API_KEY = import.meta.env.VITE_NASA_API_KEY;
-
-type ApodMediaType = "image" | "video";
-
-type ApodResponse = {
-  title: string;
-  date: string;
-  explanation: string;
-  url: string;
-  media_type: ApodMediaType;
-};
+const APOD_REQUEST_STORAGE_KEY = "apod_requests";
+const FALLBACK_BACKGROUND_IMAGE =
+  "url('https://images-assets.nasa.gov/image/PIA18033/PIA18033~orig.jpg')";
 
 type StoredRequestTimestamp = string;
+
+function readStoredRequestTimestamps(
+  rawValue: string | null,
+): StoredRequestTimestamp[] {
+  if (!rawValue) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(rawValue);
+
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed.filter((value): value is StoredRequestTimestamp => {
+      if (typeof value !== "string") {
+        return false;
+      }
+
+      return !Number.isNaN(Date.parse(value));
+    });
+  } catch {
+    return [];
+  }
+}
 
 export default function Nasa() {
   const [date, setDate] = useState("");
@@ -25,61 +49,83 @@ export default function Nasa() {
   const [error, setError] = useState("");
 
   const fetchApod = async () => {
-    const today = new Date();
-    const selectedDate = new Date(date);
-    const earliestDate = new Date("1995-06-16");
+    const apiKey = import.meta.env.VITE_NASA_API_KEY;
+    const dateValidationMessage = getApodDateValidationMessage(date);
 
-    if (!date) {
-      return setError("Selecione uma data.");
+    if (dateValidationMessage) {
+      setApod(null);
+      return setError(dateValidationMessage);
     }
 
-    if (selectedDate > today) {
-      return setError(
-        "Infelizmente, ainda não conseguimos captar imagens do futuro.",
-      );
+    if (!apiKey || apiKey.trim().length === 0) {
+      setApod(null);
+      return setError(getApodErrorMessage(undefined, "missing_api_key"));
     }
 
-    if (selectedDate < earliestDate) {
-      return setError("Não há imagens antes de 16 de junho de 1995.");
-    }
-
-    const requests = JSON.parse(
-      localStorage.getItem("apod_requests") || "[]",
-    ) as StoredRequestTimestamp[];
+    const requests = readStoredRequestTimestamps(
+      localStorage.getItem(APOD_REQUEST_STORAGE_KEY),
+    );
     const now = new Date();
-
     const lastHour = new Date(now.getTime() - 60 * 60 * 1000);
-    const updatedRequests = requests.filter((r) => new Date(r) > lastHour);
+    const updatedRequests = requests.filter((request) => {
+      return new Date(request) > lastHour;
+    });
+
     if (updatedRequests.length >= 30) {
+      setApod(null);
       return setError("Limite horário atingido. Tente novamente em breve.");
     }
 
-    const todayStr = now.toISOString().split("T")[0];
-    const dailyRequests = updatedRequests.filter((r) => r.startsWith(todayStr));
+    const todayString = now.toISOString().split("T")[0];
+    const dailyRequests = requests.filter((request) => {
+      return request.startsWith(todayString);
+    });
+
     if (dailyRequests.length >= 50) {
+      setApod(null);
       return setError("Limite diário atingido. Tente novamente amanhã.");
     }
 
     updatedRequests.push(now.toISOString());
-    localStorage.setItem("apod_requests", JSON.stringify(updatedRequests));
+    localStorage.setItem(
+      APOD_REQUEST_STORAGE_KEY,
+      JSON.stringify(updatedRequests),
+    );
 
     setError("");
     setLoading(true);
+
     try {
-      const res = await fetch(`${APOD_API}?api_key=${API_KEY}&date=${date}`);
-      if (!res.ok) throw new Error();
-      setApod(await res.json());
+      const response = await fetch(buildApodUrl(date, apiKey));
+
+      if (!response.ok) {
+        setApod(null);
+        setError(getApodErrorMessage(response.status));
+        return;
+      }
+
+      const payload: unknown = await response.json();
+      const parsedApod = parseApodResponse(payload);
+
+      if (!parsedApod.ok) {
+        setApod(null);
+        setError(getApodErrorMessage(undefined, parsedApod.code));
+        return;
+      }
+
+      setApod(parsedApod.data);
     } catch {
-      setError("Não conseguimos buscar a imagem.");
+      setApod(null);
+      setError(getApodErrorMessage(undefined, "network"));
     } finally {
       setLoading(false);
     }
   };
 
   const backgroundImage =
-    apod?.media_type === "image" && apod?.url
+    apod?.media_type === "image"
       ? `url(${apod.url})`
-      : `url('https://images-assets.nasa.gov/image/PIA18033/PIA18033~orig.jpg')`;
+      : FALLBACK_BACKGROUND_IMAGE;
 
   return (
     <section
@@ -100,7 +146,9 @@ export default function Nasa() {
             type="date"
             max={new Date().toISOString().split("T")[0]}
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={(event) => setDate(event.target.value)}
+            aria-label="Selecione uma data"
+            data-testid="apod-date-input"
             className="w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2.5 text-white backdrop-blur-sm transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/50 sm:max-w-[180px]"
           />
           <Button
@@ -108,7 +156,7 @@ export default function Nasa() {
             className="w-full disabled:opacity-50 sm:w-auto"
             disabled={loading}
           >
-            {loading ? "Carregando…" : "Buscar"}
+            {loading ? "Carregando..." : "Buscar"}
           </Button>
         </div>
 
@@ -131,6 +179,9 @@ export default function Nasa() {
                   title={apod.title}
                   className="h-full w-full"
                   frameBorder="0"
+                  sandbox="allow-scripts allow-same-origin allow-presentation"
+                  referrerPolicy="no-referrer"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
               ) : (
