@@ -17,6 +17,8 @@ jobs:
   deploy:
     name: Validate and deploy
     runs-on: ubuntu-latest
+    env:
+      VITE_NASA_API_KEY: ${{ secrets.VITE_NASA_API_KEY }}
 
     steps:
       - name: Checkout
@@ -31,6 +33,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check NASA API key secret
+        run: |
+          if [ -z "$VITE_NASA_API_KEY" ]; then
+            echo "Missing required repository secret: VITE_NASA_API_KEY"
+            exit 1
+          fi
+
       - name: Validate
         run: npm run validate
 
@@ -38,6 +47,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Configure authenticated remote
+        run: git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to gh-pages
         run: npm run deploy
