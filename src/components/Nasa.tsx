@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { sectionIds } from "../data/site";
 import {
-  buildApodUrl,
+  buildApodProxyUrl,
   getApodDateValidationMessage,
   getApodErrorMessage,
   type ApodResponse,
@@ -47,9 +47,14 @@ export default function Nasa() {
   const [apod, setApod] = useState<ApodResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const requestInFlight = useRef(false);
 
   const fetchApod = async () => {
-    const apiKey = import.meta.env.VITE_NASA_API_KEY;
+    if (requestInFlight.current) {
+      return;
+    }
+
+    const proxyUrl = import.meta.env.VITE_APOD_PROXY_URL;
     const dateValidationMessage = getApodDateValidationMessage(date);
 
     if (dateValidationMessage) {
@@ -57,9 +62,9 @@ export default function Nasa() {
       return setError(dateValidationMessage);
     }
 
-    if (!apiKey || apiKey.trim().length === 0) {
+    if (!proxyUrl || proxyUrl.trim().length === 0) {
       setApod(null);
-      return setError(getApodErrorMessage(undefined, "missing_api_key"));
+      return setError(getApodErrorMessage(undefined, "missing_proxy_url"));
     }
 
     const requests = readStoredRequestTimestamps(
@@ -93,10 +98,11 @@ export default function Nasa() {
     );
 
     setError("");
+    requestInFlight.current = true;
     setLoading(true);
 
     try {
-      const response = await fetch(buildApodUrl(date, apiKey));
+      const response = await fetch(buildApodProxyUrl(proxyUrl, date));
 
       if (!response.ok) {
         setApod(null);
@@ -118,6 +124,7 @@ export default function Nasa() {
       setApod(null);
       setError(getApodErrorMessage(undefined, "network"));
     } finally {
+      requestInFlight.current = false;
       setLoading(false);
     }
   };

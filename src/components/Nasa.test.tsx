@@ -8,7 +8,7 @@ describe("Nasa", () => {
   beforeEach(() => {
     fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
-    vi.stubEnv("VITE_NASA_API_KEY", "demo-key");
+    vi.stubEnv("VITE_APOD_PROXY_URL", "https://apod-proxy.example.workers.dev");
     localStorage.clear();
   });
 
@@ -36,8 +36,8 @@ describe("Nasa", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("shows a safe configuration message and does not call fetch when the API key is missing", () => {
-    vi.stubEnv("VITE_NASA_API_KEY", "");
+  it("shows a safe configuration message and does not call fetch when the proxy URL is missing", () => {
+    vi.stubEnv("VITE_APOD_PROXY_URL", "");
     render(<Nasa />);
 
     fireEvent.change(screen.getByTestId("apod-date-input"), {
@@ -46,9 +46,56 @@ describe("Nasa", () => {
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
 
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Configuração da API da NASA indisponível no momento.",
+      "Configuração do proxy da NASA indisponível no momento.",
     );
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("calls the proxy with only the selected date", async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue({
+        title: "Earth",
+        date: "2001-07-04",
+        explanation: "Blue marble",
+        url: "https://images.example.com/earth.jpg",
+        media_type: "image",
+      }),
+    });
+
+    render(<Nasa />);
+    fireEvent.change(screen.getByTestId("apod-date-input"), {
+      target: { value: "2001-07-04" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+
+    await screen.findByRole("heading", { level: 3, name: "Earth" });
+    expect(fetchMock).toHaveBeenCalledOnce();
+
+    const requestUrl = String(fetchMock.mock.calls[0][0]);
+    expect(requestUrl).toBe(
+      "https://apod-proxy.example.workers.dev/?date=2001-07-04",
+    );
+    expect(requestUrl).not.toContain("api_key");
+    expect(requestUrl).not.toContain("api.nasa.gov");
+  });
+
+  it("avoids duplicate requests while a request is loading", () => {
+    fetchMock.mockReturnValue(new Promise(() => undefined));
+
+    render(<Nasa />);
+    fireEvent.change(screen.getByTestId("apod-date-input"), {
+      target: { value: "2001-07-04" },
+    });
+
+    const button = screen.getByRole("button", { name: "Buscar" });
+    fireEvent.click(button);
+    fireEvent.click(button);
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(
+      screen.getByRole("button", { name: "Carregando..." }),
+    ).toBeDisabled();
   });
 
   it("shows the NASA rate-limit message for HTTP 429", async () => {

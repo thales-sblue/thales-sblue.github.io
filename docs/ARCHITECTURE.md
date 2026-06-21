@@ -15,14 +15,23 @@ As seções são compostas em uma única página. A navegação usa âncoras e r
 
 ## Integrações
 
-A única integração externa em tempo de execução é a API Astronomy Picture of the Day (APOD), da NASA. A chave usada na requisição é lida da variável `VITE_NASA_API_KEY`.
+A integração Astronomy Picture of the Day (APOD) usa duas camadas. O frontend
+envia somente a data selecionada ao Cloudflare Worker configurado em
+`VITE_APOD_PROXY_URL`. O Worker em `worker/apod-proxy/` valida origem e data,
+consulta o cache por data e chama a API da NASA no servidor com o secret
+`NASA_API_KEY`.
+
+O proxy foi projetado para o Cloudflare Workers Free e não configura serviços
+pagos nem armazenamento persistente. O cache usa a Cache API, e o controle de
+requisições por IP/origem é local a cada isolate. Se a cota gratuita diária for
+excedida, o Worker pode deixar de atender requisições.
 
 ## Interface
 
 - Tailwind CSS concentra os estilos utilitários.
 - Framer Motion controla animações e transições.
 - Imagens são empacotadas pelo Vite a partir de `src/assets/`.
-- O estado das interações permanece no cliente; este repositório não possui backend nem persistência própria.
+- O estado das interações permanece no cliente; o Worker não possui persistência própria.
 
 ## Qualidade e entrega
 

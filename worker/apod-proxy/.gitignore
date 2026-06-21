@@ -1,0 +1,6 @@
+.dev.vars
+.env
+node_modules/
+.wrangler/
+.vitest/
+wrangler-dev.*.log
