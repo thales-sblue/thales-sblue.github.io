@@ -1,5 +1,6 @@
 import type { IconType } from "react-icons";
 import { FaCode, FaDatabase, FaServer } from "react-icons/fa";
+import { sectionIds } from "../data/site";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 
@@ -25,7 +26,7 @@ const highlights: Highlight[] = [
 
 export default function About() {
   return (
-    <section id="about" className="bg-surface py-section">
+    <section id={sectionIds.about} className="bg-surface py-section">
       <Reveal className="section-container">
         <SectionHeading title="Sobre Mim" align="left" className="md:mb-12" />
         <div className="grid gap-12 md:grid-cols-2 md:gap-16">

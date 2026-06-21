@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { sectionIds } from "../data/site";
 import SectionHeading from "./ui/SectionHeading";
 import Button from "./ui/Button";
 
@@ -82,7 +83,7 @@ export default function Nasa() {
 
   return (
     <section
-      id="nasa"
+      id={sectionIds.nasa}
       style={{ backgroundImage }}
       className="bg-nasa-parallax relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat py-section"
     >

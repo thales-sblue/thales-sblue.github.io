@@ -1,33 +1,20 @@
 import { useState, useEffect, type MouseEvent } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
-
-type NavItem = {
-  name: string;
-  href: string;
-};
-
-const navItems: NavItem[] = [
-  { name: "Início", href: "#hero" },
-  { name: "Nasa", href: "#nasa" },
-  { name: "Projetos", href: "#projects" },
-  { name: "Skills", href: "#skills" },
-  { name: "Sobre", href: "#about" },
-  { name: "Contato", href: "#contact" },
-];
+import { navigationItems, sectionIds, type SectionHref } from "../data/site";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState("Início");
+  const [active, setActive] = useState<string>(navigationItems[0].label);
 
   useEffect(() => {
     const onScroll = () => {
       const pos = window.scrollY + 120;
-      let current = "Início";
-      navItems.forEach(({ name, href }) => {
+      let current: string = navigationItems[0].label;
+      navigationItems.forEach(({ label, href }) => {
         const sec = document.querySelector<HTMLElement>(href);
         if (sec && pos >= sec.offsetTop) {
-          current = name;
+          current = label;
         }
       });
       setActive(current);
@@ -37,7 +24,10 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: MouseEvent<HTMLAnchorElement>,
+    href: SectionHref,
+  ) => {
     e.preventDefault();
     setIsOpen(false);
     const section = document.querySelector<HTMLElement>(href);
@@ -57,26 +47,26 @@ export default function Header() {
           transition={{ duration: 0.4 }}
         >
           <a
-            href="#hero"
-            onClick={(e) => handleNavClick(e, "#hero")}
+            href={`#${sectionIds.hero}`}
+            onClick={(e) => handleNavClick(e, `#${sectionIds.hero}`)}
             className="text-lg font-semibold tracking-tight text-white transition hover:text-accent"
           >
             Thales
           </a>
 
           <nav className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
+            {navigationItems.map((item) => (
               <a
-                key={item.name}
+                key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
                 className={`text-sm font-medium transition-colors ${
-                  active === item.name
+                  active === item.label
                     ? "text-accent"
                     : "text-white/80 hover:text-white"
                 }`}
               >
-                {item.name}
+                {item.label}
               </a>
             ))}
           </nav>
@@ -116,18 +106,18 @@ export default function Header() {
                 <HiX />
               </button>
               <nav className="flex flex-col gap-6">
-                {navItems.map((item) => (
+                {navigationItems.map((item) => (
                   <a
-                    key={item.name}
+                    key={item.label}
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href)}
                     className={`text-xl font-medium transition-colors ${
-                      active === item.name
+                      active === item.label
                         ? "text-accent"
                         : "text-white hover:text-accent"
                     }`}
                   >
-                    {item.name}
+                    {item.label}
                   </a>
                 ))}
               </nav>

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { projects } from "../data/projects";
+import { sectionIds } from "../data/site";
 import SectionHeading from "./ui/SectionHeading";
 
 const cardVariants: Variants = {
@@ -18,7 +19,7 @@ const cardVariants: Variants = {
 
 export default function Projects() {
   return (
-    <section id="projects" className="bg-surface py-section">
+    <section id={sectionIds.projects} className="bg-surface py-section">
       <div className="section-container">
         <SectionHeading
           title="Meus Projetos"

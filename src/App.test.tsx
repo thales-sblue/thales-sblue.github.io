@@ -1,14 +1,12 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import App from "./App";
-
-const requiredSectionAnchors = [
-  "hero",
-  "projects",
-  "skills",
-  "about",
-  "contact",
-] as const;
+import {
+  contactLinks,
+  heroCtas,
+  navigationItems,
+  sectionIds,
+} from "./data/site";
 
 describe("App accessibility and semantics", () => {
   it("renders a single main landmark with the expected primary sections", () => {
@@ -18,39 +16,42 @@ describe("App accessibility and semantics", () => {
     const main = mains[0];
 
     expect(mains).toHaveLength(1);
-    expect(main).toContainElement(container.querySelector("#hero"));
-    expect(main).toContainElement(container.querySelector("#projects"));
-    expect(main).toContainElement(container.querySelector("#skills"));
-    expect(main).toContainElement(container.querySelector("#about"));
-    expect(main).toContainElement(container.querySelector("#contact"));
+
+    for (const sectionId of Object.values(sectionIds)) {
+      expect(main).toContainElement(container.querySelector(`#${sectionId}`));
+    }
   });
 
   it("exposes the required section anchors and a matching navigation target for each nav link", () => {
     render(<App />);
 
-    for (const anchorId of requiredSectionAnchors) {
+    for (const anchorId of Object.values(sectionIds)) {
       expect(document.getElementById(anchorId)).toBeInTheDocument();
     }
 
     const navigation = screen.getAllByRole("navigation")[0];
+    const navLinks = within(navigation).getAllByRole("link");
 
-    for (const link of within(navigation).getAllByRole("link")) {
-      const href = link.getAttribute("href");
+    expect(navLinks).toHaveLength(navigationItems.length);
 
-      expect(href).toMatch(/^#/);
-      expect(document.querySelector(href ?? "")).toBeInTheDocument();
+    for (const item of navigationItems) {
+      const link = within(navigation).getByRole("link", { name: item.label });
+
+      expect(link).toHaveAttribute("href", item.href);
+      expect(document.querySelector(item.href)).toBeInTheDocument();
     }
   });
 
   it("renders a single main heading and the expected section headings", () => {
     render(<App />);
 
-    expect(
-      screen.getAllByRole("heading", {
-        level: 1,
-        name: /desenvolvedor php \/ full stack com foco em backend\./i,
-      }),
-    ).toHaveLength(1);
+    const levelOneHeadings = screen.getAllByRole("heading", { level: 1 });
+    const mainHeading = levelOneHeadings[0];
+
+    expect(levelOneHeadings).toHaveLength(1);
+    expect(mainHeading).toHaveAccessibleName(/php/i);
+    expect(mainHeading).toHaveAccessibleName(/full stack/i);
+    expect(mainHeading).toHaveAccessibleName(/backend/i);
 
     expect(
       screen.getByRole("heading", { level: 2, name: "Meus Projetos" }),
@@ -69,20 +70,45 @@ describe("App accessibility and semantics", () => {
   it("keeps important CTAs accessible by role and name", () => {
     render(<App />);
 
-    expect(screen.getByRole("link", { name: "Ver Projetos" })).toHaveAttribute(
-      "href",
-      "#projects",
-    );
-    expect(screen.getByRole("link", { name: "Explorar NASA" })).toHaveAttribute(
-      "href",
-      "#nasa",
-    );
+    expect(
+      screen.getByRole("link", { name: heroCtas.projects.label }),
+    ).toHaveAttribute("href", heroCtas.projects.href);
+    expect(
+      screen.getByRole("link", { name: heroCtas.nasa.label }),
+    ).toHaveAttribute("href", heroCtas.nasa.href);
     expect(
       screen.getByRole("link", { name: "Vamos conversar" }),
-    ).toHaveAttribute("href", "mailto:thales_sblue@hotmail.com");
+    ).toHaveAttribute("href", contactLinks.email.href);
     expect(
       screen.getByRole("link", { name: "Conversar no WhatsApp" }),
-    ).toHaveAttribute("href", "https://wa.me/5544999072631");
+    ).toHaveAttribute("href", contactLinks.whatsApp.href);
+  });
+
+  it("preserves contact external link metadata", () => {
+    render(<App />);
+
+    const externalContactLinks = [
+      {
+        accessibleName: contactLinks.linkedIn.label,
+        ...contactLinks.linkedIn,
+      },
+      {
+        accessibleName: contactLinks.github.label,
+        ...contactLinks.github,
+      },
+      {
+        accessibleName: "Conversar no WhatsApp",
+        ...contactLinks.whatsApp,
+      },
+    ];
+
+    for (const item of externalContactLinks) {
+      const link = screen.getByRole("link", { name: item.accessibleName });
+
+      expect(link).toHaveAttribute("href", item.href);
+      expect(link).toHaveAttribute("target", item.target);
+      expect(link).toHaveAttribute("rel", item.rel);
+    }
   });
 
   it("uses noopener and noreferrer on every external link that opens in a new tab", () => {
