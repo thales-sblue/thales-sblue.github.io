@@ -207,6 +207,49 @@ describe("APOD proxy Worker", () => {
     expect(body).not.toContain("worker-secret");
   });
 
+  it("returns a safe 502 when the NASA fetch throws", async () => {
+    fetchMock.mockRejectedValue(new Error("request included worker-secret"));
+
+    const response = await dispatch(makeRequest());
+    const body = await response.text();
+
+    expect(response.status).toBe(502);
+    expect(body).toBe('{"error":"NASA upstream request failed."}');
+    expect(body).not.toContain("NASA_API_KEY");
+    expect(body).not.toContain("api_key");
+    expect(body).not.toContain("https://api.nasa.gov/planetary/apod");
+    expect(body).not.toContain("worker-secret");
+  });
+
+  it("returns a safe 504 when the NASA fetch times out", async () => {
+    vi.useFakeTimers();
+    fetchMock.mockImplementation((_input, init) => {
+      return new Promise((_resolve, reject) => {
+        init?.signal?.addEventListener("abort", () => {
+          reject(
+            new DOMException("request included worker-secret", "AbortError"),
+          );
+        });
+      });
+    });
+
+    try {
+      const responsePromise = dispatch(makeRequest());
+      await vi.advanceTimersByTimeAsync(8_000);
+      const response = await responsePromise;
+      const body = await response.text();
+
+      expect(response.status).toBe(504);
+      expect(body).toBe('{"error":"NASA upstream timed out."}');
+      expect(body).not.toContain("NASA_API_KEY");
+      expect(body).not.toContain("api_key");
+      expect(body).not.toContain("https://api.nasa.gov/planetary/apod");
+      expect(body).not.toContain("worker-secret");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("returns 500 when the Worker secret is missing", async () => {
     env.NASA_API_KEY = "";
 
