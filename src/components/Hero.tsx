@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import type { IconType } from "react-icons";
 import bgHero from "../assets/bg-hero.png";
 import fotoPerfil from "../assets/foto-perfil.png";
+import { heroCtas, sectionIds, siteProfile } from "../data/site";
 import Button from "./ui/Button";
 import { FaReact, FaNodeJs } from "react-icons/fa";
 import { DiJava } from "react-icons/di";
@@ -63,7 +64,7 @@ export default function Hero() {
 
   return (
     <section
-      id="hero"
+      id={sectionIds.hero}
       className="relative flex min-h-screen items-center justify-center overflow-hidden bg-cover bg-center"
       style={{ backgroundImage: `url(${bgHero})` }}
     >
@@ -102,7 +103,7 @@ export default function Hero() {
           }}
         >
           <h1 className="text-display-lg font-semibold tracking-tight text-gradient-subtle">
-            Desenvolvedor PHP / Full Stack com foco em backend.
+            {siteProfile.title}
           </h1>
           <p className="text-xl font-normal text-muted md:text-2xl">
             Trabalho com PHP 8, Oracle e Docker em aplicações de contexto
@@ -110,9 +111,11 @@ export default function Hero() {
             com IA.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
-            <Button href="#projects">Ver Projetos</Button>
-            <Button href="#nasa" variant="secondary">
-              Explorar NASA
+            <Button href={heroCtas.projects.href}>
+              {heroCtas.projects.label}
+            </Button>
+            <Button href={heroCtas.nasa.href} variant="secondary">
+              {heroCtas.nasa.label}
             </Button>
           </div>
         </motion.div>

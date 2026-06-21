@@ -5,6 +5,7 @@ import {
   FaLaptopCode,
   FaServer,
 } from "react-icons/fa";
+import { sectionIds } from "../data/site";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 
@@ -39,7 +40,7 @@ const skillGroups: SkillGroup[] = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="bg-surface-elevated py-section">
+    <section id={sectionIds.skills} className="bg-surface-elevated py-section">
       <Reveal className="section-container">
         <SectionHeading
           title="Hard Skills"
