@@ -189,6 +189,25 @@ function withCors(response: Response, origin: string): Response {
   });
 }
 
+async function fetchWithTimeout(
+  input: RequestInfo | URL,
+  init: RequestInit,
+  timeoutMs: number,
+  fetcher: typeof fetch,
+): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetcher(input, {
+      ...init,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 export async function handleRequest(
   request: Request,
   env: Env,
@@ -250,16 +269,19 @@ export async function handleRequest(
   let upstreamResponse: Response;
 
   try {
-    upstreamResponse = await dependencies.fetch(nasaUrl.toString(), {
-      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
-    });
+    upstreamResponse = await fetchWithTimeout(
+      nasaUrl.toString(),
+      {},
+      UPSTREAM_TIMEOUT_MS,
+      dependencies.fetch,
+    );
   } catch (error) {
     const status =
-      error instanceof DOMException && error.name === "TimeoutError"
-        ? 504
-        : 502;
+      error instanceof DOMException && error.name === "AbortError" ? 504 : 502;
     const message =
-      status === 504 ? "NASA request timed out." : "NASA request failed.";
+      status === 504
+        ? "NASA upstream timed out."
+        : "NASA upstream request failed.";
     return jsonResponse(status, { error: message }, origin);
   }
 
