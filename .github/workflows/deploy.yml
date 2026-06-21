@@ -18,7 +18,7 @@ jobs:
     name: Validate and deploy
     runs-on: ubuntu-latest
     env:
-      VITE_NASA_API_KEY: ${{ secrets.VITE_NASA_API_KEY }}
+      VITE_APOD_PROXY_URL: ${{ secrets.VITE_APOD_PROXY_URL }}
 
     steps:
       - name: Checkout
@@ -33,10 +33,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check NASA API key secret
+      - name: Check NASA proxy URL secret
         run: |
-          if [ -z "$VITE_NASA_API_KEY" ]; then
-            echo "Missing required repository secret: VITE_NASA_API_KEY"
+          if [ -z "$VITE_APOD_PROXY_URL" ]; then
+            echo "Missing required repository secret: VITE_APOD_PROXY_URL"
             exit 1
           fi
 

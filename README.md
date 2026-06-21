@@ -27,13 +27,15 @@ O servidor de desenvolvimento informa no terminal o endereço local da aplicaç�
 
 ## Variável de ambiente
 
-A seção NASA usa a API APOD. Crie um arquivo `.env` na raiz do projeto:
+A seção NASA usa o proxy APOD em `worker/apod-proxy/`. Depois de publicar o
+Worker, crie um arquivo `.env` na raiz do projeto:
 
 ```dotenv
-VITE_NASA_API_KEY=sua_chave_nasa
+VITE_APOD_PROXY_URL=https://apod-proxy.<cloudflare-subdomain>.workers.dev
 ```
 
-Defina uma chave válida para consultar a API pela interface do portfólio.
+A chave da NASA deve existir somente no secret `NASA_API_KEY` do Worker. Consulte
+o [guia do proxy](worker/apod-proxy/README.md) para desenvolvimento e deploy.
 
 ## Qualidade e testes
 

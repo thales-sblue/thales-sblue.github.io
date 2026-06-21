@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  APOD_API_URL,
-  buildApodUrl,
+  buildApodProxyUrl,
   getApodDateValidationMessage,
   getApodErrorMessage,
   isSafeApodImageUrl,
@@ -39,10 +38,15 @@ describe("apod helpers", () => {
     expect(isValidApodDate("2001-07-04", today)).toBe(true);
   });
 
-  it("builds a request URL with encoded params", () => {
-    expect(buildApodUrl("2001-07-04", "demo key")).toBe(
-      `${APOD_API_URL}?api_key=demo+key&date=2001-07-04`,
+  it("builds a proxy URL containing only the selected date", () => {
+    const url = buildApodProxyUrl(
+      "https://apod-proxy.example.workers.dev/?api_key=discarded#fragment",
+      "2001-07-04",
     );
+
+    expect(url).toBe("https://apod-proxy.example.workers.dev/?date=2001-07-04");
+    expect(url).not.toContain("api_key");
+    expect(url).not.toContain("api.nasa.gov");
   });
 
   it("parses a valid APOD image response", () => {

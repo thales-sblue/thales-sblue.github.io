@@ -1,4 +1,3 @@
-export const APOD_API_URL = "https://api.nasa.gov/planetary/apod";
 export const APOD_EARLIEST_DATE = "1995-06-16";
 
 export type ApodMediaType = "image" | "video";
@@ -18,7 +17,7 @@ export type ApodErrorCode =
   | "unsupported_media"
   | "unsafe_media_url"
   | "network"
-  | "missing_api_key";
+  | "missing_proxy_url";
 
 export type ApodResult =
   | { ok: true; data: ApodResponse }
@@ -141,13 +140,12 @@ export function getApodDateValidationMessage(
   return null;
 }
 
-export function buildApodUrl(date: string, apiKey: string): string {
-  const params = new URLSearchParams({
-    api_key: apiKey,
-    date,
-  });
+export function buildApodProxyUrl(proxyUrl: string, date: string): string {
+  const url = new URL(proxyUrl);
+  url.search = new URLSearchParams({ date }).toString();
+  url.hash = "";
 
-  return `${APOD_API_URL}?${params.toString()}`;
+  return url.toString();
 }
 
 export function parseApodResponse(payload: unknown): ApodResult {
@@ -187,8 +185,8 @@ export function getApodErrorMessage(
   status?: number,
   fallbackCode?: ApodErrorCode,
 ): string {
-  if (fallbackCode === "missing_api_key") {
-    return "Configuração da API da NASA indisponível no momento.";
+  if (fallbackCode === "missing_proxy_url") {
+    return "Configuração do proxy da NASA indisponível no momento.";
   }
 
   if (fallbackCode === "network") {

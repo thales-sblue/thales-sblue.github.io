@@ -1,6 +1,8 @@
 dist
 node_modules
 coverage
+worker/apod-proxy/.wrangler
+worker/apod-proxy/.vitest
 package-lock.json
 AGENTS.md
 README.md
