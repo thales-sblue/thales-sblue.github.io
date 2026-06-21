@@ -27,6 +27,34 @@ describe("Nasa", () => {
     expect(screen.getByRole("button", { name: "Buscar" })).toBeInTheDocument();
   });
 
+  it("renders the APOD date limits and guidance", () => {
+    render(<Nasa />);
+
+    const input = screen.getByTestId("apod-date-input");
+    expect(input).toHaveAttribute("min", "1995-06-16");
+    expect(input).toHaveAttribute(
+      "max",
+      new Date().toISOString().split("T")[0],
+    );
+    expect(
+      screen.getByText(
+        "Escolha uma data entre 16/06/1995 e hoje. Algumas datas podem não ter imagem disponível na NASA.",
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("sets the stable example date and clears the current error", () => {
+    render(<Nasa />);
+    fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Testar data exemplo" }),
+    );
+
+    expect(screen.getByTestId("apod-date-input")).toHaveValue("2021-08-22");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
   it("shows a validation message and does not call the API when search is clicked without a date", () => {
     render(<Nasa />);
 
@@ -98,10 +126,28 @@ describe("Nasa", () => {
     ).toBeDisabled();
   });
 
-  it("shows the NASA rate-limit message for HTTP 429", async () => {
+  it.each([
+    [
+      400,
+      "A data selecionada não pôde ser consultada. Verifique a data e tente novamente.",
+    ],
+    [403, "Esta origem não está autorizada a consultar o proxy da NASA."],
+    [
+      429,
+      "Muitas consultas em pouco tempo. Aguarde alguns minutos e tente novamente.",
+    ],
+    [
+      502,
+      "A NASA não retornou uma imagem para essa data. Tente uma data mais antiga ou escolha outro dia.",
+    ],
+    [
+      504,
+      "A NASA demorou para responder. Tente novamente ou escolha uma data mais antiga.",
+    ],
+  ])("shows the mapped message for HTTP %i", async (status, message) => {
     fetchMock.mockResolvedValue({
       ok: false,
-      status: 429,
+      status,
     });
 
     render(<Nasa />);
@@ -111,31 +157,43 @@ describe("Nasa", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
 
+    expect(await screen.findByText(message)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Tentar novamente" }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows the proxy connection message for a network failure", async () => {
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+    render(<Nasa />);
+
+    fireEvent.change(screen.getByTestId("apod-date-input"), {
+      target: { value: "2001-07-04" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+
     expect(
       await screen.findByText(
-        "Limite de consultas da NASA atingido. Tente novamente mais tarde.",
+        "Falha de conexão ao consultar o proxy da NASA. Verifique sua internet e tente novamente.",
       ),
     ).toBeInTheDocument();
   });
 
-  it("shows the NASA unavailable message for HTTP 500", async () => {
-    fetchMock.mockResolvedValue({
-      ok: false,
-      status: 500,
-    });
-
+  it("retries the last selected date", async () => {
+    fetchMock.mockResolvedValue({ ok: false, status: 502 });
     render(<Nasa />);
 
     fireEvent.change(screen.getByTestId("apod-date-input"), {
       target: { value: "2001-07-04" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Tentar novamente" }),
+    );
 
-    expect(
-      await screen.findByText(
-        "A API da NASA está indisponível no momento. Tente novamente mais tarde.",
-      ),
-    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][0]).toBe(fetchMock.mock.calls[0][0]);
+    expect(screen.getByTestId("apod-date-input")).toHaveValue("2001-07-04");
   });
 
   it("shows the invalid response message for malformed API payloads", async () => {
@@ -156,7 +214,7 @@ describe("Nasa", () => {
 
     expect(
       await screen.findByText(
-        "A resposta da NASA veio em um formato inesperado. Tente outra data.",
+        "A resposta recebida veio em um formato inesperado. Tente outra data.",
       ),
     ).toBeInTheDocument();
   });
