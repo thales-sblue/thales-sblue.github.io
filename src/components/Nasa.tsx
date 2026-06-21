@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { sectionIds } from "../data/site";
 import {
+  APOD_EARLIEST_DATE,
   buildApodProxyUrl,
   getApodDateValidationMessage,
   getApodErrorMessage,
@@ -11,6 +12,7 @@ import Button from "./ui/Button";
 import SectionHeading from "./ui/SectionHeading";
 
 const APOD_REQUEST_STORAGE_KEY = "apod_requests";
+const APOD_EXAMPLE_DATE = "2021-08-22";
 const FALLBACK_BACKGROUND_IMAGE =
   "url('https://images-assets.nasa.gov/image/PIA18033/PIA18033~orig.jpg')";
 
@@ -47,15 +49,17 @@ export default function Nasa() {
   const [apod, setApod] = useState<ApodResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [lastRequestedDate, setLastRequestedDate] = useState("");
   const requestInFlight = useRef(false);
+  const today = new Date().toISOString().split("T")[0];
 
-  const fetchApod = async () => {
+  const fetchApod = async (requestedDate = date) => {
     if (requestInFlight.current) {
       return;
     }
 
     const proxyUrl = import.meta.env.VITE_APOD_PROXY_URL;
-    const dateValidationMessage = getApodDateValidationMessage(date);
+    const dateValidationMessage = getApodDateValidationMessage(requestedDate);
 
     if (dateValidationMessage) {
       setApod(null);
@@ -98,11 +102,20 @@ export default function Nasa() {
     );
 
     setError("");
+    setLastRequestedDate(requestedDate);
     requestInFlight.current = true;
     setLoading(true);
 
     try {
-      const response = await fetch(buildApodProxyUrl(proxyUrl, date));
+      let response: Response;
+
+      try {
+        response = await fetch(buildApodProxyUrl(proxyUrl, requestedDate));
+      } catch {
+        setApod(null);
+        setError(getApodErrorMessage(undefined, "network"));
+        return;
+      }
 
       if (!response.ok) {
         setApod(null);
@@ -110,7 +123,16 @@ export default function Nasa() {
         return;
       }
 
-      const payload: unknown = await response.json();
+      let payload: unknown;
+
+      try {
+        payload = await response.json();
+      } catch {
+        setApod(null);
+        setError(getApodErrorMessage(undefined, "invalid_response"));
+        return;
+      }
+
       const parsedApod = parseApodResponse(payload);
 
       if (!parsedApod.ok) {
@@ -120,13 +142,15 @@ export default function Nasa() {
       }
 
       setApod(parsedApod.data);
-    } catch {
-      setApod(null);
-      setError(getApodErrorMessage(undefined, "network"));
     } finally {
       requestInFlight.current = false;
       setLoading(false);
     }
+  };
+
+  const useExampleDate = () => {
+    setDate(APOD_EXAMPLE_DATE);
+    setError("");
   };
 
   const backgroundImage =
@@ -148,28 +172,71 @@ export default function Nasa() {
           subtitle="Já pensou em ver o céu no dia do seu aniversário?"
         />
 
-        <div className="mx-auto mb-8 flex max-w-xs flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <input
-            type="date"
-            max={new Date().toISOString().split("T")[0]}
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
-            aria-label="Selecione uma data"
-            data-testid="apod-date-input"
-            className="w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2.5 text-white backdrop-blur-sm transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/50 sm:max-w-[180px]"
-          />
-          <Button
-            onClick={fetchApod}
-            className="w-full disabled:opacity-50 sm:w-auto"
+        <div className="mx-auto mb-8 max-w-md">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <input
+              type="date"
+              min={APOD_EARLIEST_DATE}
+              max={today}
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+              aria-label="Selecione uma data"
+              data-testid="apod-date-input"
+              className="w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2.5 text-white backdrop-blur-sm transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/50 sm:max-w-[180px]"
+            />
+            <Button
+              onClick={() => void fetchApod()}
+              className="w-full disabled:opacity-50 sm:w-auto"
+              disabled={loading}
+            >
+              {loading ? "Carregando..." : "Buscar"}
+            </Button>
+          </div>
+          <p className="mt-3 text-xs text-white/60">
+            Escolha uma data entre 16/06/1995 e hoje. Algumas datas podem não
+            ter imagem disponível na NASA.
+          </p>
+          <button
+            type="button"
+            onClick={useExampleDate}
             disabled={loading}
+            className="mt-2 text-sm text-accent underline-offset-4 hover:underline disabled:opacity-50"
           >
-            {loading ? "Carregando..." : "Buscar"}
-          </Button>
+            Testar data exemplo
+          </button>
         </div>
 
         {error && (
-          <p className="mb-4 text-sm text-red-400" role="alert">
-            {error}
+          <div className="mb-4">
+            <p className="text-sm text-red-400" role="alert">
+              {error}
+            </p>
+            {lastRequestedDate && (
+              <div className="mt-3 flex flex-wrap justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => void fetchApod(lastRequestedDate)}
+                  disabled={loading}
+                  className="text-sm font-medium text-white underline-offset-4 hover:underline disabled:opacity-50"
+                >
+                  Tentar novamente
+                </button>
+                <button
+                  type="button"
+                  onClick={useExampleDate}
+                  disabled={loading}
+                  className="text-sm text-accent underline-offset-4 hover:underline disabled:opacity-50"
+                >
+                  Usar data exemplo
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {loading && (
+          <p className="mb-4 text-sm text-white/70" role="status">
+            Consultando imagem da NASA...
           </p>
         )}
 

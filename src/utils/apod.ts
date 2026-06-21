@@ -190,11 +190,11 @@ export function getApodErrorMessage(
   }
 
   if (fallbackCode === "network") {
-    return "Falha de conexão ao consultar a NASA. Verifique sua internet e tente novamente.";
+    return "Falha de conexão ao consultar o proxy da NASA. Verifique sua internet e tente novamente.";
   }
 
   if (fallbackCode === "invalid_response") {
-    return "A resposta da NASA veio em um formato inesperado. Tente outra data.";
+    return "A resposta recebida veio em um formato inesperado. Tente outra data.";
   }
 
   if (
@@ -205,19 +205,27 @@ export function getApodErrorMessage(
   }
 
   if (status === 400) {
-    return "A NASA não retornou uma imagem para essa data. Tente outra data.";
+    return "A data selecionada não pôde ser consultada. Verifique a data e tente novamente.";
   }
 
   if (status === 403) {
-    return "A API da NASA recusou a solicitação. Tente novamente mais tarde.";
+    return "Esta origem não está autorizada a consultar o proxy da NASA.";
   }
 
   if (status === 429) {
-    return "Limite de consultas da NASA atingido. Tente novamente mais tarde.";
+    return "Muitas consultas em pouco tempo. Aguarde alguns minutos e tente novamente.";
+  }
+
+  if (status === 502) {
+    return "A NASA não retornou uma imagem para essa data. Tente uma data mais antiga ou escolha outro dia.";
+  }
+
+  if (status === 504) {
+    return "A NASA demorou para responder. Tente novamente ou escolha uma data mais antiga.";
   }
 
   if (status !== undefined && status >= 500) {
-    return "A API da NASA está indisponível no momento. Tente novamente mais tarde.";
+    return "Não foi possível concluir a consulta à NASA. Tente novamente mais tarde.";
   }
 
   return "Não conseguimos buscar a imagem.";

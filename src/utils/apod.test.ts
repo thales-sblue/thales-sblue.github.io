@@ -136,19 +136,34 @@ describe("apod helpers", () => {
 
   it("maps HTTP statuses and fallback codes to safe messages", () => {
     expect(getApodErrorMessage(400)).toBe(
-      "A NASA não retornou uma imagem para essa data. Tente outra data.",
+      "A data selecionada não pôde ser consultada. Verifique a data e tente novamente.",
     );
     expect(getApodErrorMessage(403)).toBe(
-      "A API da NASA recusou a solicitação. Tente novamente mais tarde.",
+      "Esta origem não está autorizada a consultar o proxy da NASA.",
     );
     expect(getApodErrorMessage(429)).toBe(
-      "Limite de consultas da NASA atingido. Tente novamente mais tarde.",
+      "Muitas consultas em pouco tempo. Aguarde alguns minutos e tente novamente.",
     );
-    expect(getApodErrorMessage(503)).toBe(
-      "A API da NASA está indisponível no momento. Tente novamente mais tarde.",
+    expect(getApodErrorMessage(502)).toBe(
+      "A NASA não retornou uma imagem para essa data. Tente uma data mais antiga ou escolha outro dia.",
+    );
+    expect(getApodErrorMessage(504)).toBe(
+      "A NASA demorou para responder. Tente novamente ou escolha uma data mais antiga.",
     );
     expect(getApodErrorMessage(undefined, "network")).toBe(
-      "Falha de conexão ao consultar a NASA. Verifique sua internet e tente novamente.",
+      "Falha de conexão ao consultar o proxy da NASA. Verifique sua internet e tente novamente.",
+    );
+    expect(getApodErrorMessage(undefined, "missing_proxy_url")).toBe(
+      "Configuração do proxy da NASA indisponível no momento.",
+    );
+    expect(getApodErrorMessage(undefined, "invalid_response")).toBe(
+      "A resposta recebida veio em um formato inesperado. Tente outra data.",
+    );
+    expect(getApodErrorMessage(undefined, "unsafe_media_url")).toBe(
+      "O conteúdo retornado pela NASA para essa data não é compatível para exibição aqui.",
+    );
+    expect(getApodErrorMessage(undefined, "unsupported_media")).toBe(
+      "O conteúdo retornado pela NASA para essa data não é compatível para exibição aqui.",
     );
   });
 });
