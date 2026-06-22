@@ -248,16 +248,24 @@ export default function Nasa() {
 
             <div className="mt-4 aspect-video overflow-hidden rounded-xl border border-white/10">
               {apod.media_type === "video" ? (
-                <iframe
-                  src={apod.url}
-                  title={apod.title}
-                  className="h-full w-full"
-                  frameBorder="0"
-                  sandbox="allow-scripts allow-same-origin allow-presentation"
-                  referrerPolicy="no-referrer"
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-surface-muted/80 p-6 text-center">
+                  <div>
+                    <p className="text-lg font-medium text-white">
+                      Este APOD é um vídeo externo da NASA.
+                    </p>
+                    <p className="mt-2 text-sm text-white/70">
+                      Alguns vídeos não permitem reprodução incorporada, por
+                      isso abrimos em uma nova aba.
+                    </p>
+                  </div>
+                  <Button
+                    href={apod.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Assistir no site original
+                  </Button>
+                </div>
               ) : (
                 <img
                   src={apod.url}

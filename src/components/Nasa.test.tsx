@@ -126,6 +126,31 @@ describe("Nasa", () => {
     ).toBeDisabled();
   });
 
+  it("renders image APOD media normally", async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue({
+        title: "Earth",
+        date: "2001-07-04",
+        explanation: "Blue marble",
+        url: "https://images.example.com/earth.jpg",
+        media_type: "image",
+      }),
+    });
+
+    render(<Nasa />);
+    fireEvent.change(screen.getByTestId("apod-date-input"), {
+      target: { value: "2001-07-04" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+
+    const image = await screen.findByRole("img", { name: "Earth" });
+    expect(image).toHaveAttribute(
+      "src",
+      "https://images.example.com/earth.jpg",
+    );
+  });
+
   it.each([
     [
       400,
@@ -219,14 +244,15 @@ describe("Nasa", () => {
     ).toBeInTheDocument();
   });
 
-  it("does not render an iframe for an unsafe video URL", async () => {
+  it("renders video APOD as a safe external-link fallback", async () => {
+    const videoUrl = "https://www.youtube.com/embed/example";
     fetchMock.mockResolvedValue({
       ok: true,
       json: vi.fn().mockResolvedValue({
-        title: "Launch",
-        date: "2001-07-04",
-        explanation: "Video",
-        url: "https://example.com/embed/video",
+        title: "Earth's Recent Climate Spiral",
+        date: "2022-08-22",
+        explanation: "A visualization of Earth's changing climate.",
+        url: videoUrl,
         media_type: "video",
       }),
     });
@@ -234,15 +260,34 @@ describe("Nasa", () => {
     const { container } = render(<Nasa />);
 
     fireEvent.change(screen.getByTestId("apod-date-input"), {
-      target: { value: "2001-07-04" },
+      target: { value: "2022-08-22" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
 
     expect(
-      await screen.findByText(
-        "O conteúdo retornado pela NASA para essa data não é compatível para exibição aqui.",
-      ),
+      await screen.findByText("Este APOD é um vídeo externo da NASA."),
     ).toBeInTheDocument();
+    const link = screen.getByRole("link", {
+      name: "Assistir no site original",
+    });
+    expect(link).toHaveAttribute("href", videoUrl);
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"));
+    expect(link).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
     expect(container.querySelector("iframe")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 3,
+        name: "Earth's Recent Climate Spiral",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("2022-08-22")).toBeInTheDocument();
+    expect(
+      screen.getByText("A visualization of Earth's changing climate."),
+    ).toBeInTheDocument();
+
+    const requestUrl = String(fetchMock.mock.calls[0][0]);
+    expect(requestUrl).not.toContain("api.nasa.gov");
+    expect(requestUrl).not.toContain("api_key");
   });
 });
