@@ -5,6 +5,7 @@ import {
   buildApodProxyUrl,
   getApodDateValidationMessage,
   getApodErrorMessage,
+  getExternalVideoUrl,
   type ApodResponse,
   parseApodResponse,
 } from "../utils/apod";
@@ -45,7 +46,7 @@ function readStoredRequestTimestamps(
 }
 
 export default function Nasa() {
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(APOD_EXAMPLE_DATE);
   const [apod, setApod] = useState<ApodResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -148,11 +149,6 @@ export default function Nasa() {
     }
   };
 
-  const useExampleDate = () => {
-    setDate(APOD_EXAMPLE_DATE);
-    setError("");
-  };
-
   const backgroundImage =
     apod?.media_type === "image"
       ? `url(${apod.url})`
@@ -196,14 +192,6 @@ export default function Nasa() {
             Escolha uma data entre 16/06/1995 e hoje. Algumas datas podem não
             ter imagem disponível na NASA.
           </p>
-          <button
-            type="button"
-            onClick={useExampleDate}
-            disabled={loading}
-            className="mt-2 text-sm text-accent underline-offset-4 hover:underline disabled:opacity-50"
-          >
-            Testar data exemplo
-          </button>
         </div>
 
         {error && (
@@ -220,14 +208,6 @@ export default function Nasa() {
                   className="text-sm font-medium text-white underline-offset-4 hover:underline disabled:opacity-50"
                 >
                   Tentar novamente
-                </button>
-                <button
-                  type="button"
-                  onClick={useExampleDate}
-                  disabled={loading}
-                  className="text-sm text-accent underline-offset-4 hover:underline disabled:opacity-50"
-                >
-                  Usar data exemplo
                 </button>
               </div>
             )}
@@ -251,7 +231,8 @@ export default function Nasa() {
                 <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-surface-muted/80 p-6 text-center">
                   <div>
                     <p className="text-lg font-medium text-white">
-                      Este APOD é um vídeo externo da NASA.
+                      Este conteúdo em vídeo está disponível apenas no site
+                      original.
                     </p>
                     <p className="mt-2 text-sm text-white/70">
                       Alguns vídeos não permitem reprodução incorporada, por
@@ -259,7 +240,7 @@ export default function Nasa() {
                     </p>
                   </div>
                   <Button
-                    href={apod.url}
+                    href={getExternalVideoUrl(apod.url)}
                     target="_blank"
                     rel="noreferrer noopener"
                   >

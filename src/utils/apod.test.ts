@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildApodProxyUrl,
+  getExternalVideoUrl,
   getApodDateValidationMessage,
   getApodErrorMessage,
   isSafeApodImageUrl,
@@ -131,7 +132,37 @@ describe("apod helpers", () => {
     expect(isSafeApodVideoUrl("https://player.vimeo.com/video/example")).toBe(
       true,
     );
-    expect(isSafeApodVideoUrl("https://example.com/embed/example")).toBe(false);
+    expect(isSafeApodVideoUrl("https://example.com/embed/example")).toBe(true);
+    expect(isSafeApodVideoUrl("http://example.com/embed/example")).toBe(false);
+  });
+
+  it.each([
+    [
+      "https://www.youtube.com/embed/VIDEO_ID",
+      "https://www.youtube.com/watch?v=VIDEO_ID",
+    ],
+    [
+      "https://www.youtube.com/embed/VIDEO_ID?rel=0",
+      "https://www.youtube.com/watch?v=VIDEO_ID",
+    ],
+    [
+      "https://youtube.com/embed/VIDEO_ID",
+      "https://www.youtube.com/watch?v=VIDEO_ID",
+    ],
+    [
+      "https://www.youtube-nocookie.com/embed/VIDEO_ID",
+      "https://www.youtube.com/watch?v=VIDEO_ID",
+    ],
+    ["https://youtu.be/VIDEO_ID", "https://www.youtube.com/watch?v=VIDEO_ID"],
+    [
+      "https://www.youtube.com/watch?v=VIDEO_ID",
+      "https://www.youtube.com/watch?v=VIDEO_ID",
+    ],
+    ["https://player.vimeo.com/video/12345", "https://vimeo.com/12345"],
+    ["https://vimeo.com/12345", "https://vimeo.com/12345"],
+    ["https://example.com/videos/apod", "https://example.com/videos/apod"],
+  ])("normalizes external video URL %s", (input, expected) => {
+    expect(getExternalVideoUrl(input)).toBe(expected);
   });
 
   it("maps HTTP statuses and fallback codes to safe messages", () => {

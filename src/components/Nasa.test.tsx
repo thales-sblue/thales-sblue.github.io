@@ -27,10 +27,11 @@ describe("Nasa", () => {
     expect(screen.getByRole("button", { name: "Buscar" })).toBeInTheDocument();
   });
 
-  it("renders the APOD date limits and guidance", () => {
+  it("starts with the stable example date, limits, and guidance", () => {
     render(<Nasa />);
 
     const input = screen.getByTestId("apod-date-input");
+    expect(input).toHaveValue("2021-08-22");
     expect(input).toHaveAttribute("min", "1995-06-16");
     expect(input).toHaveAttribute(
       "max",
@@ -43,34 +44,36 @@ describe("Nasa", () => {
     ).toBeInTheDocument();
   });
 
-  it("sets the stable example date and clears the current error", () => {
+  it("does not render the example date buttons", async () => {
+    fetchMock.mockResolvedValue({ ok: false, status: 502 });
     render(<Nasa />);
+
+    expect(
+      screen.queryByRole("button", { name: "Testar data exemplo" }),
+    ).not.toBeInTheDocument();
+
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "Testar data exemplo" }),
-    );
-
-    expect(screen.getByTestId("apod-date-input")).toHaveValue("2021-08-22");
-    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    await screen.findByRole("button", { name: "Tentar novamente" });
+    expect(
+      screen.queryByRole("button", { name: "Usar data exemplo" }),
+    ).not.toBeInTheDocument();
   });
 
-  it("shows a validation message and does not call the API when search is clicked without a date", () => {
+  it("allows the user to change the date manually", () => {
     render(<Nasa />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+    fireEvent.change(screen.getByTestId("apod-date-input"), {
+      target: { value: "2001-07-04" },
+    });
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Selecione uma data.");
-    expect(fetchMock).not.toHaveBeenCalled();
+    expect(screen.getByTestId("apod-date-input")).toHaveValue("2001-07-04");
   });
 
   it("shows a safe configuration message and does not call fetch when the proxy URL is missing", () => {
     vi.stubEnv("VITE_APOD_PROXY_URL", "");
     render(<Nasa />);
 
-    fireEvent.change(screen.getByTestId("apod-date-input"), {
-      target: { value: "2001-07-04" },
-    });
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
 
     expect(screen.getByRole("alert")).toHaveTextContent(
@@ -176,7 +179,6 @@ describe("Nasa", () => {
     });
 
     render(<Nasa />);
-
     fireEvent.change(screen.getByTestId("apod-date-input"), {
       target: { value: "2001-07-04" },
     });
@@ -231,7 +233,6 @@ describe("Nasa", () => {
     });
 
     render(<Nasa />);
-
     fireEvent.change(screen.getByTestId("apod-date-input"), {
       target: { value: "2001-07-04" },
     });
@@ -245,32 +246,42 @@ describe("Nasa", () => {
   });
 
   it("renders video APOD as a safe external-link fallback", async () => {
-    const videoUrl = "https://www.youtube.com/embed/example";
+    const rawVideoUrl = "https://www.youtube.com/embed/ACaPI2M4GyU?rel=0";
     fetchMock.mockResolvedValue({
       ok: true,
       json: vi.fn().mockResolvedValue({
         title: "Earth's Recent Climate Spiral",
         date: "2022-08-22",
         explanation: "A visualization of Earth's changing climate.",
-        url: videoUrl,
+        url: rawVideoUrl,
         media_type: "video",
       }),
     });
 
     const { container } = render(<Nasa />);
-
     fireEvent.change(screen.getByTestId("apod-date-input"), {
       target: { value: "2022-08-22" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
 
     expect(
-      await screen.findByText("Este APOD é um vídeo externo da NASA."),
+      await screen.findByText(
+        "Este conteúdo em vídeo está disponível apenas no site original.",
+      ),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Alguns vídeos não permitem reprodução incorporada, por isso abrimos em uma nova aba.",
+      ),
+    ).toBeInTheDocument();
+
     const link = screen.getByRole("link", {
       name: "Assistir no site original",
     });
-    expect(link).toHaveAttribute("href", videoUrl);
+    expect(link).toHaveAttribute(
+      "href",
+      "https://www.youtube.com/watch?v=ACaPI2M4GyU",
+    );
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"));
     expect(link).toHaveAttribute("rel", expect.stringContaining("noreferrer"));
@@ -289,5 +300,31 @@ describe("Nasa", () => {
     const requestUrl = String(fetchMock.mock.calls[0][0]);
     expect(requestUrl).not.toContain("api.nasa.gov");
     expect(requestUrl).not.toContain("api_key");
+  });
+
+  it("still blocks unsafe video URLs", async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue({
+        title: "Launch",
+        date: "2001-07-04",
+        explanation: "Video",
+        url: "javascript:alert(1)",
+        media_type: "video",
+      }),
+    });
+
+    const { container } = render(<Nasa />);
+    fireEvent.change(screen.getByTestId("apod-date-input"), {
+      target: { value: "2001-07-04" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+
+    expect(
+      await screen.findByText(
+        "O conteúdo retornado pela NASA para essa data não é compatível para exibição aqui.",
+      ),
+    ).toBeInTheDocument();
+    expect(container.querySelector("iframe")).not.toBeInTheDocument();
   });
 });
