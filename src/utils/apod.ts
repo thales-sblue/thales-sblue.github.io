@@ -24,11 +24,6 @@ export type ApodResult =
   | { ok: false; code: ApodErrorCode };
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
-const ALLOWED_VIDEO_HOSTS = new Set([
-  "www.youtube.com",
-  "youtube.com",
-  "player.vimeo.com",
-]);
 
 type ParsedApodDate = {
   utcTime: number;
@@ -236,11 +231,52 @@ export function isSafeApodImageUrl(url: string): boolean {
 }
 
 export function isSafeApodVideoUrl(url: string): boolean {
+  return isSafeHttpsUrl(url) !== null;
+}
+
+export function getExternalVideoUrl(url: string): string {
   const parsed = isSafeHttpsUrl(url);
 
   if (!parsed) {
-    return false;
+    return url;
   }
 
-  return ALLOWED_VIDEO_HOSTS.has(parsed.hostname);
+  const host = parsed.hostname.toLowerCase();
+  const pathSegments = parsed.pathname.split("/").filter(Boolean);
+
+  if (
+    (host === "www.youtube.com" ||
+      host === "youtube.com" ||
+      host === "www.youtube-nocookie.com") &&
+    pathSegments[0] === "embed" &&
+    pathSegments[1]
+  ) {
+    return `https://www.youtube.com/watch?v=${pathSegments[1]}`;
+  }
+
+  if (host === "youtu.be" && pathSegments[0]) {
+    return `https://www.youtube.com/watch?v=${pathSegments[0]}`;
+  }
+
+  if (
+    (host === "www.youtube.com" || host === "youtube.com") &&
+    pathSegments[0] === "watch" &&
+    parsed.searchParams.get("v")
+  ) {
+    return `https://www.youtube.com/watch?v=${parsed.searchParams.get("v")}`;
+  }
+
+  if (
+    host === "player.vimeo.com" &&
+    pathSegments[0] === "video" &&
+    pathSegments[1]
+  ) {
+    return `https://vimeo.com/${pathSegments[1]}`;
+  }
+
+  if (host === "vimeo.com" && pathSegments[0]) {
+    return `https://vimeo.com/${pathSegments[0]}`;
+  }
+
+  return url;
 }
